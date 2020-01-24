@@ -1,7 +1,6 @@
-*/**/.gradle
-*/**/.idea
-*/**/nbproject
-*/**/out
+.idea
+nbproject
+out
 
 # Ignore Gradle project-specific cache directory
 .gradle
