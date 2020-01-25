@@ -1,12 +1,14 @@
 # Bomb Vacuum
 
-## Setting Up Your Enviornment
+# Rule #1: NEVER PUSH TO MASTER
 
 Note: If using Windows, use Git Bash as a terminal.
 
+## Setting Up Your Enviornment
+
 Have the following installed:
-- (Git)[https://git-scm.com/downloads]
-- (Java 11)[https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot]
+- [Git](https://git-scm.com/downloads)
+- [Java 11](https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot)
 - Java IDE of your choice. \(Recommended: NetBeans or Intellij IDEA\)
 
 ### Adding an SSH Key to Your GitHub
@@ -33,13 +35,15 @@ When prompted for input, press `ENTER` and accept the defaul arguments.
 1. Highlight the output and `Right-click -> Copy` the key.
 1. Go to https://github.com and sign in
 1. Go to https://github.com/settings/keys
-1. Click "New SSH key"
-   - Give a meaningful title to the key \(Example: Rlab Wedge\)
+1. Click "New SSH key".
+   - Give a meaningful title to the key \(Example: Rlab Wedge\).
    - Paste the key. Make sure the paste starts with `ssh-rsa` and ends with your email. Remove any trailing whitespace if it exists.
 
 ### Cloning the Repo
 
-# Rule #1: NEVER PUSH TO MASTER
+1. Go to https://github.com/Blackburn-College-2/project-1-bomb-vacuum
+1. Run `git clone git@github.com:Blackburn-College-2/project-1-bomb-vacuum.git`
+1. Run `cd project-1-bomb-vacuum`
 
 # Rule #2: Follow (Google's Java Style Guide)[https://google.github.io/styleguide/javaguide.html] (Exception: use 4-space indentation)
 
