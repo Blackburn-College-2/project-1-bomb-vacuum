@@ -49,7 +49,9 @@ Important Note: The first time loading the project in an IDE may take a while. S
 ## Code Style
 
 Follow [Google's Java Style Guide](https://google.github.io/styleguide/javaguide.html) 
-- Exception: use 4-space indentation.
+
+Exception include:
+- use 4-space indentation.
 
 ## Branches
 
