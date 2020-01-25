@@ -41,15 +41,15 @@ When prompted for input, press `ENTER` and accept the defaul arguments.
 
 ### Cloning the Repo
 
-1. Go to https://github.com/Blackburn-College-2/project-1-bomb-vacuum
 1. Run `git clone git@github.com:Blackburn-College-2/project-1-bomb-vacuum.git`
 1. Run `cd project-1-bomb-vacuum`
 
-# Rule #2: Follow (Google's Java Style Guide)[https://google.github.io/styleguide/javaguide.html] (Exception: use 4-space indentation)
+Important Note: The first time loading the project in an IDE may take a while. Same goes for first time run.
 
-# Guidelines
+## Code Style
 
-If using Windows, use Git Bash
+Follow [Google's Java Style Guide](https://google.github.io/styleguide/javaguide.html) 
+- Exception: use 4-space indentation.
 
 ## Branches
 
@@ -60,11 +60,20 @@ If using Windows, use Git Bash
 
 ### Creating a Branch
 
-1. In a terminal run: `git checkout -b <branch-name>`
-   - Example: `git checkout -b basicgrid`
+In a terminal run: `git checkout -b <branch-name>`
+
+Example: `git checkout -b basicgrid`
 
 ### Switching to a Branch
 
-1. In a terminal run: `git checkout <branch-name>
-   - Example: `git checkout basicgrid`
+In a terminal run: `git checkout <branch-name>`
+
+Example: `git checkout basicgrid`
+
+### Pushing to a Branch
+
+In a terminal at the repo's root directory, run the following:
+1. `git add .`
+1. `git commit -m "<message>"` where message explains what changes you've made since the last commit
+1. `git push origin <branch-name>` tab auto-complete is your friend here!
 
