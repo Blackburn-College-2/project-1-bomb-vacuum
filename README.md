@@ -6,6 +6,18 @@ Note: If using Windows, use Git Bash as a terminal.
 
 In a file explorer or the desktop `Right-click -> Git Bash Here`
 
+## Code Style
+
+Follow [Google's Java Style Guide](https://google.github.io/styleguide/javaguide.html) 
+
+Exception include:
+- use 4-space indentation.
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL\n
+NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and\n
+"OPTIONAL" in this document are to be interpreted as described\n 
+in [RFC 2119](https://tools.ietf.org/html/rfc2119).
+
 ## Setting Up Your Enviornment
 
 Have the following installed:
@@ -21,7 +33,7 @@ Open a terminal.
 
 Run `ls -al ~/.ssh`
 
-If files `id_rsa` and `id_rsa.pub` exist, skip to **Adding an RSA Key Pair**
+If files `id_rsa` and `id_rsa.pub` exist, skip to **Adding an RSA Key to Your GitHub**
 
 #### Creating an RSA Key Pair
 
@@ -29,7 +41,7 @@ Using the email associated with your GitHub account:
 
 Run `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`
 
-When prompted for input, press `ENTER` and accept the defaul arguments.
+When prompted for input, press `ENTER` and accept the default arguments.
 
 #### Adding an RSA Key to Your GitHub
 
@@ -39,21 +51,16 @@ When prompted for input, press `ENTER` and accept the defaul arguments.
 1. Go to https://github.com/settings/keys
 1. Click "New SSH key".
    - Give a meaningful title to the key \(Example: Rlab Wedge\).
-   - Paste the key. Make sure the paste starts with `ssh-rsa` and ends with your email. Remove any trailing whitespace if it exists.
+   - Paste the key. Make sure the paste starts with `ssh-rsa` and ends with your email. 
+   Remove any leading and trailing whitespace if it exists.
 
 ### Cloning the Repo
 
 1. Run `git clone git@github.com:Blackburn-College-2/project-1-bomb-vacuum.git`
 1. Run `cd project-1-bomb-vacuum`
+   - ***Note: This is the repo's root directory.***
 
 Important Note: The first time loading the project in an IDE may take a while. Same goes for first time run.
-
-## Code Style
-
-Follow [Google's Java Style Guide](https://google.github.io/styleguide/javaguide.html) 
-
-Exception include:
-- use 4-space indentation.
 
 ## Branches
 
