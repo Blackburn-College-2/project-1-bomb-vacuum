@@ -2,7 +2,9 @@
 
 # Rule #1: NEVER PUSH TO MASTER
 
-Note: If using Windows, use Git Bash as a terminal.
+Note: If using Windows, use Git Bash as a terminal. 
+
+In a file explorer or the desktop `Right-click -> Git Bash Here`
 
 ## Setting Up Your Enviornment
 
@@ -54,6 +56,8 @@ Exception include:
 - use 4-space indentation.
 
 ## Branches
+
+Make sure you change to a \(or create a new\) branch before making changes. Do not work in the `master` or `dev` branches!!!
 
 ### Naming Conventions
 
