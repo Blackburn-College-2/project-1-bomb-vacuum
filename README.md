@@ -1,5 +1,6 @@
 # Bomb Vacuum
 
+
 # Rule #1: NEVER PUSH TO MASTER
 
 # Rule #2: Follow (Google's Java Style Guide)[https://google.github.io/styleguide/javaguide.html] (Exception: use 4-space indentation)
