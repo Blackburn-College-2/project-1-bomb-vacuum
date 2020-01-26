@@ -6,6 +6,8 @@ Note: If using Windows, use Git Bash as a terminal.
 
 In a file explorer or the desktop `Right-click -> Git Bash Here`
 
+## [Trello Board](https://trello.com/b/2BllDNvD/bombvacuum)
+
 ## Code Style
 
 Follow [Google's Java Style Guide](https://google.github.io/styleguide/javaguide.html) 
