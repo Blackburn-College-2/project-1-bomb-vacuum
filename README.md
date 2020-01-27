@@ -23,38 +23,15 @@ in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 ## Setting Up Your Enviornment
 
 Have the following installed:
-- [Git](https://git-scm.com/downloads)
-- [Java 11](https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot)
-- Java IDE of your choice. \(Recommended: NetBeans or Intellij IDEA\)
+- [Git](https://github.com/cordell-stocker/CS.Resources/blob/master/howto-setup-environment.md#howto-install-git)
+- [Java 11](https://github.com/cordell-stocker/CS.Resources/blob/master/howto-setup-environment.md#howto-install-java-11)
+- [NetBeans 11](https://github.com/cordell-stocker/CS.Resources/blob/master/howto-setup-environment.md#howto-install-netbeans-11)
+  - You can use a different IDE if desired.
 
-### Adding an SSH Key to Your GitHub
+## Add an SSH key to your GitHub And Configure Git
 
-Open a terminal.
-
-#### Check for existing RSA keys.
-
-Run `ls -al ~/.ssh`
-
-If files `id_rsa` and `id_rsa.pub` exist, skip to **Adding an RSA Key to Your GitHub**
-
-#### Creating an RSA Key Pair
-
-Using the email associated with your GitHub account:
-
-Run `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`
-
-When prompted for input, press `ENTER` and accept the default arguments.
-
-#### Adding an RSA Key to Your GitHub
-
-1. Run `cat ~/.ssh/id_rsa.pub`
-1. Highlight the output and `Right-click -> Copy` the key.
-1. Go to https://github.com and sign in
-1. Go to https://github.com/settings/keys
-1. Click "New SSH key".
-   - Give a meaningful title to the key \(Example: Rlab Wedge\).
-   - Paste the key. Make sure the paste starts with `ssh-rsa` and ends with your email. 
-   Remove any leading and trailing whitespace if it exists.
+Follow these instructions: 
+[howto-add-sshkey-to-github.md](https://github.com/cordell-stocker/CS.Resources/blob/master/howto-add-sshkey-to-github.md)
 
 ### Cloning the Repo
 
