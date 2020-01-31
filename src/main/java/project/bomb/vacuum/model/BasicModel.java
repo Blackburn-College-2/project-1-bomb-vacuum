@@ -28,6 +28,7 @@ public class BasicModel implements Model {
 
     @Override
     public void newGame(int rows, int columns, int bombs) {
+        
         throw new UnsupportedOperationException("Method not yet implemented.");
     }
 
