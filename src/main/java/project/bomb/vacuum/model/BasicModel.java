@@ -66,7 +66,7 @@ public class BasicModel implements Model {
 
     @Override
     public void newGame(DefaultBoard board) {
-        switch (board) {
+        switch (board) { 
             case EASY:
                 newGame(8, 8, 10);
                 break;
