@@ -15,7 +15,9 @@ public class BasicModel implements Model {
 
     @Override
     public void tileUpdatedByUser(TileAction tileAction, Position position) {
-        throw new UnsupportedOperationException("Method not yet implemented.");
+        
+        
+       // throw new UnsupportedOperationException("Method not yet implemented.");
     }
 
     public static void main(String[] args) {
@@ -39,8 +41,7 @@ public class BasicModel implements Model {
     }
 
     /**
-     * So far, newGame will build the grid and place bombs. Next action is to
-     * make it count the number of tiles touched by bombs.
+     * 
      *
      * @param rows // The number of rows to assign to the grid
      * @param columns // The number of columns to assign to the grid
@@ -56,7 +57,7 @@ public class BasicModel implements Model {
                 state[a][b] = TileValue.EMPTY;
             }
         }
-        for (int i = 0; i < (bombs); i++) {
+        for (int i = 0; i < bombs; i++) {
             int x = (int) (Math.random() * ((rows - 1) + 1));
             int y = (int) (Math.random() * ((columns - 1) + 1)); //Generates an 
             //int from 0 to 
@@ -107,12 +108,9 @@ public class BasicModel implements Model {
 
         int rowLen = this.gameState.length - 1; // # of rows
         int colLen = this.gameState[0].length - 1; // # of columns
-        System.out.println(rowLen);
-        System.out.println(colLen);
+        
         for (int i = 0; i < rowLen + 1; i++) {
             for (int j = 0; j < colLen + 1; j++) {
-                int tempRow = i;
-                int tempCol = j;
 
                 if (gameState[i][j].equals(TileValue.BOMB)) {
 
