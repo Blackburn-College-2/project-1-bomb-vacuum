@@ -1,9 +1,13 @@
 package project.bomb.vacuum.model;
 
+import project.bomb.vacuum.BoardConfiguration;
 import project.bomb.vacuum.DefaultBoard;
+import project.bomb.vacuum.HighScores;
 import project.bomb.vacuum.Model;
 import project.bomb.vacuum.TileAction;
 import project.bomb.vacuum.Position;
+import project.bomb.vacuum.Timer;
+import project.bomb.vacuum.exceptions.InvalidBoardConfiguration;
 
 public class BasicModel implements Model {
 
@@ -43,7 +47,7 @@ public class BasicModel implements Model {
      * @param bombs // The number of bombs to be placed on the grid
      */
 
-    @Override
+    
     public void newGame(int rows, int columns, int bombs) {
         TileValue[][] state = new TileValue[rows][columns];
         for (int a = 0; a < rows; a++) { // assigns EMPTY in order 
@@ -149,7 +153,7 @@ public class BasicModel implements Model {
         throw new UnsupportedOperationException("Method not yet implemented.");
     }
 
-    @Override
+    
     public void getHighScores() {
         throw new UnsupportedOperationException("Method not yet implemented.");
     }
@@ -157,5 +161,25 @@ public class BasicModel implements Model {
     @Override
     public void cheatToggled(boolean toggle) {
         throw new UnsupportedOperationException("Method not yet implemented.");
+    }
+
+    @Override
+    public void newGame(BoardConfiguration boardConfiguration) throws InvalidBoardConfiguration {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public HighScores getScores(DefaultBoard board) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public BoardConfiguration getDefaultBoardConfiguration(DefaultBoard board) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Timer createTimer() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
