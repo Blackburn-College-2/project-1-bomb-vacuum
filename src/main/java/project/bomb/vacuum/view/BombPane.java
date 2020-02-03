@@ -5,7 +5,9 @@
  */
 package project.bomb.vacuum.view;
 
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -22,6 +24,7 @@ public class BombPane extends GridPane{
 
         double screenHeight = (BombPane.buttonSize * rows);
         double screenWidth = (BombPane.buttonSize * columns);
+
     }
 
     private Button makeButton() {
