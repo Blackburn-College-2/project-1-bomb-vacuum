@@ -23,11 +23,15 @@ public class GUI extends Application {
         double screenWidth = 800;
         double screenHeight = 600;
         Pane anchorPane  = new Pane();
-        
+        BorderPane borderPane = new BorderPane();
         BombPane bombPane = new BombPane(10,10);
-        anchorPane.getChildren().add(bombPane);
+
+        borderPane.setCenter(bombPane);
+        
+        anchorPane.getChildren().add(borderPane);
         Scene scene = new Scene(anchorPane, screenWidth, screenHeight);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
