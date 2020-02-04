@@ -29,8 +29,10 @@ public class GUI extends Application implements View {
         BorderPane borderPane = new BorderPane();
         
         BombPane bombPane = new BombPane(10,10);
+        TimerPane timerPane = new TimerPane();
 
         borderPane.setCenter(bombPane);
+        borderPane.setTop(timerPane);
         
         anchorPane.getChildren().add(borderPane);
         Scene scene = new Scene(anchorPane, screenWidth, screenHeight);
