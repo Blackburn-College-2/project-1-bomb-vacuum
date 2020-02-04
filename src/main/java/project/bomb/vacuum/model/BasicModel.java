@@ -9,6 +9,7 @@ public class BasicModel implements Model {
 
     private Tile[][] gameModel;
     private final Controller controller;
+    private int bombs;
 
     public BasicModel(Controller controller) {
         this.controller = controller;
@@ -38,7 +39,7 @@ public class BasicModel implements Model {
         this.controller.setTileStatuses(new TileStatus[]{status});
     }
 
-    private void revealTile(Tile tile) {
+    private void revealTile(Tile tile) { // this needs fixed
         TileState tileState = tile.getState();
         TileValue tileValue = tile.getValue();
         if (tileState == TileState.NOT_CLICKED) {
@@ -55,21 +56,23 @@ public class BasicModel implements Model {
         this.controller.setTileStatuses(new TileStatus[]{status});
     }
 
-    public void endGameStateTransition() {
+    public void endGameStateTransition() { // this needs fixed 
         int rows = (this.gameModel.length - 1);
         int col = (this.gameModel[0].length);
-        
+        int bombCount = 0;
+        TileStatus[] returnedStatus = new TileStatus[bombs];
         for (int i = 0; i < this.gameModel.length; i++) {
             for (int j = 0; j < this.gameModel[0].length; j++) {
                 if (this.gameModel[i][j].getValue() == TileValue.BOMB){
                     Tile temp = this.gameModel[i][j];
                     temp.setState(TileState.BOMB);
-                    TileStatus status = new TileStatus(temp.getState(), temp.position);
-                    this.controller.setTileStatuses(new TileStatus[]{status});
+                    returnedStatus[bombCount] = new TileStatus(temp.getState(),temp.position);
+                    
                 }
             }
         }
-    }
+        this.controller.setTileStatuses(returnedStatus);
+    } 
 
     public static void main(String[] args) {  // FOR TESTS
 
@@ -100,6 +103,7 @@ public class BasicModel implements Model {
      * @param bombs // The number of bombs to be placed on the grid
      */
     public void newGame(int rows, int columns, int bombs) {
+        this.bombs = bombs;
         Tile[][] state = new Tile[rows][columns];
         for (int row = 0; row < rows; row++) { // assigns EMPTY in order 
             // to avoid NULL POINTER
