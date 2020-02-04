@@ -11,5 +11,6 @@ public class TileStatus {
     public TileStatus(TileState state, Position position) {
         this.position = position;
         this.state = state;
+        
     }
 }
