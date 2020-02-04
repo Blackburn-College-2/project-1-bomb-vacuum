@@ -9,6 +9,9 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import project.bomb.vacuum.Controller;
+import project.bomb.vacuum.Position;
+import project.bomb.vacuum.TileAction;
 
 /**
  *
@@ -18,32 +21,32 @@ public class BombPane extends GridPane{
 
     private static final int buttonSize = 50;
 
-    public BombPane(int columns, int rows) {
-
-        populateGrid(columns, rows);
+    public BombPane(Controller controller, int columns, int rows) {
+        populateGrid(controller, columns, rows);
 
         double screenHeight = (BombPane.buttonSize * rows);
         double screenWidth = (BombPane.buttonSize * columns);
 
     }
 
-    private Button makeButton() {
-        Button button = new Button();
+    private TileButton makeButton(Controller controller, int row, int column) {
+        TileButton button = new TileButton(controller, row, column);
         button.setPrefSize(BombPane.buttonSize, BombPane.buttonSize);
+
         return button;
     }
 
-    private void populateGrid(int gridColumns, int gridRows) {
+    private void populateGrid(Controller controller, int gridColumns, int gridRows) {
         for (int i = 0; i < gridColumns; i++) {
             for (int j = 0; j < gridRows; j++) {
-                Button button = makeButton();
+                TileButton button = makeButton(controller, i, j);
                 placeButton(button, i, j);
             }
 
         }
     }
 
-    private void placeButton(Button button, int gridColumn, int gridRow) {
+    private void placeButton(TileButton button, int gridColumn, int gridRow) {
         this.add(button, gridColumn, gridRow, 1, 1);
     }
 }
