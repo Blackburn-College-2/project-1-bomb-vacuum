@@ -13,7 +13,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 /**
- *
+ * https://www.youtube.com/watch?v=36jbBSQd3eU 
+ * reference used for making timer
  * @author Isaac.Garrett
  */
 public class TimerPane extends Pane implements project.bomb.vacuum.Timer {
