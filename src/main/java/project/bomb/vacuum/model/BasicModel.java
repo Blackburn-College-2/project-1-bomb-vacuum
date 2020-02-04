@@ -9,6 +9,7 @@ public class BasicModel implements Model {
 
     private Tile[][] gameModel;
     private final Controller controller;
+    private int bombs;
 
     public BasicModel(Controller controller) {
         this.controller = controller;
@@ -19,7 +20,7 @@ public class BasicModel implements Model {
     }
 
     @Override
-    public void tileUpdatedByUser(TileAction tileAction, Position position) {
+    public void tileUpdatedByUser(TileAction tileAction, Position position) {  // middle?
         Tile tile = gameModel[position.row][position.column];
 
         if (tileAction == TileAction.FLAG_TILE) {
@@ -37,26 +38,40 @@ public class BasicModel implements Model {
         TileStatus status = new TileStatus(tileState, tile.position);
         this.controller.setTileStatuses(new TileStatus[]{status});
     }
-
-    private void revealTile(Tile tile) {
+    private void revealTile(Tile tile) { // this needs fixed
         TileState tileState = tile.getState();
         TileValue tileValue = tile.getValue();
         if (tileState == TileState.NOT_CLICKED) {
-            if(tileValue == TileValue.BOMB){
-                //handle endgame state
-            } else if (tileValue == TileValue.EMPTY){
-            TileStatus status = new TileStatus(TileState.EMPTY, tile.position);
-            
+            if (tileValue == TileValue.BOMB) {
+                tile.setState(TileState.values()[tile.getValue().ordinal()]);
+                endGameStateTransition();
+            } else if (tileValue == TileValue.EMPTY) {
+                tile.setState(TileState.values()[tile.getValue().ordinal()]);
             } else {
-                /**
-                if(TileValue.TWO){
-                    TileStatus status = new TileStatus(TileState.TWO, tile.position);
-                }
-                */
+                tile.setState(TileState.values()[tile.getValue().ordinal()]);
             }
-        } 
+        }
+        TileStatus status = new TileStatus(tile.getState(), tile.position);
         this.controller.setTileStatuses(new TileStatus[]{status});
     }
+
+    public void endGameStateTransition() { 
+        int rows = (this.gameModel.length - 1);
+        int col = (this.gameModel[0].length);
+        int bombCount = 0;
+        TileStatus[] returnedStatus = new TileStatus[bombs];
+        for (int i = 0; i < this.gameModel.length; i++) {
+            for (int j = 0; j < this.gameModel[0].length; j++) {
+                if (this.gameModel[i][j].getValue() == TileValue.BOMB){
+                    Tile temp = this.gameModel[i][j];
+                    temp.setState(TileState.BOMB);
+                    returnedStatus[bombCount] = new TileStatus(temp.getState(),temp.position);
+                    
+                }
+            }
+        }
+        this.controller.setTileStatuses(returnedStatus);
+    } 
 
     public static void main(String[] args) {  // FOR TESTS
 
@@ -66,7 +81,7 @@ public class BasicModel implements Model {
 
     @Override
     public void newGame(DefaultBoard board) {
-        switch (board) { 
+        switch (board) {
             case EASY:
                 newGame(8, 8, 10);
                 break;
@@ -87,6 +102,7 @@ public class BasicModel implements Model {
      * @param bombs // The number of bombs to be placed on the grid
      */
     public void newGame(int rows, int columns, int bombs) {
+        this.bombs = bombs;
         Tile[][] state = new Tile[rows][columns];
         for (int row = 0; row < rows; row++) { // assigns EMPTY in order 
             // to avoid NULL POINTER
