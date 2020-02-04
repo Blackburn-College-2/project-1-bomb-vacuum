@@ -20,7 +20,7 @@ public class BasicModel implements Model {
     }
 
     @Override
-    public void tileUpdatedByUser(TileAction tileAction, Position position) {
+    public void tileUpdatedByUser(TileAction tileAction, Position position) {  // middle?
         Tile tile = gameModel[position.row][position.column];
 
         if (tileAction == TileAction.FLAG_TILE) {
@@ -38,14 +38,13 @@ public class BasicModel implements Model {
         TileStatus status = new TileStatus(tileState, tile.position);
         this.controller.setTileStatuses(new TileStatus[]{status});
     }
-
     private void revealTile(Tile tile) { // this needs fixed
         TileState tileState = tile.getState();
         TileValue tileValue = tile.getValue();
         if (tileState == TileState.NOT_CLICKED) {
             if (tileValue == TileValue.BOMB) {
                 tile.setState(TileState.values()[tile.getValue().ordinal()]);
-                //  handle endgame
+                endGameStateTransition();
             } else if (tileValue == TileValue.EMPTY) {
                 tile.setState(TileState.values()[tile.getValue().ordinal()]);
             } else {
@@ -56,7 +55,7 @@ public class BasicModel implements Model {
         this.controller.setTileStatuses(new TileStatus[]{status});
     }
 
-    public void endGameStateTransition() { // this needs fixed 
+    public void endGameStateTransition() { 
         int rows = (this.gameModel.length - 1);
         int col = (this.gameModel[0].length);
         int bombCount = 0;
