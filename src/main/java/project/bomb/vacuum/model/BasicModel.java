@@ -129,6 +129,7 @@ public class BasicModel implements Model {
         this.gameModel = state;
         updateNumberedTiles();
         printGameState();
+        controller.initializeBoard(rows, columns);
     }
 
     public void printGameState() {

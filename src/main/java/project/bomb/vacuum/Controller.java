@@ -16,6 +16,9 @@ public interface Controller {
      */
     void startNewGame(DefaultBoard board);
 
+    void setView(View view);
+
+
     /**
      * Starts a new game with the specified rows, columns, and bombs.
      * <p>

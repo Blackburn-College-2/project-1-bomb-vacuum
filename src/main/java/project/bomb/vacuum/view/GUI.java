@@ -25,7 +25,7 @@ public class GUI extends Application implements View {
     public static void setController(Controller controller) {
         GUI.controller = controller;
     }
-
+    
     private Pane anchorPane = new Pane();
     private MenuPane menuPane = new MenuPane(controller);
     private BorderPane borderPane = new BorderPane();
@@ -39,6 +39,7 @@ public class GUI extends Application implements View {
     @Override
     public void start(Stage stage) {
         View.setView(this); // Required
+        controller.setView(this);
 
         double screenWidth = 800;
         double screenHeight = 600;
