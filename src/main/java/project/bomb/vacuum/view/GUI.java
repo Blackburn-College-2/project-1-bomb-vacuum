@@ -34,8 +34,6 @@ public class GUI extends Application implements View {
         borderPane.setCenter(bombPane);
         borderPane.setTop(timerPane);
         
-        timerPane.startTimer();
-        
         anchorPane.getChildren().add(borderPane);
         Scene scene = new Scene(anchorPane, screenWidth, screenHeight);
         stage.setScene(scene);
