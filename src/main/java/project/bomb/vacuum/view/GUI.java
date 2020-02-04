@@ -48,7 +48,7 @@ public class GUI extends Application implements View {
 
         gameSelect.getChildren().addAll(easyButton, 
                 hardButton, customButton);
-        
+
         
 
         borderPane.setRight(gameSelect);
@@ -66,7 +66,7 @@ public class GUI extends Application implements View {
     //}
     @Override
     public void initializeBoard(int rows, int columns) {
-        BombPane initBombPane = new BombPane(rows,columns);
+        BombPane initBombPane = new BombPane(controller, rows,columns);
         borderPane.setCenter(initBombPane);
     }
 
