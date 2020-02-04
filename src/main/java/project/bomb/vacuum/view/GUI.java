@@ -3,6 +3,8 @@ package project.bomb.vacuum.view;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.event.EventHandler;
+
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Button;
@@ -27,13 +29,17 @@ public class GUI extends Application implements View {
     public void start(Stage stage) throws Exception {
         double screenWidth = 800;
         double screenHeight = 600;
+        Button easyButton = new Button("Easy");
+        Button hardButton = new Button("Hard");
+        Button customButton = new Button("Custom");
         
 
         VBox gameSelect = new VBox();
-        gameSelect.getChildren().addAll(new Button ("Easy"), 
-                new Button ("Hard"), new Button ("Custom"));
+        gameSelect.getChildren().addAll(easyButton, 
+                hardButton, customButton);
         
-        //BombPane bombPane = new BombPane(10,10);
+        
+        
 
         borderPane.setRight(gameSelect);
         initializeBoard(10,10);
@@ -45,6 +51,9 @@ public class GUI extends Application implements View {
         stage.show();
     }
 
+    //public void handleEasy(){
+        
+    //}
     @Override
     public void initializeBoard(int rows, int columns) {
         BombPane initBombPane = new BombPane(rows,columns);
