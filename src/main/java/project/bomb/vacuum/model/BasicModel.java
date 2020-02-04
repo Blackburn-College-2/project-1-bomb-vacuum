@@ -42,20 +42,33 @@ public class BasicModel implements Model {
         TileState tileState = tile.getState();
         TileValue tileValue = tile.getValue();
         if (tileState == TileState.NOT_CLICKED) {
-            if(tileValue == TileValue.BOMB){
-                //handle endgame state
-            } else if (tileValue == TileValue.EMPTY){
-            TileStatus status = new TileStatus(TileState.EMPTY, tile.position);
-            
+            if (tileValue == TileValue.BOMB) {
+                tile.setState(TileState.values()[tile.getValue().ordinal()]);
+                //  handle endgame
+            } else if (tileValue == TileValue.EMPTY) {
+                tile.setState(TileState.values()[tile.getValue().ordinal()]);
             } else {
-                /**
-                if(TileValue.TWO){
-                    TileStatus status = new TileStatus(TileState.TWO, tile.position);
-                }
-                */
+                tile.setState(TileState.values()[tile.getValue().ordinal()]);
             }
-        } 
+        }
+        TileStatus status = new TileStatus(tile.getState(), tile.position);
         this.controller.setTileStatuses(new TileStatus[]{status});
+    }
+
+    public void endGameStateTransition() {
+        int rows = (this.gameModel.length - 1);
+        int col = (this.gameModel[0].length);
+        
+        for (int i = 0; i < this.gameModel.length; i++) {
+            for (int j = 0; j < this.gameModel[0].length; j++) {
+                if (this.gameModel[i][j].getValue() == TileValue.BOMB){
+                    Tile temp = this.gameModel[i][j];
+                    temp.setState(TileState.BOMB);
+                    TileStatus status = new TileStatus(temp.getState(), temp.position);
+                    this.controller.setTileStatuses(new TileStatus[]{status});
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {  // FOR TESTS
@@ -66,7 +79,7 @@ public class BasicModel implements Model {
 
     @Override
     public void newGame(DefaultBoard board) {
-        switch (board) { 
+        switch (board) {
             case EASY:
                 newGame(8, 8, 10);
                 break;
