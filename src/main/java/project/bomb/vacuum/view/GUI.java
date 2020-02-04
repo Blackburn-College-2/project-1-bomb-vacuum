@@ -6,33 +6,39 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import project.bomb.vacuum.GameOverState;
 import project.bomb.vacuum.TileStatus;
 import project.bomb.vacuum.View;
-import project.bomb.vacuum.view.BombPane;
 
 public class GUI extends Application implements View {
+    Pane anchorPane  = new Pane();
+    BorderPane borderPane = new BorderPane();
+
 
     public static void launchGUI() {
         launch();
     }
     
-    //private static final int buttonSize = 50;
+    private static final int buttonSize = 50;
     
     @Override
     public void start(Stage stage) throws Exception {
         double screenWidth = 800;
         double screenHeight = 600;
-        Pane anchorPane  = new Pane();
-        BorderPane borderPane = new BorderPane();
         
-        BombPane bombPane = new BombPane(10,10);
 
-        borderPane.setCenter(bombPane);
+        VBox gameSelect = new VBox();
+        gameSelect.getChildren().addAll(new Button ("Easy"), 
+                new Button ("Hard"), new Button ("Custom"));
         
+        //BombPane bombPane = new BombPane(10,10);
+
+        borderPane.setRight(gameSelect);
+        initializeBoard(10,10);
         anchorPane.getChildren().add(borderPane);
+
         Scene scene = new Scene(anchorPane, screenWidth, screenHeight);
         stage.setScene(scene);
         stage.setResizable(false);
@@ -41,7 +47,8 @@ public class GUI extends Application implements View {
 
     @Override
     public void initializeBoard(int rows, int columns) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        BombPane initBombPane = new BombPane(rows,columns);
+        borderPane.setCenter(initBombPane);
     }
 
     @Override
