@@ -8,9 +8,11 @@ import javafx.event.EventHandler;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import project.bomb.vacuum.Controller;
 import project.bomb.vacuum.DefaultBoard;
@@ -66,8 +68,17 @@ public class GUI extends Application implements View {
 
     @Override
     public void gameOver(GameOverState gameOverState, long time) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        if (gameOverState.equals(gameOverState.WIN)){
+            Label winLabel = new Label("You won, dude!");
+            Popup winPop = new Popup();
+            winPop.getContent().add(winLabel);
+            
+        } else {
+           Label loseLabel = new Label("You lost, but gg");
+           Popup losePop = new Popup();
+           losePop.getContent().add(loseLabel);
+        }
+        }
 
     @Override
     public void setTime(long time) {
