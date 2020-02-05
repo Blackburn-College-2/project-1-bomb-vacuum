@@ -1,19 +1,11 @@
 package project.bomb.vacuum.view;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.event.EventHandler;
 
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import project.bomb.vacuum.Controller;
-import project.bomb.vacuum.DefaultBoard;
 import project.bomb.vacuum.GameOverState;
 import project.bomb.vacuum.TileStatus;
 import project.bomb.vacuum.View;
@@ -26,10 +18,9 @@ public class GUI extends Application implements View {
     public static void setController(Controller controller) {
         GUI.controller = controller;
     }
-    
-    private Pane anchorPane = new Pane();
-    private MenuPane menuPane = new MenuPane(controller);
-    private BorderPane borderPane = new BorderPane();
+
+    private Stage stage;
+    private BorderPane mainPane = new BorderPane();
     private BombPane bombPane;
 
     public static void launchGUI() {
@@ -42,27 +33,28 @@ public class GUI extends Application implements View {
 
     @Override
     public void start(Stage stage) {
+        this.stage = stage;
         View.setView(this); // Required
         controller.setView(this);
 
-        double screenWidth = 800;
-        double screenHeight = 600;
+        mainPane.setRight(new MenuPane(controller));
 
-        borderPane.setRight(menuPane);
-        anchorPane.getChildren().add(borderPane);
-
-        Scene scene = new Scene(anchorPane, screenWidth, screenHeight);
+        Scene scene = new Scene(mainPane, 50, 50);
         stage.setScene(scene);
-        stage.setResizable(false);
+//        stage.setResizable(false);
         stage.show();
-
         GUI.startup.run();
     }
 
     @Override
     public void initializeBoard(int rows, int columns) {
         this.bombPane = new BombPane(controller, rows, columns);
-        borderPane.setCenter(this.bombPane);
+        mainPane.setCenter(this.bombPane);
+
+        double screenWidth = this.bombPane.getMinWidth() + MenuPane.BUTTON_WIDTH + 40;
+        double screenHeight = this.bombPane.getMinHeight() + 50;
+        stage.setHeight(screenHeight);
+        stage.setWidth(screenWidth);
     }
 
     @Override

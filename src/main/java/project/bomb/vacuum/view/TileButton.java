@@ -14,7 +14,7 @@ class TileButton extends Button {
     TileButton(Controller controller, int row, int column) {
         this.row = row;
         this.column = column;
-
+        TileButton that = this;
         this.setOnMousePressed(event -> {
             switch (event.getButton()) {
                 case PRIMARY:
