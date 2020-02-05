@@ -21,6 +21,7 @@ import project.bomb.vacuum.View;
 public class GUI extends Application implements View {
 
     private static Controller controller;
+    private static Runnable startup;
 
     public static void setController(Controller controller) {
         GUI.controller = controller;
@@ -29,12 +30,15 @@ public class GUI extends Application implements View {
     private Pane anchorPane = new Pane();
     private MenuPane menuPane = new MenuPane(controller);
     private BorderPane borderPane = new BorderPane();
+    private BombPane bombPane;
 
     public static void launchGUI() {
         launch();
     }
 
-    private static final int buttonSize = 50;
+    public static void setStartup(Runnable startup) {
+        GUI.startup = startup;
+    }
 
     @Override
     public void start(Stage stage) {
@@ -51,18 +55,19 @@ public class GUI extends Application implements View {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+
+        GUI.startup.run();
     }
 
-    //}
     @Override
     public void initializeBoard(int rows, int columns) {
-        BombPane initBombPane = new BombPane(controller, rows, columns);
-        borderPane.setCenter(initBombPane);
+        this.bombPane = new BombPane(controller, rows, columns);
+        borderPane.setCenter(this.bombPane);
     }
 
     @Override
     public void setTileStatuses(TileStatus[] tileStates) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.bombPane.updateTiles(tileStates);
     }
 
     @Override
