@@ -1,7 +1,5 @@
 package project.bomb.vacuum.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import project.bomb.vacuum.*;
 import project.bomb.vacuum.exceptions.InvalidBoardConfiguration;
 
@@ -38,40 +36,33 @@ public class BasicModel implements Model {
         TileStatus status = new TileStatus(tileState, tile.position);
         this.controller.setTileStatuses(new TileStatus[]{status});
     }
+
     private void revealTile(Tile tile) { // this needs fixed
         TileState tileState = tile.getState();
-        TileValue tileValue = tile.getValue();
         if (tileState == TileState.NOT_CLICKED) {
-            if (tileValue == TileValue.BOMB) {
-                tile.setState(TileState.values()[tile.getValue().ordinal()]);
-                endGameStateTransition();
-            } else if (tileValue == TileValue.EMPTY) {
-                tile.setState(TileState.values()[tile.getValue().ordinal()]);
-            } else {
-                tile.setState(TileState.values()[tile.getValue().ordinal()]);
-            }
+            tile.setState(TileState.values()[tile.getValue().ordinal()]);
         }
         TileStatus status = new TileStatus(tile.getState(), tile.position);
         this.controller.setTileStatuses(new TileStatus[]{status});
+        if (tile.getValue() == TileValue.BOMB) {
+            endGameStateTransition();
+        }
     }
 
-    public void endGameStateTransition() { 
-        int rows = (this.gameModel.length - 1);
-        int col = (this.gameModel[0].length);
+    public void endGameStateTransition() {
         int bombCount = 0;
         TileStatus[] returnedStatus = new TileStatus[bombs];
         for (int i = 0; i < this.gameModel.length; i++) {
             for (int j = 0; j < this.gameModel[0].length; j++) {
-                if (this.gameModel[i][j].getValue() == TileValue.BOMB){
+                if (this.gameModel[i][j].getValue() == TileValue.BOMB) {
                     Tile temp = this.gameModel[i][j];
                     temp.setState(TileState.BOMB);
-                    returnedStatus[bombCount] = new TileStatus(temp.getState(),temp.position);
-                    
+                    returnedStatus[bombCount++] = new TileStatus(temp.getState(), temp.position);
                 }
             }
         }
         this.controller.setTileStatuses(returnedStatus);
-    } 
+    }
 
     public static void main(String[] args) {  // FOR TESTS
 
@@ -95,11 +86,9 @@ public class BasicModel implements Model {
     }
 
     /**
-     *
-     *
-     * @param rows // The number of rows to assign to the grid
+     * @param rows    // The number of rows to assign to the grid
      * @param columns // The number of columns to assign to the grid
-     * @param bombs // The number of bombs to be placed on the grid
+     * @param bombs   // The number of bombs to be placed on the grid
      */
     public void newGame(int rows, int columns, int bombs) {
         this.bombs = bombs;
@@ -172,7 +161,7 @@ public class BasicModel implements Model {
      * This method will allow you to increment the TileValue when the board is
      * being updated for the controller
      *
-     * @param row // The target row to be changed
+     * @param row    // The target row to be changed
      * @param column // The target column to be changed
      */
     public void incrementTile(int row, int column) {

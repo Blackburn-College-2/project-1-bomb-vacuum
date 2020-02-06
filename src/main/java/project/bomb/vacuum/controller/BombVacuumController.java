@@ -21,6 +21,9 @@ public class BombVacuumController implements Controller {
     public BombVacuumController() {
         this.model = new BasicModel(this);
         GUI.setController(this);
+        GUI.setStartup(() -> {
+            model.newGame(DefaultBoard.INTERMEDIATE);
+        });
         GUI.launchGUI();
     }
 
