@@ -37,29 +37,54 @@ public class BasicModel implements Model {
     }
 
     private void revealTile(Tile tile) { // this needs fixed
-        TileState tileState = tile.getState();
-        if (tileState == TileState.NOT_CLICKED) {
-            tile.setState(TileState.values()[tile.getValue().ordinal()]);
-        }
-        TileStatus status = new TileStatus(tile.getState(), tile.position);
-        this.controller.setTileStatuses(new TileStatus[]{status});
         if (tile.getValue() == TileValue.BOMB) {
             endGameStateTransition(GameOverState.LOSE);
+            return;
+        }
+        recursiveReveal(tile);
+    }
+
+    private void recursiveReveal(Tile tile) {
+        if (tile.getState() != TileState.NOT_CLICKED) {
+            return;
+        } else if (tile.getValue() != TileValue.EMPTY) {
+            tile.setState(TileState.values()[tile.getValue().ordinal()]);
+            controller.setTileStatuses(new TileStatus[]{new TileStatus(tile.getState(), tile.position)});
+            return;
+        }
+        tile.setState(TileState.values()[tile.getValue().ordinal()]);
+
+        Position position = tile.position;
+        this.attemptReveal(position.row - 1, position.column - 1);
+        this.attemptReveal(position.row - 1, position.column);
+        this.attemptReveal(position.row - 1, position.column + 1);
+        this.attemptReveal(position.row, position.column - 1);
+        this.attemptReveal(position.row, position.column + 1);
+        this.attemptReveal(position.row + 1, position.column - 1);
+        this.attemptReveal(position.row + 1, position.column);
+        this.attemptReveal(position.row + 1, position.column + 1);
+
+        controller.setTileStatuses(new TileStatus[]{new TileStatus(tile.getState(), tile.position)});
+    }
+
+    private void attemptReveal(int row, int column) {
+        try {
+            Tile otherTile = this.gameModel[row][column];
+            recursiveReveal(otherTile);
+        } catch (IndexOutOfBoundsException ex) {
+            // do nothing.
         }
     }
 
-    public void endGameStateTransition(GameOverState gameOverState) {
+    private void endGameStateTransition(GameOverState gameOverState) {
         int bombCount = 0;
         TileStatus[] returnedStatus = new TileStatus[bombs];
-        for (int i = 0; i < this.gameModel.length; i++) {
-            for (int j = 0; j < this.gameModel[0].length; j++) {
-                if (this.gameModel[i][j].getValue() == TileValue.BOMB) {
-                    Tile temp = this.gameModel[i][j];
-                    temp.setState(TileState.BOMB);
-                    returnedStatus[bombCount++] = new TileStatus(temp.getState(), temp.position);
-                }
-            }
+
+        for (Tile bombTile : bombTiles) {
+            bombTile.setState(TileState.BOMB);
+            returnedStatus[bombCount++] = new TileStatus(bombTile.getState(), bombTile.position);
         }
+
         this.controller.setTileStatuses(returnedStatus);
         this.controller.gameOver(gameOverState);
     }
@@ -84,7 +109,7 @@ public class BasicModel implements Model {
      * @param columns // The number of columns to assign to the grid
      * @param bombs   // The number of bombs to be placed on the grid
      */
-    public void newGame(int rows, int columns, int bombs) {
+    private void newGame(int rows, int columns, int bombs) {
         this.bombTiles.clear();
         this.bombs = bombs;
 

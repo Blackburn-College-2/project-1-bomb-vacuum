@@ -77,7 +77,11 @@ class BombPane extends GridPane{
             Position position = tileStatus.position;
             int state = tileStatus.state.ordinal();
             if (state < 9) {
-                placeLabel("" + state, position.row, position.column);
+                String message = "";
+                if (state > 0) {
+                    message += state;
+                }
+                placeLabel(message, position.row, position.column);
             } else {
                 switch (tileStatus.state) {
                     case BOMB:
