@@ -3,47 +3,61 @@ package project.bomb.vacuum.view;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.event.EventHandler;
+
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import project.bomb.vacuum.Controller;
+import project.bomb.vacuum.DefaultBoard;
 import project.bomb.vacuum.GameOverState;
 import project.bomb.vacuum.TileStatus;
 import project.bomb.vacuum.View;
-import project.bomb.vacuum.view.BombPane;
 
 public class GUI extends Application implements View {
+
+    private static Controller controller;
+
+    public static void setController(Controller controller) {
+        GUI.controller = controller;
+    }
+    
+    private Pane anchorPane = new Pane();
+    private MenuPane menuPane = new MenuPane(controller);
+    private BorderPane borderPane = new BorderPane();
 
     public static void launchGUI() {
         launch();
     }
-    
-    //private static final int buttonSize = 50;
-    
+
+    private static final int buttonSize = 50;
+
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
+        View.setView(this); // Required
+        controller.setView(this);
+
         double screenWidth = 800;
         double screenHeight = 600;
-        Pane anchorPane  = new Pane();
-        BorderPane borderPane = new BorderPane();
-        
-        BombPane bombPane = new BombPane(10,10);
-        TimerPane timerPane = new TimerPane();
 
-        borderPane.setCenter(bombPane);
-        borderPane.setTop(timerPane);
-        
+        borderPane.setRight(menuPane);
         anchorPane.getChildren().add(borderPane);
+
         Scene scene = new Scene(anchorPane, screenWidth, screenHeight);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
     }
 
+    //}
     @Override
     public void initializeBoard(int rows, int columns) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        BombPane initBombPane = new BombPane(controller, rows, columns);
+        borderPane.setCenter(initBombPane);
     }
 
     @Override
@@ -60,6 +74,5 @@ public class GUI extends Application implements View {
     public void setTime(long time) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 
 }

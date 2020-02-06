@@ -3,17 +3,28 @@ package project.bomb.vacuum.controller;
 import project.bomb.vacuum.*;
 import project.bomb.vacuum.exceptions.InvalidBoardConfiguration;
 import project.bomb.vacuum.exceptions.InvalidStateException;
+import project.bomb.vacuum.model.BasicModel;
+import project.bomb.vacuum.view.GUI;
 
 public class BombVacuumController implements Controller {
 
     private final Model model;
-    private final View view;
+    private View view;
     private Timer timer;
 
     private DefaultBoard defaultBoard;
 
-    public BombVacuumController(Model model, View view) {
-        this.model = model;
+    public static void main(String[] args) {
+        new BombVacuumController();
+    }
+
+    public BombVacuumController() {
+        this.model = new BasicModel(this);
+        GUI.setController(this);
+        GUI.launchGUI();
+    }
+
+    public void setView(View view) {
         this.view = view;
     }
 

@@ -6,6 +6,19 @@ package project.bomb.vacuum;
 public interface View {
 
     /**
+     * Stores the instance of the currently used View.
+     */
+    ViewContainer container = new ViewContainer();
+
+    static View getView() {
+        return container.getView();
+    }
+
+    static void setView(View view) {
+        container.setView(view);
+    }
+
+    /**
      * Creates a new board of tiles using the specified size.
      *
      * @param rows number of rows in the tile grid.
