@@ -1,0 +1,4 @@
+Tile positions using 2d array
+gui does not need to know what a tile is
+keep track of a list of things that have been flagged for the cheat function
+checkout and pull dev then branch off it
