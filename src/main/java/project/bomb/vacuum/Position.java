@@ -12,4 +12,8 @@ public class Position {
         this.row = row;
         this.column = column;
     }
+
+    public String toString() {
+        return String.format("(%s, %s)", row, column);
+    }
 }
