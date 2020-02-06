@@ -69,12 +69,12 @@ public class GUI extends Application implements View {
     @Override
     public void gameOver(GameOverState gameOverState, long time) {
         if (gameOverState.equals(gameOverState.WIN)){
-            Label winLabel = new Label("You won, dude!");
+            Label winLabel = new Label("You won, dude! Your time was: " + time);
             Popup winPop = new Popup();
             winPop.getContent().add(winLabel);
             
         } else {
-           Label loseLabel = new Label("You lost, but gg");
+           Label loseLabel = new Label("You lost, but gg. Your time was: "+ time );
            Popup losePop = new Popup();
            losePop.getContent().add(loseLabel);
         }
