@@ -1,8 +1,11 @@
 package project.bomb.vacuum.view;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import project.bomb.vacuum.Controller;
@@ -23,6 +26,7 @@ public class GUI extends Application implements View {
     private BorderPane mainPane = new BorderPane();
     private BombPane bombPane;
     private TimerPane timerPane = new TimerPane();
+    private boolean cheating = false;
 
     public static void launchGUI() {
         launch();
@@ -42,11 +46,24 @@ public class GUI extends Application implements View {
         mainPane.setTop(timerPane);
 
         Scene scene = new Scene(mainPane, 50, 50);
+        setKeyboardHandler(scene);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
 
         GUI.startup.run();
+    }
+
+    private void setKeyboardHandler(Scene scene) {
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.SHIFT) {
+                    cheating = !cheating;
+                    controller.cheatToggled(cheating);
+                }
+            }
+        });
     }
 
     @Override
