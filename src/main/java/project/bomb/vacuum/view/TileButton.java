@@ -8,17 +8,16 @@ import project.bomb.vacuum.TileAction;
 
 class TileButton extends Button {
 
-    final int row;
-    final int column;
+    private boolean isFlagged = false;
 
     TileButton(Controller controller, int row, int column) {
-        this.row = row;
-        this.column = column;
-
+        TileButton that = this;
         this.setOnMousePressed(event -> {
             switch (event.getButton()) {
                 case PRIMARY:
-                    controller.tileUpdatedByUser(TileAction.REVEAL_TILE, new Position(row, column));
+                    if (!that.isFlagged) {
+                        controller.tileUpdatedByUser(TileAction.REVEAL_TILE, new Position(row, column));
+                    }
                     break;
                 case SECONDARY:
                     controller.tileUpdatedByUser(TileAction.FLAG_TILE, new Position(row, column));
@@ -32,6 +31,15 @@ class TileButton extends Button {
                 controller.tileUpdatedByUser(TileAction.DEHIGHLIGHT, new Position(row, column));
             }
         });
+    }
+
+    void setFlag(boolean isFlagged) {
+        this.isFlagged = isFlagged;
+        if (isFlagged) {
+            this.setText("F");
+        } else {
+            this.setText("");
+        }
     }
 
 }

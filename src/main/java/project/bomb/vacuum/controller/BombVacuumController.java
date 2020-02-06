@@ -10,7 +10,8 @@ public class BombVacuumController implements Controller {
 
     private final Model model;
     private View view;
-    private Timer timer;
+    private Timer timer = new BasicTimer(this);
+    private boolean timerRunning = false;
 
     private DefaultBoard defaultBoard;
 
@@ -21,15 +22,12 @@ public class BombVacuumController implements Controller {
     public BombVacuumController() {
         this.model = new BasicModel(this);
         GUI.setController(this);
+        GUI.setStartup(() -> model.newGame(DefaultBoard.INTERMEDIATE));
         GUI.launchGUI();
     }
 
     public void setView(View view) {
         this.view = view;
-    }
-
-    private void readyNewGame() {
-        this.timer = model.createTimer();
     }
 
     // ##### Called By Model #####
@@ -47,6 +45,7 @@ public class BombVacuumController implements Controller {
     @Override
     public void gameOver(GameOverState gameOverState) {
         timer.stopTimer();
+        timerRunning = false;
         view.gameOver(gameOverState, this.timer.getTime());
     }
 
@@ -60,13 +59,20 @@ public class BombVacuumController implements Controller {
     @Override
     public void startNewGame(DefaultBoard board) {
         this.defaultBoard = board;
+        this.prepareNewGame();
         model.newGame(board);
     }
 
     @Override
     public void startNewGame(BoardConfiguration boardConfiguration) throws InvalidBoardConfiguration {
         this.defaultBoard = null;
+        this.prepareNewGame();
         model.newGame(boardConfiguration);
+    }
+
+    private void prepareNewGame() {
+        timerRunning = false;
+        timer.resetTimer();
     }
 
     @Override
@@ -76,6 +82,10 @@ public class BombVacuumController implements Controller {
 
     @Override
     public void tileUpdatedByUser(TileAction tileAction, Position position) {
+        if (!timerRunning) {
+            timerRunning = true;
+            this.startTimer();
+        }
         model.tileUpdatedByUser(tileAction, position);
     }
 
