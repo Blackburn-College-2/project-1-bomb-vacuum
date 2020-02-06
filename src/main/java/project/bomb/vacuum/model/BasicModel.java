@@ -91,9 +91,8 @@ public class BasicModel implements Model {
         Tile[][] state = new Tile[rows][columns];
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
-                Tile bombTile = new Tile(TileValue.EMPTY, row, col);
-                this.bombTiles.add(bombTile);
-                state[row][col] = bombTile;
+                Tile tile = new Tile(TileValue.EMPTY, row, col);
+                state[row][col] = tile;
             }
         }
 
@@ -103,6 +102,7 @@ public class BasicModel implements Model {
             int y = (int) (Math.random() * ((columns - 1) + 1));
 
             if (state[x][y].getValue() != TileValue.BOMB) {
+                this.bombTiles.add(state[x][y]);
                 state[x][y].setValue(TileValue.BOMB);
                 bombsToPlace--;
             }
@@ -175,7 +175,8 @@ public class BasicModel implements Model {
         if (toggle) {
             int counter = 0;
             for (Tile bombTile : bombTiles) {
-                returnedStatus[counter++] = new TileStatus(TileState.BOMB, bombTile.position);
+                returnedStatus[counter] = new TileStatus(TileState.BOMB, bombTile.position);
+                counter++;
             }
         } else {
             int counter = 0;
