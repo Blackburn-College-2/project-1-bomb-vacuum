@@ -1,5 +1,7 @@
 package project.bomb.vacuum.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import project.bomb.vacuum.*;
 import project.bomb.vacuum.exceptions.InvalidBoardConfiguration;
 
@@ -8,13 +10,10 @@ public class BasicModel implements Model {
     private Tile[][] gameModel;
     private final Controller controller;
     private int bombs;
+    private List<Tile> bombTiles = new ArrayList<>();
 
     public BasicModel(Controller controller) {
         this.controller = controller;
-
-//        How to convert list to array:
-//        List<Tile> list = new ArrayList<>();
-//        Tile[] tiles = list.toArray(new Tile[0]);
     }
 
     @Override
@@ -86,33 +85,31 @@ public class BasicModel implements Model {
      * @param bombs   // The number of bombs to be placed on the grid
      */
     public void newGame(int rows, int columns, int bombs) {
+        this.bombTiles.clear();
         this.bombs = bombs;
+
         Tile[][] state = new Tile[rows][columns];
-        for (int row = 0; row < rows; row++) { // assigns EMPTY in order 
-            // to avoid NULL POINTER
+        for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
-                state[row][col] = new Tile(TileValue.EMPTY, row, col);
+                Tile bombTile = new Tile(TileValue.EMPTY, row, col);
+                this.bombTiles.add(bombTile);
+                state[row][col] = bombTile;
             }
         }
+
         int bombsToPlace = bombs;
         while (bombsToPlace > 0) {
             int x = (int) (Math.random() * ((rows - 1) + 1));
-            int y = (int) (Math.random() * ((columns - 1) + 1)); //Generates an 
-            //int from 0 to 
-            //max - 1
+            int y = (int) (Math.random() * ((columns - 1) + 1));
 
-            if (state[x][y].getValue() == TileValue.BOMB) { // making sure there 
-                // isn't overlap of bomb
-
-            } else {
-                state[x][y].setValue(TileValue.BOMB); // assigning bombs to tiles 
+            if (state[x][y].getValue() != TileValue.BOMB) {
+                state[x][y].setValue(TileValue.BOMB);
                 bombsToPlace--;
             }
-
         }
         this.gameModel = state;
+
         updateNumberedTiles();
-//        printGameState();
         controller.initializeBoard(rows, columns);
     }
 
@@ -129,26 +126,17 @@ public class BasicModel implements Model {
      * This method will iterate through the gameState Array and increment all
      * tiles that touch a bomb
      */
-    public void updateNumberedTiles() { // t[0].length == col.len // t.length == row.len
-
-        int rowLen = this.gameModel.length - 1; // # of rows
-        int colLen = this.gameModel[0].length - 1; // # of columns
-
-        for (int i = 0; i < rowLen + 1; i++) {
-            for (int j = 0; j < colLen + 1; j++) {
-
-                if (gameModel[i][j].getValue() == TileValue.BOMB) {
-
-                    incrementTile(i - 1, j - 1);
-                    incrementTile(i - 1, j);
-                    incrementTile(i - 1, j + 1);
-                    incrementTile(i, j - 1);
-                    incrementTile(i, j + 1);
-                    incrementTile(i + 1, j - 1);
-                    incrementTile(i + 1, j);
-                    incrementTile(i + 1, j + 1);
-                }
-            }
+    private void updateNumberedTiles() { // t[0].length == col.len // t.length == row.len
+        for (Tile bombTile : bombTiles) {
+            Position position = bombTile.position;
+            incrementTile(position.row - 1, position.column - 1);
+            incrementTile(position.row - 1, position.column);
+            incrementTile(position.row - 1, position.column + 1);
+            incrementTile(position.row, position.column - 1);
+            incrementTile(position.row, position.column + 1);
+            incrementTile(position.row + 1, position.column - 1);
+            incrementTile(position.row + 1, position.column);
+            incrementTile(position.row + 1, position.column + 1);
         }
     }
 
@@ -159,7 +147,7 @@ public class BasicModel implements Model {
      * @param row    // The target row to be changed
      * @param column // The target column to be changed
      */
-    public void incrementTile(int row, int column) {
+    private void incrementTile(int row, int column) {
         try {
             if (this.gameModel[row][column].getValue() == TileValue.BOMB) {
                 return;
@@ -182,25 +170,20 @@ public class BasicModel implements Model {
 
     @Override
     public void cheatToggled(boolean toggle) {
-        int rows = (this.gameModel.length);
-        int col = (this.gameModel[0].length);
-        int stateChangeCount = 0;
         TileStatus[] returnedStatus = new TileStatus[bombs];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < col; j++) {
-                if (toggle && this.gameModel[i][j].getValue() == TileValue.BOMB) { // if cheat is toggled on, then change all bomb tiles to a bomb state
-                    Tile temp = this.gameModel[i][j];
-                    temp.setState(TileState.BOMB);
-                    returnedStatus[stateChangeCount] = new TileStatus(temp.getState(), temp.position);
-                    stateChangeCount++;
-                } else if(!toggle && this.gameModel[i][j].getValue() == TileValue.BOMB) { // if cheat is toggled off, then change all bomb tiles to a not_clicked state
-                    Tile temp = this.gameModel[i][j];
-                    temp.setState(TileState.NOT_CLICKED);
-                    returnedStatus[stateChangeCount] = new TileStatus(temp.getState(), temp.position);
-                    stateChangeCount++;
-                }
+
+        if (toggle) {
+            int counter = 0;
+            for (Tile bombTile : bombTiles) {
+                returnedStatus[counter++] = new TileStatus(TileState.BOMB, bombTile.position);
+            }
+        } else {
+            int counter = 0;
+            for (Tile bombTile : bombTiles) {
+                returnedStatus[counter++] = new TileStatus(bombTile.getState(), bombTile.position);
             }
         }
+
         this.controller.setTileStatuses(returnedStatus);
     }
 

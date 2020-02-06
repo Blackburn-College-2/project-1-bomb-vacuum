@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.TilePane;
 import project.bomb.vacuum.Controller;
 import project.bomb.vacuum.Position;
 import project.bomb.vacuum.TileStatus;
@@ -20,11 +21,13 @@ import project.bomb.vacuum.TileStatus;
  */
 class BombPane extends GridPane{
 
+    private final Controller controller;
     private HashMap<String, ViewTile> tiles = new HashMap<>();
 
     private static final int TILE_SIZE = 25;
 
     BombPane(Controller controller, int columns, int rows) {
+        this.controller = controller;
         populateGrid(controller, columns, rows);
 
         double height = (BombPane.TILE_SIZE * rows);
@@ -81,9 +84,15 @@ class BombPane extends GridPane{
                         placeLabel("B", position.row, position.column);
                         break;
                     case FLAGGED:
+                        if (this.getViewTile(position).getTile() instanceof Label) {
+                            placeButton(controller, position.row, position.column);
+                        }
                         flagTile(position);
                         break;
                     case NOT_CLICKED:
+                        if (this.getViewTile(position).getTile() instanceof Label) {
+                            placeButton(controller, position.row, position.column);
+                        }
                         unFlagTile(position);
                         break;
                     default:
