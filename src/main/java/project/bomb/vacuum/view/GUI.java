@@ -1,6 +1,7 @@
 package project.bomb.vacuum.view;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 
@@ -27,6 +28,7 @@ public class GUI extends Application implements View {
     private BombPane bombPane;
     private TimerPane timerPane = new TimerPane();
     private boolean cheating = false;
+    private boolean firstInit = true;
 
     public static void launchGUI() {
         launch();
@@ -68,13 +70,34 @@ public class GUI extends Application implements View {
 
     @Override
     public void initializeBoard(int rows, int columns) {
+        double widthPadding = 60;
+        double heightPadding = 70;
         this.bombPane = new BombPane(controller, rows, columns);
         mainPane.setCenter(this.bombPane);
 
-        double screenWidth = this.bombPane.getMinWidth() + MenuPane.BUTTON_WIDTH + 40;
-        double screenHeight = this.bombPane.getMinHeight() + timerPane.getMinHeight()+ 50;
+        double screenWidth = this.bombPane.getMinWidth() + MenuPane.BUTTON_WIDTH + widthPadding;
+        double screenHeight = this.bombPane.getMinHeight() + timerPane.getMinHeight()+ heightPadding;
         stage.setHeight(screenHeight);
         stage.setWidth(screenWidth);
+
+        if (firstInit) {
+            firstInit = false;
+            Thread hotfixThread = new Thread(() -> {
+                for (int i = 0; i < 3; i++) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Platform.runLater(() -> {
+                        stage.setHeight(screenHeight);
+                        stage.setWidth(screenWidth);
+                    });
+                }
+            });
+            hotfixThread.setDaemon(true);
+            hotfixThread.start();
+        }
     }
 
     @Override
