@@ -12,6 +12,7 @@ public class BombVacuumController implements Controller {
     private View view;
     private Timer timer = new BasicTimer(this);
     private boolean timerRunning = false;
+    private boolean gameOver = false;
 
     private DefaultBoard defaultBoard;
 
@@ -46,6 +47,7 @@ public class BombVacuumController implements Controller {
     public void gameOver(GameOverState gameOverState) {
         timer.stopTimer();
         timerRunning = false;
+        gameOver = true;
         view.gameOver(gameOverState, this.timer.getTime());
     }
 
@@ -72,6 +74,7 @@ public class BombVacuumController implements Controller {
 
     private void prepareNewGame() {
         timerRunning = false;
+        gameOver = false;
         timer.resetTimer();
     }
 
@@ -82,11 +85,13 @@ public class BombVacuumController implements Controller {
 
     @Override
     public void tileUpdatedByUser(TileAction tileAction, Position position) {
-        if (!timerRunning) {
+        if (!timerRunning && !gameOver) {
             timerRunning = true;
             this.startTimer();
         }
-        model.tileUpdatedByUser(tileAction, position);
+        if (!gameOver) {
+            model.tileUpdatedByUser(tileAction, position);
+        }
     }
 
     @Override
