@@ -45,11 +45,11 @@ public class BasicModel implements Model {
         TileStatus status = new TileStatus(tile.getState(), tile.position);
         this.controller.setTileStatuses(new TileStatus[]{status});
         if (tile.getValue() == TileValue.BOMB) {
-            endGameStateTransition();
+            endGameStateTransition(GameOverState.LOSE);
         }
     }
 
-    public void endGameStateTransition() {
+    public void endGameStateTransition(GameOverState gameOverState) {
         int bombCount = 0;
         TileStatus[] returnedStatus = new TileStatus[bombs];
         for (int i = 0; i < this.gameModel.length; i++) {
@@ -62,12 +62,7 @@ public class BasicModel implements Model {
             }
         }
         this.controller.setTileStatuses(returnedStatus);
-    }
-
-    public static void main(String[] args) {  // FOR TESTS
-
-        BasicModel n = new BasicModel(null);
-        n.newGame(DefaultBoard.INTERMEDIATE);
+        this.controller.gameOver(gameOverState);
     }
 
     @Override
@@ -117,7 +112,7 @@ public class BasicModel implements Model {
         }
         this.gameModel = state;
         updateNumberedTiles();
-        printGameState();
+//        printGameState();
         controller.initializeBoard(rows, columns);
     }
 
