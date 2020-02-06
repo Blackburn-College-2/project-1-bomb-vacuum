@@ -65,29 +65,6 @@ public class BasicModel implements Model {
         this.controller.gameOver(gameOverState);
     }
 
-    public void cheatToggle(boolean toggle) {
-        int rows = (this.gameModel.length);
-        int col = (this.gameModel[0].length);
-        int stateChangeCount = 0;
-        TileStatus[] returnedStatus = new TileStatus[bombs];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < col; j++) {
-                if (toggle == true && this.gameModel[i][j].getValue() == TileValue.BOMB) { // if cheat is toggled on, then change all bomb tiles to a bomb state
-                    Tile temp = this.gameModel[i][j];
-                    temp.setState(TileState.BOMB);
-                    returnedStatus[stateChangeCount] = new TileStatus(temp.getState(), temp.position);
-                    stateChangeCount++;
-                } else if(toggle == false && this.gameModel[i][j].getValue() == TileValue.BOMB) { // if cheat is toggled off, then change all bomb tiles to a not_clicked state
-                    Tile temp = this.gameModel[i][j];
-                    temp.setState(TileState.NOT_CLICKED);
-                    returnedStatus[stateChangeCount] = new TileStatus(temp.getState(), temp.position);
-                    stateChangeCount++;
-                }
-            }
-        }
-        this.controller.setTileStatuses(returnedStatus);
-    }
-
     @Override
     public void newGame(DefaultBoard board) {
         switch (board) {
@@ -205,7 +182,26 @@ public class BasicModel implements Model {
 
     @Override
     public void cheatToggled(boolean toggle) {
-        throw new UnsupportedOperationException("Method not yet implemented.");
+        int rows = (this.gameModel.length);
+        int col = (this.gameModel[0].length);
+        int stateChangeCount = 0;
+        TileStatus[] returnedStatus = new TileStatus[bombs];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < col; j++) {
+                if (toggle && this.gameModel[i][j].getValue() == TileValue.BOMB) { // if cheat is toggled on, then change all bomb tiles to a bomb state
+                    Tile temp = this.gameModel[i][j];
+                    temp.setState(TileState.BOMB);
+                    returnedStatus[stateChangeCount] = new TileStatus(temp.getState(), temp.position);
+                    stateChangeCount++;
+                } else if(!toggle && this.gameModel[i][j].getValue() == TileValue.BOMB) { // if cheat is toggled off, then change all bomb tiles to a not_clicked state
+                    Tile temp = this.gameModel[i][j];
+                    temp.setState(TileState.NOT_CLICKED);
+                    returnedStatus[stateChangeCount] = new TileStatus(temp.getState(), temp.position);
+                    stateChangeCount++;
+                }
+            }
+        }
+        this.controller.setTileStatuses(returnedStatus);
     }
 
     @Override
