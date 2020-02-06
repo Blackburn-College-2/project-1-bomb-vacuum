@@ -10,83 +10,11 @@ public class BasicModel implements Model {
     private Tile[][] gameModel;
     private final Controller controller;
     private int bombs;
+    private int nonBombsRemaining;
     private List<Tile> bombTiles = new ArrayList<>();
 
     public BasicModel(Controller controller) {
         this.controller = controller;
-    }
-
-    @Override
-    public void tileUpdatedByUser(TileAction tileAction, Position position) {  // middle?
-        Tile tile = gameModel[position.row][position.column];
-
-        if (tileAction == TileAction.FLAG_TILE) {
-            if (tile.getState() == TileState.FLAGGED || tile.getState() == TileState.NOT_CLICKED) {
-                flagTile(tile);
-            }
-        } else if (tileAction == TileAction.REVEAL_TILE) {
-            revealTile(tile);
-        }
-    }
-
-    private void flagTile(Tile tile) {
-        TileState tileState = tile.getState() == TileState.FLAGGED ? TileState.NOT_CLICKED : TileState.FLAGGED;
-        tile.setState(tileState);
-        TileStatus status = new TileStatus(tileState, tile.position);
-        this.controller.setTileStatuses(new TileStatus[]{status});
-    }
-
-    private void revealTile(Tile tile) { // this needs fixed
-        if (tile.getValue() == TileValue.BOMB) {
-            endGameStateTransition(GameOverState.LOSE);
-            return;
-        }
-        recursiveReveal(tile);
-    }
-
-    private void recursiveReveal(Tile tile) {
-        if (tile.getState() != TileState.NOT_CLICKED) {
-            return;
-        } else if (tile.getValue() != TileValue.EMPTY) {
-            tile.setState(TileState.values()[tile.getValue().ordinal()]);
-            controller.setTileStatuses(new TileStatus[]{new TileStatus(tile.getState(), tile.position)});
-            return;
-        }
-        tile.setState(TileState.values()[tile.getValue().ordinal()]);
-
-        Position position = tile.position;
-        this.attemptReveal(position.row - 1, position.column - 1);
-        this.attemptReveal(position.row - 1, position.column);
-        this.attemptReveal(position.row - 1, position.column + 1);
-        this.attemptReveal(position.row, position.column - 1);
-        this.attemptReveal(position.row, position.column + 1);
-        this.attemptReveal(position.row + 1, position.column - 1);
-        this.attemptReveal(position.row + 1, position.column);
-        this.attemptReveal(position.row + 1, position.column + 1);
-
-        controller.setTileStatuses(new TileStatus[]{new TileStatus(tile.getState(), tile.position)});
-    }
-
-    private void attemptReveal(int row, int column) {
-        try {
-            Tile otherTile = this.gameModel[row][column];
-            recursiveReveal(otherTile);
-        } catch (IndexOutOfBoundsException ex) {
-            // do nothing.
-        }
-    }
-
-    private void endGameStateTransition(GameOverState gameOverState) {
-        int bombCount = 0;
-        TileStatus[] returnedStatus = new TileStatus[bombs];
-
-        for (Tile bombTile : bombTiles) {
-            bombTile.setState(TileState.BOMB);
-            returnedStatus[bombCount++] = new TileStatus(bombTile.getState(), bombTile.position);
-        }
-
-        this.controller.setTileStatuses(returnedStatus);
-        this.controller.gameOver(gameOverState);
     }
 
     @Override
@@ -104,6 +32,11 @@ public class BasicModel implements Model {
         }
     }
 
+    @Override
+    public void newGame(BoardConfiguration boardConfiguration) throws InvalidBoardConfiguration {
+        this.newGame(boardConfiguration.rows, boardConfiguration.columns, boardConfiguration.bombs);
+    }
+
     /**
      * @param rows    // The number of rows to assign to the grid
      * @param columns // The number of columns to assign to the grid
@@ -112,6 +45,7 @@ public class BasicModel implements Model {
     private void newGame(int rows, int columns, int bombs) {
         this.bombTiles.clear();
         this.bombs = bombs;
+        this.nonBombsRemaining = rows * columns - bombs;
 
         Tile[][] state = new Tile[rows][columns];
         for (int row = 0; row < rows; row++) {
@@ -136,15 +70,6 @@ public class BasicModel implements Model {
 
         updateNumberedTiles();
         controller.initializeBoard(rows, columns);
-    }
-
-    public void printGameState() {
-        for (int i = 0; i < this.gameModel.length; i++) {
-            System.out.println("");
-            for (int j = 0; j < this.gameModel[0].length; j++) {
-                System.out.print(String.format("%-6s", gameModel[i][j].getValue()));
-            }
-        }
     }
 
     /**
@@ -185,6 +110,88 @@ public class BasicModel implements Model {
     }
 
     @Override
+    public void tileUpdatedByUser(TileAction tileAction, Position position) {  // middle?
+        Tile tile = gameModel[position.row][position.column];
+
+        if (tileAction == TileAction.FLAG_TILE) {
+            if (tile.getState() == TileState.FLAGGED || tile.getState() == TileState.NOT_CLICKED) {
+                flagTile(tile);
+            }
+        } else if (tileAction == TileAction.REVEAL_TILE) {
+            revealTile(tile);
+        }
+    }
+
+    private void flagTile(Tile tile) {
+        TileState tileState = tile.getState() == TileState.FLAGGED ? TileState.NOT_CLICKED : TileState.FLAGGED;
+        tile.setState(tileState);
+        TileStatus status = new TileStatus(tileState, tile.position);
+        this.controller.setTileStatuses(new TileStatus[]{status});
+    }
+
+    private void revealTile(Tile tile) { // this needs fixed
+        if (tile.getValue() == TileValue.BOMB) {
+            endGameStateTransition(GameOverState.LOSE);
+            return;
+        }
+        recursiveReveal(tile);
+
+        if (this.nonBombsRemaining <= 0) {
+            this.endGameStateTransition(GameOverState.WIN);
+        }
+    }
+
+    private void recursiveReveal(Tile tile) {
+        if (tile.getState() != TileState.NOT_CLICKED) {
+            return;
+        }
+
+        tile.setState(TileState.values()[tile.getValue().ordinal()]);
+        controller.setTileStatuses(new TileStatus[]{new TileStatus(tile.getState(), tile.position)});
+        this.nonBombsRemaining--;
+
+        if (tile.getValue() != TileValue.EMPTY) {
+            return;
+        }
+
+        Position position = tile.position;
+        this.attemptReveal(position.row - 1, position.column - 1);
+        this.attemptReveal(position.row - 1, position.column);
+        this.attemptReveal(position.row - 1, position.column + 1);
+        this.attemptReveal(position.row, position.column - 1);
+        this.attemptReveal(position.row, position.column + 1);
+        this.attemptReveal(position.row + 1, position.column - 1);
+        this.attemptReveal(position.row + 1, position.column);
+        this.attemptReveal(position.row + 1, position.column + 1);
+    }
+
+    private void attemptReveal(int row, int column) {
+        try {
+            Tile otherTile = this.gameModel[row][column];
+            recursiveReveal(otherTile);
+        } catch (IndexOutOfBoundsException ex) {
+            // do nothing.
+        }
+    }
+
+    private void endGameStateTransition(GameOverState gameOverState) {
+        if (gameOverState == GameOverState.LOSE) {
+            int bombCount = 0;
+            TileStatus[] returnedStatus = new TileStatus[bombs];
+
+            for (Tile bombTile : bombTiles) {
+                bombTile.setState(TileState.BOMB);
+                returnedStatus[bombCount++] = new TileStatus(bombTile.getState(), bombTile.position);
+            }
+
+            this.controller.setTileStatuses(returnedStatus);
+        } else if (gameOverState == GameOverState.WIN) {
+            // do nothing
+        }
+        this.controller.gameOver(gameOverState);
+    }
+
+    @Override
     public void updateHighScore(DefaultBoard board, String name, long time) {
         throw new UnsupportedOperationException("Method not yet implemented.");
     }
@@ -214,11 +221,6 @@ public class BasicModel implements Model {
     }
 
     @Override
-    public void newGame(BoardConfiguration boardConfiguration) throws InvalidBoardConfiguration {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public HighScores getScores(DefaultBoard board) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -231,5 +233,14 @@ public class BasicModel implements Model {
     @Override
     public Timer createTimer() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void printGameState() {
+        for (int i = 0; i < this.gameModel.length; i++) {
+            System.out.println("");
+            for (int j = 0; j < this.gameModel[0].length; j++) {
+                System.out.print(String.format("%-6s", gameModel[i][j].getValue()));
+            }
+        }
     }
 }
