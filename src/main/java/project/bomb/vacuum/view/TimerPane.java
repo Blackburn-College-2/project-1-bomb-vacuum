@@ -1,91 +1,39 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package project.bomb.vacuum.view;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
-/**
- * https://www.youtube.com/watch?v=36jbBSQd3eU 
- * reference used for making timer
- * @author Isaac.Garrett
- */
-public class TimerPane extends Pane implements project.bomb.vacuum.Timer {
+class TimerPane extends StackPane {
 
-    int hours;
-    int minutes;
-    int seconds;
-    long currentTime;
-    Timer timer;
-    TimerTask task;
+    private Label display = new Label("00:00:00");
 
-    public TimerPane() {
-        hours = 0;
-        minutes = 0;
-        seconds = 0;
-        HBox hbox = new HBox(8);
-        this.getChildren().add(hbox);
-        Label label = new Label(hours + " : " + minutes + " : " + seconds);
-        hbox.getChildren().add(label);
-        timer = new Timer();
-        task = new TimerTask() {
-            public void run() {
-                seconds++;
-                currentTime = currentTime + 1000;
-                Platform.runLater(() -> {
-                    String time = "";
-                    if(hours < 10){
-                        time += "0" + hours;
-                    }else{
-                        time += hours;
-                    }
-                    time += ":";
-                    if(minutes < 10){
-                        time += "0" + minutes;
-                    }else{
-                        time += minutes;
-                    }
-                    time += ":";
-                    if(seconds < 10){
-                        time += "0" + seconds;
-                    }else{
-                        time += seconds;
-                    }
-                    label.setText(time);                    
-                });
-                if (seconds == 59) {
-                    minutes++;
-                    seconds = 0 - 1;
-                }
-                if (minutes == 59) {
-                    hours++;
-                    minutes = 0 - 1;
-                }
-                if (hours == 99) {
-                    seconds = 0;
-                    minutes = 0;
-                    hours = 0;
-                }
-            }
-        };
+    TimerPane() {
+        this.setAlignment(Pos.CENTER);
+        this.getChildren().add(display);
+
+        this.setMinHeight(30);
     }
 
-    public long getTime() {
-        return currentTime;
+    void setTime(long time) {
+        int millisInHour = 3600000;
+        int millisInMinute = 60000;
+        int millisInSecond = 1000;
+
+        long hours = time / millisInHour;
+        time = time % millisInHour;
+        long minutes = time / millisInMinute;
+        time = time % millisInMinute;
+        long seconds = time / millisInSecond;
+
+        String hoursText = String.format("%2d", hours).replace(' ', '0');
+        String minutesText = String.format("%2d", minutes).replace(' ', '0');
+        String secondsText = String.format("%2d", seconds).replace(' ', '0');
+
+        String displayedTime = String.format("%s:%s:%s", hoursText, minutesText, secondsText);
+
+        Platform.runLater(() -> display.setText(displayedTime));
     }
 
-    public void startTimer() {
-        timer.scheduleAtFixedRate(task, 1000, 1000);
-    }
-
-    public void stopTimer() {
-        timer.cancel();
-    }
 }

@@ -7,4 +7,6 @@ public interface Timer {
     void stopTimer();
 
     long getTime();
+
+    void resetTimer();
 }

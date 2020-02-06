@@ -22,6 +22,7 @@ public class GUI extends Application implements View {
     private Stage stage;
     private BorderPane mainPane = new BorderPane();
     private BombPane bombPane;
+    private TimerPane timerPane = new TimerPane();
 
     public static void launchGUI() {
         launch();
@@ -38,11 +39,13 @@ public class GUI extends Application implements View {
         controller.setView(this);
 
         mainPane.setRight(new MenuPane(controller));
+        mainPane.setTop(timerPane);
 
         Scene scene = new Scene(mainPane, 50, 50);
         stage.setScene(scene);
-//        stage.setResizable(false);
+        stage.setResizable(false);
         stage.show();
+
         GUI.startup.run();
     }
 
@@ -52,7 +55,7 @@ public class GUI extends Application implements View {
         mainPane.setCenter(this.bombPane);
 
         double screenWidth = this.bombPane.getMinWidth() + MenuPane.BUTTON_WIDTH + 40;
-        double screenHeight = this.bombPane.getMinHeight() + 50;
+        double screenHeight = this.bombPane.getMinHeight() + timerPane.getMinHeight()+ 50;
         stage.setHeight(screenHeight);
         stage.setWidth(screenWidth);
     }
@@ -64,12 +67,12 @@ public class GUI extends Application implements View {
 
     @Override
     public void gameOver(GameOverState gameOverState, long time) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.err.println("Game over not yet implemented in GUI");
     }
 
     @Override
     public void setTime(long time) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        timerPane.setTime(time);
     }
 
 }
