@@ -7,14 +7,11 @@ package project.bomb.vacuum.view;
 
 import java.util.HashMap;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import project.bomb.vacuum.Controller;
 import project.bomb.vacuum.Position;
-import project.bomb.vacuum.TileState;
 import project.bomb.vacuum.TileStatus;
 
 /**
@@ -87,7 +84,7 @@ class BombPane extends GridPane{
                         flagTile(position);
                         break;
                     case NOT_CLICKED:
-                        unflagTile(position);
+                        unFlagTile(position);
                         break;
                     default:
                         System.out.println("State not yet supported: " + tileStatus.state);
@@ -97,13 +94,13 @@ class BombPane extends GridPane{
     }
 
     private void flagTile(Position position) {
-        Button tile = (Button) this.getViewTile(position).getTile();
-        tile.setText("F");
+        TileButton tile = (TileButton) this.getViewTile(position).getTile();
+        tile.setFlag(true);
     }
 
-    private void unflagTile(Position position) {
-        Button tile = (Button) this.getViewTile(position).getTile();
-        tile.setText("");
+    private void unFlagTile(Position position) {
+        TileButton tile = (TileButton) this.getViewTile(position).getTile();
+        tile.setFlag(false);
     }
 
     private ViewTile getViewTile(Position position) {
