@@ -20,6 +20,7 @@ public class BasicModel implements Model {
     private int bombs;
     private int nonBombsRemaining;
     private List<Tile> bombTiles = new ArrayList<>();
+    private List<Tile> highlighted = new ArrayList<>();
 
     public BasicModel(Controller controller) {
         this.controller = controller;
@@ -127,6 +128,8 @@ public class BasicModel implements Model {
             }
         } else if (tileAction == TileAction.REVEAL_TILE) {
             revealTile(tile);
+        } else if (tileAction == TileAction.HIGHLIGHT) {
+            highlightTiles(tile);
         }
     }
 
@@ -150,7 +153,7 @@ public class BasicModel implements Model {
     }
 
     private void recursiveReveal(Tile tile) {
-        if (tile.getState() != TileState.NOT_CLICKED) {
+        if (tile.getState() != TileState.NOT_CLICKED && tile.getState() != TileState.HIGHLIGHTED) {
             return;
         }
 
@@ -179,6 +182,45 @@ public class BasicModel implements Model {
             recursiveReveal(otherTile);
         } catch (IndexOutOfBoundsException ex) {
             // do nothing.
+        }
+    }
+
+    private void highlightTiles(Tile tile) {
+        for (Tile tileH : highlighted) {
+            if (tileH.getState() == TileState.HIGHLIGHTED) {
+                tileH.setState(TileState.NOT_CLICKED);
+                controller.setTileStatuses(new TileStatus[]{new TileStatus(tileH.getState(), tileH.position)});
+            }
+        }
+        if (highlighted.size() > 0) {
+            if (highlighted.get(0) == tile) {
+                highlighted.clear();
+                return;
+            }
+        }
+        highlighted.clear();
+        Position position = tile.position;
+        this.attemptHighlight(position.row, position.column);
+        this.attemptHighlight(position.row - 1, position.column - 1);
+        this.attemptHighlight(position.row - 1, position.column);
+        this.attemptHighlight(position.row - 1, position.column + 1);
+        this.attemptHighlight(position.row, position.column - 1);
+        this.attemptHighlight(position.row, position.column + 1);
+        this.attemptHighlight(position.row + 1, position.column - 1);
+        this.attemptHighlight(position.row + 1, position.column);
+        this.attemptHighlight(position.row + 1, position.column + 1);
+    }
+
+    private void attemptHighlight(int row, int column) {
+        try {
+            Tile tile = this.gameModel[row][column];
+            if (tile.getState() == TileState.NOT_CLICKED) {
+                tile.setState(TileState.HIGHLIGHTED);
+                controller.setTileStatuses(new TileStatus[]{new TileStatus(tile.getState(), tile.position)});
+                this.highlighted.add(tile);
+            }
+        } catch (IndexOutOfBoundsException ex) {
+            // do nothing
         }
     }
 

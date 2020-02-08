@@ -18,7 +18,6 @@ public interface Controller {
 
     void setView(View view);
 
-
     /**
      * Starts a new game with the specified rows, columns, and bombs.
      * <p>
@@ -48,9 +47,15 @@ public interface Controller {
     void tileUpdatedByUser(TileAction tileAction, Position position);
 
     /**
+     * Gets the high scores for the current board.
+     *
+     * @return the high scores for the board.
+     */
+    HighScores getScores();
+
+    /**
      * Gets the high scores for the specified type of default board.
      *
-     * @param board the board to get scores for.
      * @return the high scores for the specified board.
      */
     HighScores getScores(DefaultBoard board);
