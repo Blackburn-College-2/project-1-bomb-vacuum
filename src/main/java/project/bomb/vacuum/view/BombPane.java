@@ -10,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.TilePane;
 import project.bomb.vacuum.Controller;
 import project.bomb.vacuum.Position;
 import project.bomb.vacuum.TileStatus;
@@ -50,7 +49,7 @@ class BombPane extends GridPane{
     }
 
     private void placeButton(Controller controller, int row, int column) {
-        TileButton tile = new TileButton(controller, row, column);
+        TileButton tile = new TileButton(controller, row, column, TILE_SIZE);
         this.setTile(tile, row, column);
     }
 
@@ -98,6 +97,10 @@ class BombPane extends GridPane{
                             placeButton(controller, position.row, position.column);
                         }
                         unFlagTile(position);
+                        deHighlightTile(position);
+                        break;
+                    case HIGHLIGHTED:
+                        highlightTile(position);
                         break;
                     default:
                         System.out.println("State not yet supported: " + tileStatus.state);
@@ -114,6 +117,16 @@ class BombPane extends GridPane{
     private void unFlagTile(Position position) {
         TileButton tile = (TileButton) this.getViewTile(position).getTile();
         tile.setFlag(false);
+    }
+
+    private void highlightTile(Position position) {
+        TileButton tile = (TileButton) this.getViewTile(position).getTile();
+        tile.highlight(true);
+    }
+
+    private void deHighlightTile(Position position) {
+        TileButton tile = (TileButton) this.getViewTile(position).getTile();
+        tile.highlight(false);
     }
 
     private ViewTile getViewTile(Position position) {
