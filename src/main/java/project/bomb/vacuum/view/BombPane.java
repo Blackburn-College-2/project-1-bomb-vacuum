@@ -50,7 +50,7 @@ class BombPane extends GridPane{
     }
 
     private void placeButton(Controller controller, int row, int column) {
-        TileButton tile = new TileButton(controller, row, column);
+        TileButton tile = new TileButton(controller, row, column, TILE_SIZE);
         this.setTile(tile, row, column);
     }
 
@@ -108,11 +108,13 @@ class BombPane extends GridPane{
 
     private void flagTile(Position position) {
         TileButton tile = (TileButton) this.getViewTile(position).getTile();
+//        tile.highlight(true);
         tile.setFlag(true);
     }
 
     private void unFlagTile(Position position) {
         TileButton tile = (TileButton) this.getViewTile(position).getTile();
+        tile.highlight(false);
         tile.setFlag(false);
     }
 
