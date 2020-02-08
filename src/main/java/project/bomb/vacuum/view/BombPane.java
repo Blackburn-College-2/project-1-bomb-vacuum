@@ -108,7 +108,7 @@ class BombPane extends GridPane{
 
     private void flagTile(Position position) {
         TileButton tile = (TileButton) this.getViewTile(position).getTile();
-//        tile.highlight(true);
+        tile.highlight(true);
         tile.setFlag(true);
     }
 
