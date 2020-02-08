@@ -47,11 +47,18 @@ public interface Controller {
     void tileUpdatedByUser(TileAction tileAction, Position position);
 
     /**
+     * Gets the high scores for the current board.
+     *
+     * @return the high scores for the board.
+     */
+    HighScores getScores();
+
+    /**
      * Gets the high scores for the specified type of default board.
      *
      * @return the high scores for the specified board.
      */
-    HighScores getScores();
+    HighScores getScores(DefaultBoard board);
 
     /**
      * @param cheat true to show all bombs, false to hide bombs.

@@ -113,14 +113,17 @@ public class GUI extends Application implements View {
 
     @Override
     public void gameOver(GameOverState gameOverState, long time) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Game Over");
         StringBuilder message = new StringBuilder();
+        StringBuilder header = new StringBuilder();
         if (gameOverState.equals(GameOverState.WIN)) {
-            message.append("You won, dude!");
+            header.append("You won, dude!");
         } else {
-            message.append("You lost, but gg.");
+            header.append("You lost, but gg.");
         }
-        message.append("Your time was: ").append(time).append('\n');
+        header.append("Your time was: ").append(TimerPane.formatTime(time)).append('\n');
+        alert.setHeaderText(header.toString());
 
         HighScores scores = controller.getScores();
         if (scores != null) {
