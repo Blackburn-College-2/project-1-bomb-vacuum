@@ -17,6 +17,12 @@ class TimerPane extends StackPane {
     }
 
     void setTime(long time) {
+        String displayedTime = formatTime(time);
+
+        Platform.runLater(() -> display.setText(displayedTime));
+    }
+
+    static String formatTime(long time) {
         int millisInHour = 3600000;
         int millisInMinute = 60000;
         int millisInSecond = 1000;
@@ -31,9 +37,7 @@ class TimerPane extends StackPane {
         String minutesText = String.format("%2d", minutes).replace(' ', '0');
         String secondsText = String.format("%2d", seconds).replace(' ', '0');
 
-        String displayedTime = String.format("%s:%s:%s", hoursText, minutesText, secondsText);
-
-        Platform.runLater(() -> display.setText(displayedTime));
+        return String.format("%s:%s:%s", hoursText, minutesText, secondsText);
     }
 
 }
