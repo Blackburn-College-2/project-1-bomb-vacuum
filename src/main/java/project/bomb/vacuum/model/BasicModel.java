@@ -377,7 +377,7 @@ public class BasicModel implements Model {
         if (score == null) {
             return new HighScore() {
             public String getName() {
-                return "";
+                return "NUL";
             }
 
             public long getTime() {
@@ -385,12 +385,11 @@ public class BasicModel implements Model {
             }
         };
         }
-        String[] parts = score.split("|");
+        String[] parts = score.split("\\|");
         return new HighScore() {
             public String getName() {
                 return parts[0];
             }
-
             public long getTime() {
                 return Long.parseLong(parts[1]);
             }
@@ -399,7 +398,7 @@ public class BasicModel implements Model {
 
     private String[] getScoresHelper(DefaultBoard board) {
         BufferedReader br;
-        File path = new File("/project-1-bomb-vacuum/src/main/java/project/bomb/vacuum/");
+        String path = "./src/main/java/project/bomb/vacuum/";
         String line;
         String[] highScores = new String[5];
 
@@ -425,6 +424,7 @@ public class BasicModel implements Model {
             }
 
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("File does not exist!");
         }
         return highScores;
@@ -440,12 +440,4 @@ public class BasicModel implements Model {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private void printGameState() {
-        for (int i = 0; i < this.gameModel.length; i++) {
-            System.out.println("");
-            for (int j = 0; j < this.gameModel[0].length; j++) {
-                System.out.print(String.format("%-6s", gameModel[i][j].getValue()));
-            }
-        }
-    }
 }
