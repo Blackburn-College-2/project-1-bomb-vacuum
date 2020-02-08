@@ -60,8 +60,10 @@ class TileButton extends StackPane {
 
     void highlight(boolean highlight) {
         if (highlight) {
+            this.button.setStyle("-fx-border-color: rgba(255, 0, 0, .9)");
             this.getChildren().add(0, highlighter);
         } else {
+            this.button.setStyle("");
             this.getChildren().remove(highlighter);
         }
     }
