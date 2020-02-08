@@ -260,7 +260,7 @@ public class BasicModel implements Model {
 
     @Override
     public HighScores getScores(DefaultBoard board) {
-        return makeFakeScores();
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -280,48 +280,5 @@ public class BasicModel implements Model {
                 System.out.print(String.format("%-6s", gameModel[i][j].getValue()));
             }
         }
-    }
-
-    private HighScores makeFakeScores() {
-        return new HighScores() {
-            @Override
-            public HighScore getFirst() {
-                return makeFakeScore();
-            }
-
-            @Override
-            public HighScore getSecond() {
-                return makeFakeScore();
-            }
-
-            @Override
-            public HighScore getThird() {
-                return makeFakeScore();
-            }
-
-            @Override
-            public HighScore getFourth() {
-                return makeFakeScore();
-            }
-
-            @Override
-            public HighScore getFifth() {
-                return makeFakeScore();
-            }
-        };
-    }
-
-    private HighScore makeFakeScore() {
-        return new HighScore() {
-            @Override
-            public String getName() {
-                return "CAT";
-            }
-
-            @Override
-            public long getTime() {
-                return 0;
-            }
-        };
     }
 }
