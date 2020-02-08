@@ -8,6 +8,13 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import project.bomb.vacuum.Controller;
 import project.bomb.vacuum.GameOverState;
@@ -107,7 +114,16 @@ public class GUI extends Application implements View {
 
     @Override
     public void gameOver(GameOverState gameOverState, long time) {
-        System.err.println("Game over not yet implemented in GUI");
+        if (gameOverState.equals(gameOverState.WIN)){
+            Label winLabel = new Label("You won, dude! Your time was: " + time);
+            Popup winPop = new Popup();
+            winPop.getContent().add(winLabel);
+            
+        } else {
+           Label loseLabel = new Label("You lost, but gg. Your time was: "+ time );
+           Popup losePop = new Popup();
+           losePop.getContent().add(loseLabel);
+        }
     }
 
     @Override
