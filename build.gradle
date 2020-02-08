@@ -19,7 +19,7 @@ dependencies {
 }
 
 application {
-    mainClassName = 'project.bomb.vacuum.App'
+    mainClassName = 'project.bomb.vacuum.controller.BombVacuumController'
 }
 
 run {

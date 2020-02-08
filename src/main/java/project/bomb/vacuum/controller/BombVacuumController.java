@@ -3,22 +3,32 @@ package project.bomb.vacuum.controller;
 import project.bomb.vacuum.*;
 import project.bomb.vacuum.exceptions.InvalidBoardConfiguration;
 import project.bomb.vacuum.exceptions.InvalidStateException;
+import project.bomb.vacuum.model.BasicModel;
+import project.bomb.vacuum.view.GUI;
 
 public class BombVacuumController implements Controller {
 
     private final Model model;
-    private final View view;
-    private Timer timer;
+    private View view;
+    private Timer timer = new BasicTimer(this);
+    private boolean timerRunning = false;
+    private boolean gameOver = false;
 
     private DefaultBoard defaultBoard;
 
-    public BombVacuumController(Model model, View view) {
-        this.model = model;
-        this.view = view;
+    public static void main(String[] args) {
+        new BombVacuumController();
     }
 
-    private void readyNewGame() {
-        this.timer = model.createTimer();
+    public BombVacuumController() {
+        this.model = new BasicModel(this);
+        GUI.setController(this);
+        GUI.setStartup(() -> model.newGame(DefaultBoard.INTERMEDIATE));
+        GUI.launchGUI();
+    }
+
+    public void setView(View view) {
+        this.view = view;
     }
 
     // ##### Called By Model #####
@@ -36,6 +46,8 @@ public class BombVacuumController implements Controller {
     @Override
     public void gameOver(GameOverState gameOverState) {
         timer.stopTimer();
+        timerRunning = false;
+        gameOver = true;
         view.gameOver(gameOverState, this.timer.getTime());
     }
 
@@ -49,13 +61,21 @@ public class BombVacuumController implements Controller {
     @Override
     public void startNewGame(DefaultBoard board) {
         this.defaultBoard = board;
+        this.prepareNewGame();
         model.newGame(board);
     }
 
     @Override
     public void startNewGame(BoardConfiguration boardConfiguration) throws InvalidBoardConfiguration {
         this.defaultBoard = null;
+        this.prepareNewGame();
         model.newGame(boardConfiguration);
+    }
+
+    private void prepareNewGame() {
+        timerRunning = false;
+        gameOver = false;
+        timer.resetTimer();
     }
 
     @Override
@@ -65,7 +85,13 @@ public class BombVacuumController implements Controller {
 
     @Override
     public void tileUpdatedByUser(TileAction tileAction, Position position) {
-        model.tileUpdatedByUser(tileAction, position);
+        if (!timerRunning && !gameOver) {
+            timerRunning = true;
+            this.startTimer();
+        }
+        if (!gameOver) {
+            model.tileUpdatedByUser(tileAction, position);
+        }
     }
 
     @Override
