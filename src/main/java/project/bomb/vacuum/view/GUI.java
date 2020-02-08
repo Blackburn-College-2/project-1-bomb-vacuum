@@ -5,6 +5,8 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.DialogEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -16,10 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import project.bomb.vacuum.Controller;
-import project.bomb.vacuum.GameOverState;
-import project.bomb.vacuum.TileStatus;
-import project.bomb.vacuum.View;
+import project.bomb.vacuum.*;
 
 public class GUI extends Application implements View {
 
@@ -83,7 +82,7 @@ public class GUI extends Application implements View {
         mainPane.setCenter(this.bombPane);
 
         double screenWidth = this.bombPane.getMinWidth() + MenuPane.BUTTON_WIDTH + widthPadding;
-        double screenHeight = this.bombPane.getMinHeight() + timerPane.getMinHeight()+ heightPadding;
+        double screenHeight = this.bombPane.getMinHeight() + timerPane.getMinHeight() + heightPadding;
         stage.setHeight(screenHeight);
         stage.setWidth(screenWidth);
 
@@ -114,16 +113,31 @@ public class GUI extends Application implements View {
 
     @Override
     public void gameOver(GameOverState gameOverState, long time) {
-        if (gameOverState.equals(gameOverState.WIN)){
-            Label winLabel = new Label("You won, dude! Your time was: " + time);
-            Popup winPop = new Popup();
-            winPop.getContent().add(winLabel);
-            
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        StringBuilder message = new StringBuilder();
+        if (gameOverState.equals(GameOverState.WIN)) {
+            message.append("You won, dude!");
         } else {
-           Label loseLabel = new Label("You lost, but gg. Your time was: "+ time );
-           Popup losePop = new Popup();
-           losePop.getContent().add(loseLabel);
+            message.append("You lost, but gg.");
         }
+        message.append("Your time was: ").append(time).append('\n');
+
+        HighScores scores = controller.getScores();
+        if (scores != null) {
+            appendScore(message, "1. ", scores.getFirst());
+            appendScore(message, "2. ", scores.getSecond());
+            appendScore(message, "3. ", scores.getThird());
+            appendScore(message, "4. ", scores.getFourth());
+            appendScore(message, "5. ", scores.getFifth());
+        }
+        alert.setContentText(message.toString());
+        alert.setOnCloseRequest(dialogEvent -> alert.hide());
+        alert.show();
+    }
+
+    private void appendScore(StringBuilder stringBuilder, String title, HighScore score) {
+        String timeString = TimerPane.formatTime(score.getTime());
+        stringBuilder.append(title).append(score.getName()).append(": ").append(timeString).append('\n');
     }
 
     @Override

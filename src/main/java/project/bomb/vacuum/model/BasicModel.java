@@ -238,10 +238,6 @@ public class BasicModel implements Model {
         throw new UnsupportedOperationException("Method not yet implemented.");
     }
 
-    public void getHighScores() {
-        throw new UnsupportedOperationException("Method not yet implemented.");
-    }
-
     @Override
     public void cheatToggled(boolean toggle) {
         TileStatus[] returnedStatus = new TileStatus[bombs];

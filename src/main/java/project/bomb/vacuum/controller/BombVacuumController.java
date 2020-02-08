@@ -95,8 +95,26 @@ public class BombVacuumController implements Controller {
     }
 
     @Override
-    public HighScores getScores(DefaultBoard board) {
-        return model.getScores(board);
+    public HighScores getScores() {
+        if (defaultBoard != null) {
+            return model.getScores(defaultBoard);
+        } else {
+            return null;
+        }
+    }
+
+    private HighScore makeEmptyScore() {
+        return new HighScore() {
+            @Override
+            public String getName() {
+                return "";
+            }
+
+            @Override
+            public long getTime() {
+                return 0;
+            }
+        };
     }
 
     @Override

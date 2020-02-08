@@ -18,7 +18,6 @@ public interface Controller {
 
     void setView(View view);
 
-
     /**
      * Starts a new game with the specified rows, columns, and bombs.
      * <p>
@@ -50,10 +49,9 @@ public interface Controller {
     /**
      * Gets the high scores for the specified type of default board.
      *
-     * @param board the board to get scores for.
      * @return the high scores for the specified board.
      */
-    HighScores getScores(DefaultBoard board);
+    HighScores getScores();
 
     /**
      * @param cheat true to show all bombs, false to hide bombs.
