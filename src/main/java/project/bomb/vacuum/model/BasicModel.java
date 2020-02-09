@@ -1,7 +1,9 @@
 package project.bomb.vacuum.model;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import project.bomb.vacuum.*;
 import project.bomb.vacuum.exceptions.InvalidBoardConfiguration;
@@ -241,86 +244,151 @@ public class BasicModel implements Model {
         this.controller.gameOver(gameOverState);
     }
 
-//    @Override
-//    //Still need to replace lines after 5 and order them 
-//    public void updateHighScore(DefaultBoard board, String name, long time) {
-//        PrintWriter pw;
-//        File path = new File("/project-1-bomb-vacuum/src/main/java/project/bomb/vacuum/");
-//        BufferedReader br;
-//        String line;
-//        int count;
-//
-//        try {
-//            if (board == DefaultBoard.EASY) {
-//                
-//                br = new BufferedReader(new FileReader(path + "easyhighscores.txt"));
-//                line = br.readLine();
-//                if (line == null) {
-//                    count = 0;
-//                } else {
-//                    count = 1;
-//                }
-//                while (line != null) {
-//                    line = br.readLine();
-//                    count++;
-//                }
-//
-//                if (count < 5) {
-//                    pw = new PrintWriter(new FileWriter(path + "easyhighscores.txt"));
-//                    pw.write(name + "|" + time + "\n");
-//                } else {
-//                    //replace lines here
-//                }
-//            } else if (board == DefaultBoard.INTERMEDIATE) {
-//                pw = new PrintWriter(new FileWriter(path + "intermediatehighscores.txt"));
-//                pw.println(name + "|" + time + "\n");
-//            } else if (board == DefaultBoard.EXPERT) {
-//                pw = new PrintWriter(new FileWriter(path + "experthighscores.txt"));
-//                pw.println(name + "|" + time + "\n");
-//            }
-//        } catch (IOException e) {
-//            System.out.println("File does not exist!");
-//        }
-//    }
     public void updateHighScore(DefaultBoard board, String name, long time) {
-//        String path = "/project-1-bomb-vacuum/src/main/java/project/bomb/vacuum/";
-//        if (board == DefaultBoard.EASY) {
-//            addToAndSortHighScores(board, path + "easyhighscores.txt", name, time);
-//        } else if (board == DefaultBoard.INTERMEDIATE) {
-//            addToAndSortHighScores(board, path + "intermediatehighscores.txt", name, time);
-//        } else if (board == DefaultBoard.EXPERT) {
-//            addToAndSortHighScores(board, path + "experthighscores.txt", name, time);
-//        }
-        System.out.println(String.format("%s: %s -- %d", board.toString(), name, time));
+        String path = "./src/main/java/project/bomb/vacuum/";
+        HighScore newHighScore = new SimpleHighScore(name, time);
+        if (board == DefaultBoard.EASY) {
+            saveScore(path + "easyhighscores", newHighScore);
+        } else if (board == DefaultBoard.INTERMEDIATE) {
+            saveScore(path + "intermediatehighscores", newHighScore);
+        } else if (board == DefaultBoard.EXPERT) {
+            saveScore(path + "experthighscores", newHighScore);
+        }
+    }
+    
+    private void loadAndPrintScores(String path) {
+        String[] scores = loadScores(path);
+        HighScore[] parsed = parseScores(scores);
+        parsed = sortScores(parsed);
+        printArray(parsed);
+    }
+    
+    private void saveScore(String path, HighScore score) {
+        String[] rawScores = loadScores(path);
+        HighScore[] currentScores = parseScores(rawScores);
+        HighScore[] newScores = new HighScore[currentScores.length + 1];
+        System.arraycopy(currentScores, 0, newScores, 0, currentScores.length);
+        newScores[newScores.length - 1] = score;
+        
+        newScores = sortScores(newScores);
+        
+        System.arraycopy(newScores, 0, currentScores, 0, currentScores.length);
+        saveScores(path, currentScores);
     }
 
-//    private void addToAndSortHighScores(DefaultBoard board, String file, String name, long time) {
-//        PrintWriter pw;
-//        String[] highScores;
-//        int count = 0;
-//        try {
-//            pw = new PrintWriter(new FileWriter(file));
-//            highScores = getScores(board);
-//            for (int i = 0; i < highScores.length; i++) {
-//                if (highScores[i] != null) {
-//                    count++;
-//                }
-//            }
-//            if (count < highScores.length) {
-//                pw.write(name + "|" + time + "\n");
-//                pw.close();
-//            } else {
-//                highScores[4] = highScores[4].replace(highScores[4], name + "|" + time + "\n");
-//                pw.write(highScores[4]);
-//                pw.close();
-//            }
-//            pw.write(Collections.sort(Arrays.asList(highScores)));
-//            pw.close();
-//        } catch (IOException e) {
-//            System.out.println("File does not exist!");
-//        }
-//    }
+    private HighScore[] sortScores(HighScore[] scores) {
+        List<HighScore> list = Arrays.asList(scores);
+        Collections.sort(list, new Comparator() {
+            @Override
+            public int compare(Object arg0, Object arg1) {
+                if (arg0 instanceof HighScore && arg1 instanceof HighScore) {
+                    return compareLong(((HighScore) arg0).getTime(), ((HighScore) arg1).getTime());
+                }
+                return 0;
+            }
+        });
+        return list.toArray(new HighScore[0]);
+    }
 
+    private int compareLong(long one, long two) {
+        if (one == two) {
+            return 0;
+        } else if (one > two) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+    
+    private HighScore[] parseScores(String[] scores) {
+        HighScore[] parsed = new HighScore[scores.length];
+        for (int i = 0; i < scores.length; i++) {
+            parsed[i] = parseScore(scores[i]);
+        }
+        return parsed;
+    }
+
+    private HighScore parseScore(String score) {
+        String[] parts = score.split("\\|");
+        return new SimpleHighScore(parts[0], Long.parseLong(parts[1]));
+    }
+
+    private String[] loadScores(String path) {
+        String[] scores = new String[5];
+        BufferedReader reader = null;
+        try {
+            File file = new File(path);
+            reader = new BufferedReader(new FileReader(file));
+            for (int i = 0; i < scores.length; i++) {
+                scores[i] = reader.readLine();
+            }
+        } catch (FileNotFoundException ex) {
+            System.out.println("File not found: " + path);
+        } catch (IOException ex) {
+            System.out.println("Failed to read line in file: " + path);
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException ex) {
+                System.out.println("Failed to close reader");
+            }
+        }
+        return scores;
+    }
+    
+    private void saveScores(String path, HighScore[] scores) {
+        String[] textScores = new String[scores.length];
+        for (int i = 0; i < scores.length; i++) {
+            textScores[i] = String.format("%s|%d", scores[i].getName(), scores[i].getTime());
+        }
+        saveScores(path, textScores);
+    }
+
+    private void saveScores(String path, String[] scores) {
+        BufferedWriter writer = null;
+        try {
+            File file = new File(path);
+            writer = new BufferedWriter(new FileWriter(file));
+            for (String score : scores) {
+                writer.write(score + "\n");
+            }
+        } catch (IOException ex) {
+            System.out.println("Failed to create writer: " + path);
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.flush();
+                    writer.close();
+                }
+            } catch (IOException ex) {
+                System.out.println("Failed to close reader");
+            }
+        }
+    }
+
+    private <T> void printArray(T[] arr) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (int i = 0; i < arr.length - 1; i++) {
+            if (arr[i] != null) {
+                sb.append(arr[i].toString()).append(", ");
+            } else {
+                sb.append("null, ");
+            }
+        }
+        if (arr.length > 0) {
+            if (arr[arr.length - 1] != null) {
+                sb.append(arr[arr.length - 1]);
+            } else {
+                sb.append("null");
+            }
+        }
+        sb.append("]");
+        System.out.println(sb.toString());
+    }
+    
     @Override
     public void cheatToggled(boolean toggle) {
         TileStatus[] returnedStatus = new TileStatus[bombs];
