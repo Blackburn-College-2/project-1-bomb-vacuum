@@ -3,29 +3,36 @@ package project.bomb.vacuum.view;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
-import project.bomb.vacuum.Controller;
-import project.bomb.vacuum.GameOverState;
-import project.bomb.vacuum.TileStatus;
-import project.bomb.vacuum.View;
+import project.bomb.vacuum.*;
 
 public class GUI extends Application implements View {
 
     private static Controller controller;
     private static Runnable startup;
+    private Stage stage;
+
+    private BorderPane mainPane = new BorderPane();
+    private BombPane bombPane;
+    static DefaultBoard board;
 
     public static void setController(Controller controller) {
         GUI.controller = controller;
     }
 
-    private Stage stage;
-    private BorderPane mainPane = new BorderPane();
-    private BombPane bombPane;
     private TimerPane timerPane = new TimerPane();
     private boolean cheating = false;
     private boolean firstInit = true;
@@ -57,13 +64,10 @@ public class GUI extends Application implements View {
     }
 
     private void setKeyboardHandler(Scene scene) {
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.SHIFT) {
-                    cheating = !cheating;
-                    controller.cheatToggled(cheating);
-                }
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.SHIFT) {
+                cheating = !cheating;
+                controller.cheatToggled(cheating);
             }
         });
     }
@@ -72,11 +76,12 @@ public class GUI extends Application implements View {
     public void initializeBoard(int rows, int columns) {
         double widthPadding = 60;
         double heightPadding = 70;
-        this.bombPane = new BombPane(controller, rows, columns);
+        // BombPane constructor is columns, rows....
+        this.bombPane = new BombPane(controller, columns, rows);
         mainPane.setCenter(this.bombPane);
 
         double screenWidth = this.bombPane.getMinWidth() + MenuPane.BUTTON_WIDTH + widthPadding;
-        double screenHeight = this.bombPane.getMinHeight() + timerPane.getMinHeight()+ heightPadding;
+        double screenHeight = this.bombPane.getMinHeight() + timerPane.getMinHeight() + heightPadding;
         stage.setHeight(screenHeight);
         stage.setWidth(screenWidth);
 
@@ -107,7 +112,52 @@ public class GUI extends Application implements View {
 
     @Override
     public void gameOver(GameOverState gameOverState, long time) {
-        System.err.println("Game over not yet implemented in GUI");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Game Over");
+        StringBuilder message = new StringBuilder();
+        StringBuilder header = new StringBuilder();
+        if (gameOverState.equals(GameOverState.WIN)) {
+            header.append("You won, dude!");
+        } else {
+            header.append("You lost, but gg.");
+        }
+        header.append("Your time was: ").append(TimerPane.formatTime(time)).append('\n');
+        alert.setHeaderText(header.toString());
+
+        TextField nameField = new TextField();
+        if (GUI.board != null) {
+            Pane pane = alert.getDialogPane();
+            Label nameLabel = new Label("Enter a 3 character tag");
+            nameLabel.setMinWidth(200);
+            nameField.setMinWidth(40);
+            VBox box = new VBox(nameLabel, nameField);
+//        box.setAlignment(Pos.CENTER);
+            box.setMinWidth(600);
+            box.translateXProperty().bind(pane.widthProperty().multiply(0.6));
+            box.translateYProperty().bind(pane.heightProperty().multiply(0.5));
+            pane.getChildren().add(box);
+        }
+
+        HighScores scores = controller.getScores();
+        if (scores != null) {
+            appendScore(message, "1. ", scores.getFirst());
+            appendScore(message, "2. ", scores.getSecond());
+            appendScore(message, "3. ", scores.getThird());
+            appendScore(message, "4. ", scores.getFourth());
+            appendScore(message, "5. ", scores.getFifth());
+        }
+        alert.setContentText(message.toString());
+        alert.setOnCloseRequest(dialogEvent -> {
+            if (GUI.board != null) {
+                controller.updateHighScore(nameField.getText());
+            }
+        });
+        alert.show();
+    }
+
+    private void appendScore(StringBuilder stringBuilder, String title, HighScore score) {
+        String timeString = TimerPane.formatTime(score.getTime());
+        stringBuilder.append(title).append(score.getName()).append(": ").append(timeString).append('\n');
     }
 
     @Override

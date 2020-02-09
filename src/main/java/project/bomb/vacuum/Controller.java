@@ -18,7 +18,6 @@ public interface Controller {
 
     void setView(View view);
 
-
     /**
      * Starts a new game with the specified rows, columns, and bombs.
      * <p>
@@ -31,15 +30,6 @@ public interface Controller {
     void startNewGame(BoardConfiguration boardConfiguration) throws InvalidBoardConfiguration;
 
     /**
-     * Gets the configuration for a default board, as this may change
-     * between {@link Model}s.
-     *
-     * @param board the default board type.
-     * @return the configuration for the default board type.
-     */
-    BoardConfiguration getDefaultBoardConfiguration(DefaultBoard board);
-
-    /**
      * Called when a tile has been altered by the user.
      *
      * @param tileAction which mouse button was pressed.
@@ -48,9 +38,15 @@ public interface Controller {
     void tileUpdatedByUser(TileAction tileAction, Position position);
 
     /**
+     * Gets the high scores for the current board.
+     *
+     * @return the high scores for the board.
+     */
+    HighScores getScores();
+
+    /**
      * Gets the high scores for the specified type of default board.
      *
-     * @param board the board to get scores for.
      * @return the high scores for the specified board.
      */
     HighScores getScores(DefaultBoard board);
