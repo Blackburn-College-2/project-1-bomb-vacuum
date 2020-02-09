@@ -78,7 +78,8 @@ public class GUI extends Application implements View {
     public void initializeBoard(int rows, int columns) {
         double widthPadding = 60;
         double heightPadding = 70;
-        this.bombPane = new BombPane(controller, rows, columns);
+        // BombPane constructor is columns, rows....
+        this.bombPane = new BombPane(controller, columns, rows);
         mainPane.setCenter(this.bombPane);
 
         double screenWidth = this.bombPane.getMinWidth() + MenuPane.BUTTON_WIDTH + widthPadding;
