@@ -79,11 +79,6 @@ public class BombVacuumController implements Controller {
     }
 
     @Override
-    public BoardConfiguration getDefaultBoardConfiguration(DefaultBoard board) {
-        return model.getDefaultBoardConfiguration(board);
-    }
-
-    @Override
     public void tileUpdatedByUser(TileAction tileAction, Position position) {
         if (!timerRunning && !gameOver) {
             timerRunning = true;
@@ -106,20 +101,6 @@ public class BombVacuumController implements Controller {
     @Override
     public HighScores getScores(DefaultBoard board) {
         return model.getScores(board);
-    }
-
-    private HighScore makeEmptyScore() {
-        return new HighScore() {
-            @Override
-            public String getName() {
-                return "";
-            }
-
-            @Override
-            public long getTime() {
-                return 0;
-            }
-        };
     }
 
     @Override

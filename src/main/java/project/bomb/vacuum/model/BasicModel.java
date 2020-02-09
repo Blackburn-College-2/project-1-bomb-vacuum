@@ -430,14 +430,4 @@ public class BasicModel implements Model {
         return highScores;
     }
 
-    @Override
-    public BoardConfiguration getDefaultBoardConfiguration(DefaultBoard board) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Timer createTimer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }

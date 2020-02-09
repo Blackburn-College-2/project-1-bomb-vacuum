@@ -50,20 +50,4 @@ public interface Model {
      * @param cheat true to show all bombs, false to hide bombs.
      */
     void cheatToggled(boolean cheat);
-
-    /**
-     * Gets the configuration for a default board, as this may change
-     * between {@link Model}s.
-     *
-     * @param board the default board type.
-     * @return the configuration for the default board type.
-     */
-    BoardConfiguration getDefaultBoardConfiguration(DefaultBoard board);
-
-    /**
-     * Creates a new {@link Timer} to be used by the controller.
-     *
-     * @return a new Timer.
-     */
-    Timer createTimer();
 }
