@@ -49,6 +49,7 @@ class MenuPane extends VBox {
         button.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
                 controller.startNewGame(board);
+                GUI.board = board;
             }
         });
         this.setButtonWidth(button);
@@ -108,15 +109,14 @@ class MenuPane extends VBox {
             options.translateYProperty().bind(pane.heightProperty().multiply(0.5));
             options.translateXProperty().bind(pane.widthProperty().multiply(0.5));
 
-            alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
-                @Override
-                public void handle(DialogEvent dialogEvent) {
-                    controller.startNewGame(new BoardConfiguration(
-                            Integer.parseInt(rows.getText()),
-                            Integer.parseInt(columns.getText()),
-                            Integer.parseInt(bombs.getText())
-                    ));
-                }
+            alert.setOnCloseRequest(dialogEvent -> {
+                controller.startNewGame(new BoardConfiguration(
+                        Integer.parseInt(rows.getText()),
+                        Integer.parseInt(columns.getText()),
+                        Integer.parseInt(bombs.getText())
+
+                ));
+                GUI.board = null;
             });
 
             alert.show();
@@ -145,7 +145,7 @@ class MenuPane extends VBox {
     }
 
     private String formatRow(HighScore easy, HighScore medium, HighScore hard, String title) {
-        return String.format("%"+spacing+"s%"+spacing+"s%"+spacing+"s", formatScore(easy, title), formatScore(medium, title), formatScore(hard, title));
+        return String.format("%" + spacing + "s%" + spacing + "s%" + spacing + "s", formatScore(easy, title), formatScore(medium, title), formatScore(hard, title));
     }
 
     private String formatScore(HighScore score, String title) {
