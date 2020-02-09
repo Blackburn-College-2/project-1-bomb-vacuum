@@ -1,7 +1,9 @@
 package project.bomb.vacuum.model;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import project.bomb.vacuum.*;
 import project.bomb.vacuum.exceptions.InvalidBoardConfiguration;
@@ -47,9 +50,9 @@ public class BasicModel implements Model {
     }
 
     /**
-     * @param rows // The number of rows to assign to the grid
+     * @param rows    // The number of rows to assign to the grid
      * @param columns // The number of columns to assign to the grid
-     * @param bombs // The number of bombs to be placed on the grid
+     * @param bombs   // The number of bombs to be placed on the grid
      */
     private void newGame(int rows, int columns, int bombs) {
         this.bombTiles.clear();
@@ -103,7 +106,7 @@ public class BasicModel implements Model {
      * This method will allow you to increment the TileValue when the board is
      * being updated for the controller
      *
-     * @param row // The target row to be changed
+     * @param row    // The target row to be changed
      * @param column // The target column to be changed
      */
     private void incrementTile(int row, int column) {
@@ -241,85 +244,136 @@ public class BasicModel implements Model {
         this.controller.gameOver(gameOverState);
     }
 
-//    @Override
-//    //Still need to replace lines after 5 and order them 
-//    public void updateHighScore(DefaultBoard board, String name, long time) {
-//        PrintWriter pw;
-//        File path = new File("/project-1-bomb-vacuum/src/main/java/project/bomb/vacuum/");
-//        BufferedReader br;
-//        String line;
-//        int count;
-//
-//        try {
-//            if (board == DefaultBoard.EASY) {
-//                
-//                br = new BufferedReader(new FileReader(path + "easyhighscores.txt"));
-//                line = br.readLine();
-//                if (line == null) {
-//                    count = 0;
-//                } else {
-//                    count = 1;
-//                }
-//                while (line != null) {
-//                    line = br.readLine();
-//                    count++;
-//                }
-//
-//                if (count < 5) {
-//                    pw = new PrintWriter(new FileWriter(path + "easyhighscores.txt"));
-//                    pw.write(name + "|" + time + "\n");
-//                } else {
-//                    //replace lines here
-//                }
-//            } else if (board == DefaultBoard.INTERMEDIATE) {
-//                pw = new PrintWriter(new FileWriter(path + "intermediatehighscores.txt"));
-//                pw.println(name + "|" + time + "\n");
-//            } else if (board == DefaultBoard.EXPERT) {
-//                pw = new PrintWriter(new FileWriter(path + "experthighscores.txt"));
-//                pw.println(name + "|" + time + "\n");
-//            }
-//        } catch (IOException e) {
-//            System.out.println("File does not exist!");
-//        }
-//    }
     public void updateHighScore(DefaultBoard board, String name, long time) {
-//        String path = "/project-1-bomb-vacuum/src/main/java/project/bomb/vacuum/";
-//        if (board == DefaultBoard.EASY) {
-//            addToAndSortHighScores(board, path + "easyhighscores.txt", name, time);
-//        } else if (board == DefaultBoard.INTERMEDIATE) {
-//            addToAndSortHighScores(board, path + "intermediatehighscores.txt", name, time);
-//        } else if (board == DefaultBoard.EXPERT) {
-//            addToAndSortHighScores(board, path + "experthighscores.txt", name, time);
-//        }
-        System.out.println(String.format("%s: %s -- %d", board.toString(), name, time));
+        String path = "./src/main/java/project/bomb/vacuum/";
+        HighScore newHighScore = new SimpleHighScore(name, time);
+        if (board == DefaultBoard.EASY) {
+            saveScore(path + "easyhighscores.txt", newHighScore);
+        } else if (board == DefaultBoard.INTERMEDIATE) {
+            saveScore(path + "intermediatehighscores.txt", newHighScore);
+        } else if (board == DefaultBoard.EXPERT) {
+            saveScore(path + "experthighscores.txt", newHighScore);
+        }
     }
 
-//    private void addToAndSortHighScores(DefaultBoard board, String file, String name, long time) {
-//        PrintWriter pw;
-//        String[] highScores;
-//        int count = 0;
-//        try {
-//            pw = new PrintWriter(new FileWriter(file));
-//            highScores = getScores(board);
-//            for (int i = 0; i < highScores.length; i++) {
-//                if (highScores[i] != null) {
-//                    count++;
-//                }
-//            }
-//            if (count < highScores.length) {
-//                pw.write(name + "|" + time + "\n");
-//                pw.close();
-//            } else {
-//                highScores[4] = highScores[4].replace(highScores[4], name + "|" + time + "\n");
-//                pw.write(highScores[4]);
-//                pw.close();
-//            }
-//            pw.write(Collections.sort(Arrays.asList(highScores)));
-//            pw.close();
-//        } catch (IOException e) {
-//            System.out.println("File does not exist!");
-//        }
-//    }
+    private void saveScore(String path, HighScore score) {
+        String[] rawScores = loadScores(path);
+        HighScore[] currentScores = parseScores(rawScores);
+        HighScore[] newScores = new HighScore[currentScores.length + 1];
+        System.arraycopy(currentScores, 0, newScores, 0, currentScores.length);
+        newScores[newScores.length - 1] = score;
+
+        newScores = sortScores(newScores);
+
+        System.arraycopy(newScores, 0, currentScores, 0, currentScores.length);
+        saveScores(path, currentScores);
+    }
+
+    private HighScore[] sortScores(HighScore[] scores) {
+        HighScore temp;
+        for (int i = 0; i < scores.length - 1; i++) {
+            int smallest = i;
+            for (int k = i + 1; k < scores.length; k++) {
+                if ((scores[k].getTime() < scores[smallest].getTime() && scores[k].getTime() > 0) || scores[smallest].getTime() == 0) {
+                    smallest = k;
+                }
+            }
+            temp = scores[i];
+            scores[i] = scores[smallest];
+            scores[smallest] = temp;
+        }
+        return scores;
+    }
+
+    private int compareLong(long one, long two) {
+        if (one == two) {
+            return 0;
+        } else if (one > two) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+
+    private HighScore[] parseScores(String[] scores) {
+        HighScore[] parsed = new HighScore[scores.length];
+        for (int i = 0; i < scores.length; i++) {
+            parsed[i] = parseScore(scores[i]);
+        }
+        return parsed;
+    }
+
+    private HighScore parseScore(String score) {
+        if (score != null) {
+            String[] parts = score.split("\\|");
+            return new SimpleHighScore(parts[0], Long.parseLong(parts[1]));
+        } else {
+            return new SimpleHighScore("NUL", 0);
+        }
+    }
+
+    private String[] loadScores(String path) {
+        String[] scores = new String[5];
+        BufferedReader reader = null;
+        try {
+            File file = new File(path);
+            reader = new BufferedReader(new FileReader(file));
+            for (int i = 0; i < scores.length; i++) {
+                scores[i] = reader.readLine();
+            }
+        } catch (FileNotFoundException ex) {
+            System.out.println("File not found: " + path);
+        } catch (IOException ex) {
+            System.out.println("Failed to read line in file: " + path);
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException ex) {
+                System.out.println("Failed to close reader");
+            }
+        }
+        return scores;
+    }
+
+    private void saveScores(String path, HighScore[] scores) {
+        String[] textScores = new String[scores.length];
+        for (int i = 0; i < scores.length; i++) {
+            textScores[i] = String.format("%s|%d", scores[i].getName(), scores[i].getTime());
+        }
+        saveScores(path, textScores);
+    }
+
+    private void saveScores(String path, String[] scores) {
+        BufferedWriter writer = null;
+        try {
+            File file = new File(path);
+            writer = new BufferedWriter(new FileWriter(file));
+            for (String score : scores) {
+                writer.write(score + "\n");
+            }
+        } catch (IOException ex) {
+            System.out.println("Failed to create writer: " + path);
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.flush();
+                    writer.close();
+                }
+            } catch (IOException ex) {
+                System.out.println("Failed to close reader");
+            }
+        }
+    }
+
+    private <T> void printArray(T[] arr) {
+        for (T e : arr) {
+            if (e != null) {
+                System.out.println(e.toString());
+            }
+        }
+    }
 
     @Override
     public void cheatToggled(boolean toggle) {
@@ -343,32 +397,47 @@ public class BasicModel implements Model {
 
     @Override
     public HighScores getScores(DefaultBoard board) {
-        String[] rawScores = getScoresHelper(board);
-        
+        String path = "./src/main/java/project/bomb/vacuum/";
+
+        if (board == DefaultBoard.EASY) {
+            path += "easyhighscores.txt";
+        } else if (board == DefaultBoard.INTERMEDIATE) {
+            path += "intermediatehighscores.txt";
+        } else if (board == DefaultBoard.EXPERT) {
+            path += "experthighscores.txt";
+        }
+
+        String[] rawScores = loadScores(path);
+        HighScore[] parsed = this.parseScores(rawScores);
+        parsed = this.sortScores(parsed);
+        return this.makeHighScores(parsed);
+    }
+
+    private HighScores makeHighScores(HighScore[] scores) {
         return new HighScores() {
             @Override
             public HighScore getFirst() {
-                return convertRawScore(rawScores[0]);
+                return scores[0];
             }
 
             @Override
             public HighScore getSecond() {
-                return convertRawScore(rawScores[1]);
+                return scores[1];
             }
 
             @Override
             public HighScore getThird() {
-                return convertRawScore(rawScores[2]);
+                return scores[2];
             }
 
             @Override
             public HighScore getFourth() {
-                return convertRawScore(rawScores[3]);
+                return scores[3];
             }
 
             @Override
             public HighScore getFifth() {
-                return convertRawScore(rawScores[4]);
+                return scores[4];
             }
         };
     }
@@ -376,20 +445,21 @@ public class BasicModel implements Model {
     private HighScore convertRawScore(String score) {
         if (score == null) {
             return new HighScore() {
-            public String getName() {
-                return "NUL";
-            }
+                public String getName() {
+                    return "NUL";
+                }
 
-            public long getTime() {
-                return 0;
-            }
-        };
+                public long getTime() {
+                    return 0;
+                }
+            };
         }
         String[] parts = score.split("\\|");
         return new HighScore() {
             public String getName() {
                 return parts[0];
             }
+
             public long getTime() {
                 return Long.parseLong(parts[1]);
             }
