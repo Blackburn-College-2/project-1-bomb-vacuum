@@ -50,9 +50,9 @@ public class BasicModel implements Model {
     }
 
     /**
-     * @param rows // The number of rows to assign to the grid
+     * @param rows    // The number of rows to assign to the grid
      * @param columns // The number of columns to assign to the grid
-     * @param bombs // The number of bombs to be placed on the grid
+     * @param bombs   // The number of bombs to be placed on the grid
      */
     private void newGame(int rows, int columns, int bombs) {
         this.bombTiles.clear();
@@ -106,7 +106,7 @@ public class BasicModel implements Model {
      * This method will allow you to increment the TileValue when the board is
      * being updated for the controller
      *
-     * @param row // The target row to be changed
+     * @param row    // The target row to be changed
      * @param column // The target column to be changed
      */
     private void incrementTile(int row, int column) {
@@ -248,46 +248,41 @@ public class BasicModel implements Model {
         String path = "./src/main/java/project/bomb/vacuum/";
         HighScore newHighScore = new SimpleHighScore(name, time);
         if (board == DefaultBoard.EASY) {
-            saveScore(path + "easyhighscores", newHighScore);
+            saveScore(path + "easyhighscores.txt", newHighScore);
         } else if (board == DefaultBoard.INTERMEDIATE) {
-            saveScore(path + "intermediatehighscores", newHighScore);
+            saveScore(path + "intermediatehighscores.txt", newHighScore);
         } else if (board == DefaultBoard.EXPERT) {
-            saveScore(path + "experthighscores", newHighScore);
+            saveScore(path + "experthighscores.txt", newHighScore);
         }
     }
-    
-    private void loadAndPrintScores(String path) {
-        String[] scores = loadScores(path);
-        HighScore[] parsed = parseScores(scores);
-        parsed = sortScores(parsed);
-        printArray(parsed);
-    }
-    
+
     private void saveScore(String path, HighScore score) {
         String[] rawScores = loadScores(path);
         HighScore[] currentScores = parseScores(rawScores);
         HighScore[] newScores = new HighScore[currentScores.length + 1];
         System.arraycopy(currentScores, 0, newScores, 0, currentScores.length);
         newScores[newScores.length - 1] = score;
-        
+
         newScores = sortScores(newScores);
-        
+
         System.arraycopy(newScores, 0, currentScores, 0, currentScores.length);
         saveScores(path, currentScores);
     }
 
     private HighScore[] sortScores(HighScore[] scores) {
-        List<HighScore> list = Arrays.asList(scores);
-        Collections.sort(list, new Comparator() {
-            @Override
-            public int compare(Object arg0, Object arg1) {
-                if (arg0 instanceof HighScore && arg1 instanceof HighScore) {
-                    return compareLong(((HighScore) arg0).getTime(), ((HighScore) arg1).getTime());
+        HighScore temp;
+        for (int i = 0; i < scores.length - 1; i++) {
+            int smallest = i;
+            for (int k = i + 1; k < scores.length; k++) {
+                if ((scores[k].getTime() < scores[smallest].getTime() && scores[k].getTime() > 0) || scores[smallest].getTime() == 0) {
+                    smallest = k;
                 }
-                return 0;
             }
-        });
-        return list.toArray(new HighScore[0]);
+            temp = scores[i];
+            scores[i] = scores[smallest];
+            scores[smallest] = temp;
+        }
+        return scores;
     }
 
     private int compareLong(long one, long two) {
@@ -299,7 +294,7 @@ public class BasicModel implements Model {
             return -1;
         }
     }
-    
+
     private HighScore[] parseScores(String[] scores) {
         HighScore[] parsed = new HighScore[scores.length];
         for (int i = 0; i < scores.length; i++) {
@@ -309,8 +304,12 @@ public class BasicModel implements Model {
     }
 
     private HighScore parseScore(String score) {
-        String[] parts = score.split("\\|");
-        return new SimpleHighScore(parts[0], Long.parseLong(parts[1]));
+        if (score != null) {
+            String[] parts = score.split("\\|");
+            return new SimpleHighScore(parts[0], Long.parseLong(parts[1]));
+        } else {
+            return new SimpleHighScore("NUL", 0);
+        }
     }
 
     private String[] loadScores(String path) {
@@ -337,7 +336,7 @@ public class BasicModel implements Model {
         }
         return scores;
     }
-    
+
     private void saveScores(String path, HighScore[] scores) {
         String[] textScores = new String[scores.length];
         for (int i = 0; i < scores.length; i++) {
@@ -369,26 +368,13 @@ public class BasicModel implements Model {
     }
 
     private <T> void printArray(T[] arr) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        for (int i = 0; i < arr.length - 1; i++) {
-            if (arr[i] != null) {
-                sb.append(arr[i].toString()).append(", ");
-            } else {
-                sb.append("null, ");
+        for (T e : arr) {
+            if (e != null) {
+                System.out.println(e.toString());
             }
         }
-        if (arr.length > 0) {
-            if (arr[arr.length - 1] != null) {
-                sb.append(arr[arr.length - 1]);
-            } else {
-                sb.append("null");
-            }
-        }
-        sb.append("]");
-        System.out.println(sb.toString());
     }
-    
+
     @Override
     public void cheatToggled(boolean toggle) {
         TileStatus[] returnedStatus = new TileStatus[bombs];
@@ -411,32 +397,47 @@ public class BasicModel implements Model {
 
     @Override
     public HighScores getScores(DefaultBoard board) {
-        String[] rawScores = getScoresHelper(board);
-        
+        String path = "./src/main/java/project/bomb/vacuum/";
+
+        if (board == DefaultBoard.EASY) {
+            path += "easyhighscores.txt";
+        } else if (board == DefaultBoard.INTERMEDIATE) {
+            path += "intermediatehighscores.txt";
+        } else if (board == DefaultBoard.EXPERT) {
+            path += "experthighscores.txt";
+        }
+
+        String[] rawScores = loadScores(path);
+        HighScore[] parsed = this.parseScores(rawScores);
+        parsed = this.sortScores(parsed);
+        return this.makeHighScores(parsed);
+    }
+
+    private HighScores makeHighScores(HighScore[] scores) {
         return new HighScores() {
             @Override
             public HighScore getFirst() {
-                return convertRawScore(rawScores[0]);
+                return scores[0];
             }
 
             @Override
             public HighScore getSecond() {
-                return convertRawScore(rawScores[1]);
+                return scores[1];
             }
 
             @Override
             public HighScore getThird() {
-                return convertRawScore(rawScores[2]);
+                return scores[2];
             }
 
             @Override
             public HighScore getFourth() {
-                return convertRawScore(rawScores[3]);
+                return scores[3];
             }
 
             @Override
             public HighScore getFifth() {
-                return convertRawScore(rawScores[4]);
+                return scores[4];
             }
         };
     }
@@ -444,20 +445,21 @@ public class BasicModel implements Model {
     private HighScore convertRawScore(String score) {
         if (score == null) {
             return new HighScore() {
-            public String getName() {
-                return "NUL";
-            }
+                public String getName() {
+                    return "NUL";
+                }
 
-            public long getTime() {
-                return 0;
-            }
-        };
+                public long getTime() {
+                    return 0;
+                }
+            };
         }
         String[] parts = score.split("\\|");
         return new HighScore() {
             public String getName() {
                 return parts[0];
             }
+
             public long getTime() {
                 return Long.parseLong(parts[1]);
             }
