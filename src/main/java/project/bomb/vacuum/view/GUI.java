@@ -63,13 +63,10 @@ public class GUI extends Application implements View {
     }
 
     private void setKeyboardHandler(Scene scene) {
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.SHIFT) {
-                    cheating = !cheating;
-                    controller.cheatToggled(cheating);
-                }
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.SHIFT) {
+                cheating = !cheating;
+                controller.cheatToggled(cheating);
             }
         });
     }

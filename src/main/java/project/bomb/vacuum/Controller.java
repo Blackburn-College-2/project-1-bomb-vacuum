@@ -30,15 +30,6 @@ public interface Controller {
     void startNewGame(BoardConfiguration boardConfiguration) throws InvalidBoardConfiguration;
 
     /**
-     * Gets the configuration for a default board, as this may change
-     * between {@link Model}s.
-     *
-     * @param board the default board type.
-     * @return the configuration for the default board type.
-     */
-    BoardConfiguration getDefaultBoardConfiguration(DefaultBoard board);
-
-    /**
      * Called when a tile has been altered by the user.
      *
      * @param tileAction which mouse button was pressed.
