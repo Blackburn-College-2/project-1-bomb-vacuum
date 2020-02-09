@@ -3,18 +3,17 @@ package project.bomb.vacuum.view;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.DialogEvent;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -24,14 +23,16 @@ public class GUI extends Application implements View {
 
     private static Controller controller;
     private static Runnable startup;
+    private Stage stage;
+
+    private BorderPane mainPane = new BorderPane();
+    private BombPane bombPane;
+    static DefaultBoard board;
 
     public static void setController(Controller controller) {
         GUI.controller = controller;
     }
 
-    private Stage stage;
-    private BorderPane mainPane = new BorderPane();
-    private BombPane bombPane;
     private TimerPane timerPane = new TimerPane();
     private boolean cheating = false;
     private boolean firstInit = true;
@@ -123,6 +124,20 @@ public class GUI extends Application implements View {
         header.append("Your time was: ").append(TimerPane.formatTime(time)).append('\n');
         alert.setHeaderText(header.toString());
 
+        TextField nameField = new TextField();
+        if (GUI.board != null) {
+            Pane pane = alert.getDialogPane();
+            Label nameLabel = new Label("Enter a 3 character tag");
+            nameLabel.setMinWidth(200);
+            nameField.setMinWidth(40);
+            VBox box = new VBox(nameLabel, nameField);
+//        box.setAlignment(Pos.CENTER);
+            box.setMinWidth(600);
+            box.translateXProperty().bind(pane.widthProperty().multiply(0.6));
+            box.translateYProperty().bind(pane.heightProperty().multiply(0.5));
+            pane.getChildren().add(box);
+        }
+
         HighScores scores = controller.getScores();
         if (scores != null) {
             appendScore(message, "1. ", scores.getFirst());
@@ -132,7 +147,11 @@ public class GUI extends Application implements View {
             appendScore(message, "5. ", scores.getFifth());
         }
         alert.setContentText(message.toString());
-        alert.setOnCloseRequest(dialogEvent -> alert.hide());
+        alert.setOnCloseRequest(dialogEvent -> {
+            if (GUI.board != null) {
+                controller.updateHighScore(nameField.getText());
+            }
+        });
         alert.show();
     }
 

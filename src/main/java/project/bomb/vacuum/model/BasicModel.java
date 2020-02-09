@@ -291,7 +291,7 @@ public class BasicModel implements Model {
 //        } else if (board == DefaultBoard.EXPERT) {
 //            addToAndSortHighScores(board, path + "experthighscores.txt", name, time);
 //        }
-
+        System.out.println(String.format("%s: %s -- %d", board.toString(), name, time));
     }
 
 //    private void addToAndSortHighScores(DefaultBoard board, String file, String name, long time) {
