@@ -1,17 +1,12 @@
 package project.bomb.vacuum.view;
 
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import project.bomb.vacuum.Controller;
-import project.bomb.vacuum.DefaultBoard;
-import project.bomb.vacuum.HighScore;
-import project.bomb.vacuum.HighScores;
+import javafx.scene.layout.*;
+import project.bomb.vacuum.*;
 
 /**
  * @author delaney.satchwell
@@ -71,9 +66,51 @@ class MenuPane extends VBox {
             alert.setTitle("Create Custom Game");
             Pane pane = alert.getDialogPane();
 
-            HBox options = new HBox();
-            pane.getChildren().add(options);
+            TextField bombs = new TextField();
+            TextField rows = new TextField();
+            TextField columns = new TextField();
 
+            Label bombsLabel = new Label("Bombs");
+            Label rowsLabel = new Label("Rows");
+            Label columnsLabel = new Label("Columns");
+
+            VBox bombBox = new VBox(bombsLabel, bombs);
+            bombBox.setSpacing(5);
+            bombBox.setMinWidth(50);
+            VBox rowBox = new VBox(rowsLabel, rows);
+            rowBox.setSpacing(5);
+            rowBox.setMinWidth(50);
+            VBox columnBox = new VBox(columnsLabel, columns);
+            columnBox.setSpacing(5);
+            columnBox.setMinWidth(50);
+
+            bombs.setMinWidth(30);
+            rows.setMinWidth(30);
+            columns.setMinWidth(30);
+
+            HBox options = new HBox(rowBox, columnBox, bombBox);
+            options.setSpacing(40);
+//            options.setStyle("-fx-border-color: BLUE; -fx-stroke-width: 4px");
+            options.setMaxHeight(100);
+
+            StackPane mainPane = new StackPane();
+            mainPane.setAlignment(Pos.CENTER);
+            pane.getChildren().add(mainPane);
+            mainPane.getChildren().add(options);
+
+            options.translateYProperty().bind(pane.heightProperty().multiply(0.5));
+            options.translateXProperty().bind(pane.widthProperty().multiply(0.5));
+
+            alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
+                @Override
+                public void handle(DialogEvent dialogEvent) {
+                    controller.startNewGame(new BoardConfiguration(
+                            Integer.parseInt(rows.getText()),
+                            Integer.parseInt(columns.getText()),
+                            Integer.parseInt(bombs.getText())
+                    ));
+                }
+            });
             alert.show();
         });
     }

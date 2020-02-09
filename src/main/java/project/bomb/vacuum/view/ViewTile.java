@@ -15,6 +15,7 @@ public class ViewTile extends StackPane {
         this.height = height;
         this.setSize(this);
         this.setAlignment(Pos.CENTER);
+        this.setStyle("-fx-border-color: rgba(100, 100, 100, 0.2); -fx-stroke-width: 0.3px");
     }
 
     void setTile(Region tile) {
