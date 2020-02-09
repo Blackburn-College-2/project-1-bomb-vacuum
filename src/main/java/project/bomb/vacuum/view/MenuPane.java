@@ -7,6 +7,13 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import project.bomb.vacuum.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import project.bomb.vacuum.Controller;
+import project.bomb.vacuum.DefaultBoard;
+import project.bomb.vacuum.HighScore;
+import project.bomb.vacuum.HighScores;
 
 /**
  * @author delaney.satchwell
@@ -111,6 +118,7 @@ class MenuPane extends VBox {
                     ));
                 }
             });
+
             alert.show();
         });
     }
