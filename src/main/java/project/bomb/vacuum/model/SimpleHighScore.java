@@ -7,18 +7,14 @@ package project.bomb.vacuum.model;
 
 import project.bomb.vacuum.HighScore;
 
-/**
- *
- * @author rylee.wilson
- */
 public class SimpleHighScore implements HighScore {
     private final String name;
     private final long time;
 
     /**
-     * 
-     * @param name
-     * @param time 
+     * Creates a new SimpleHighScore
+     * @param name the name associated with the score
+     * @param time the time from the game
      */
     SimpleHighScore(String name, long time) {
         this.name = name;
@@ -26,8 +22,8 @@ public class SimpleHighScore implements HighScore {
     }
 
     /**
-     * 
-     * @return 
+     * Gets the SimpleHighScore's name
+     * @return the name
      */
     @Override
     public String getName() {
@@ -35,8 +31,8 @@ public class SimpleHighScore implements HighScore {
     }
 
     /**
-     * 
-     * @return 
+     * Gets the SimpleHighScore's time
+     * @return the time
      */
     @Override
     public long getTime() {
@@ -44,8 +40,8 @@ public class SimpleHighScore implements HighScore {
     }
     
     /**
-     * 
-     * @return 
+     * Formats the HighScore as a string
+     * @return the formatted HighScore including name and time as a string
      */
     public String toString() {
         return String.format("%s -- %d", this.name, this.time);

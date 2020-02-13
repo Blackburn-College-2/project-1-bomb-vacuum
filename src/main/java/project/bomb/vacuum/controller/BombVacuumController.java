@@ -6,10 +6,6 @@ import project.bomb.vacuum.exceptions.InvalidStateException;
 import project.bomb.vacuum.model.BasicModel;
 import project.bomb.vacuum.view.GUI;
 
-/**
- * 
- * @author cordell.stocker
- */
 public class BombVacuumController implements Controller {
 
     private final Model model;

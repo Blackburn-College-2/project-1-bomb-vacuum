@@ -16,10 +16,6 @@ import java.util.List;
 import project.bomb.vacuum.*;
 import project.bomb.vacuum.exceptions.InvalidBoardConfiguration;
 
-/**
- *
- * @author rylee.wilson & tyler.braden
- */
 public class BasicModel implements Model {
 
     private Tile[][] gameModel;
