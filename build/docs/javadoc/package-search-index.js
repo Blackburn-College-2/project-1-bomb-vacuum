@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"project.bomb.vacuum"},{"l":"project.bomb.vacuum.controller"},{"l":"project.bomb.vacuum.exceptions"},{"l":"project.bomb.vacuum.model"},{"l":"project.bomb.vacuum.view"}]
