@@ -1,7 +1,5 @@
 package project.bomb.vacuum;
 
-import project.bomb.vacuum.exceptions.InvalidBoardConfiguration;
-
 /**
  * Handles the communications between a {@link View} and {@link Model}
  */
@@ -25,9 +23,8 @@ public interface Controller {
      * between 1 bomb and (rows * columns) - 1 bombs.
      *
      * @param boardConfiguration the configuration to use.
-     * @throws InvalidBoardConfiguration if the requirements are not met for a valid board.
      */
-    void startNewGame(BoardConfiguration boardConfiguration) throws InvalidBoardConfiguration;
+    void startNewGame(BoardConfiguration boardConfiguration);
 
     /**
      * Called when a tile has been altered by the user.

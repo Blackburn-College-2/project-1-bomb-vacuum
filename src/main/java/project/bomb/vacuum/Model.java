@@ -1,15 +1,16 @@
 package project.bomb.vacuum;
 
-import com.google.common.annotations.Beta;
-import project.bomb.vacuum.exceptions.InvalidBoardConfiguration;
-
+/**
+ * The base for a model controller, in the MVC paradigm, to play
+ * a game of Bomb Vacuum.
+ */
 public interface Model {
 
     /**
      * Called when a tile has been altered by the user.
      *
      * @param tileAction which mouse button was pressed.
-     * @param position    which tile position was pressed.
+     * @param position   which tile position was pressed.
      */
     void tileUpdatedByUser(TileAction tileAction, Position position);
 
@@ -22,14 +23,13 @@ public interface Model {
 
     /**
      * States a new game using the specified board size and bomb count.
-     *
+     * <p>
      * A game must have a minimum of two rows and two columns, and
      * between 1 bomb and (rows * columns) - 1 bombs.
      *
      * @param boardConfiguration the configuration to use.
-     * @throws InvalidBoardConfiguration if the requirements are not met for a valid board.
      */
-    void newGame(BoardConfiguration boardConfiguration) throws InvalidBoardConfiguration;
+    void newGame(BoardConfiguration boardConfiguration);
 
     /**
      * @param board the board played.

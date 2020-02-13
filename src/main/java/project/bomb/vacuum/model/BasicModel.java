@@ -7,14 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import project.bomb.vacuum.*;
-import project.bomb.vacuum.exceptions.InvalidBoardConfiguration;
 
 public class BasicModel implements Model {
 
@@ -57,7 +52,7 @@ public class BasicModel implements Model {
      * {@inheritDoc }
      */
     @Override
-    public void newGame(BoardConfiguration boardConfiguration) throws InvalidBoardConfiguration {
+    public void newGame(BoardConfiguration boardConfiguration) {
         this.newGame(boardConfiguration.rows, boardConfiguration.columns, boardConfiguration.bombs);
     }
 
@@ -298,9 +293,8 @@ public class BasicModel implements Model {
             }
 
             this.controller.setTileStatuses(returnedStatus);
-        } else if (gameOverState == GameOverState.WIN) {
-            // do nothing
         }
+
         this.controller.gameOver(gameOverState);
     }
 
@@ -332,7 +326,7 @@ public class BasicModel implements Model {
         System.arraycopy(currentScores, 0, newScores, 0, currentScores.length);
         newScores[newScores.length - 1] = score;
 
-        newScores = sortScores(newScores);
+        sortScores(newScores);
 
         System.arraycopy(newScores, 0, currentScores, 0, currentScores.length);
         saveScores(path, currentScores);
@@ -342,10 +336,10 @@ public class BasicModel implements Model {
      * Sorts the high scores in the file from best to worst with best at the top
      * Must always have 5 scores so handles null values by placing them at the bottom
      * Sorted using selection sort
+     *
      * @param scores the scores to be sorted
-     * @return the sorted array of high scores
      */
-    private HighScore[] sortScores(HighScore[] scores) {
+    private void sortScores(HighScore[] scores) {
         HighScore temp;
         for (int i = 0; i < scores.length - 1; i++) {
             int smallest = i;
@@ -358,7 +352,6 @@ public class BasicModel implements Model {
             scores[i] = scores[smallest];
             scores[smallest] = temp;
         }
-        return scores;
     }
 
     /**
@@ -498,14 +491,13 @@ public class BasicModel implements Model {
     public void cheatToggled(boolean toggle) {
         TileStatus[] returnedStatus = new TileStatus[bombs];
 
+        int counter = 0;
         if (toggle) {
-            int counter = 0;
             for (Tile bombTile : bombTiles) {
                 returnedStatus[counter] = new TileStatus(TileState.BOMB, bombTile.position);
                 counter++;
             }
         } else {
-            int counter = 0;
             for (Tile bombTile : bombTiles) {
                 returnedStatus[counter++] = new TileStatus(bombTile.getState(), bombTile.position);
             }
@@ -531,7 +523,7 @@ public class BasicModel implements Model {
 
         String[] rawScores = loadScores(path);
         HighScore[] parsed = this.parseScores(rawScores);
-        parsed = this.sortScores(parsed);
+        this.sortScores(parsed);
         return this.makeHighScores(parsed);
     }
 
@@ -567,75 +559,6 @@ public class BasicModel implements Model {
                 return scores[4];
             }
         };
-    }
-
-    /**
-     * Converts a String variant of a high score from a String to a HighScore
-     * Uses the format name|score
-     * @param score the string to be converted
-     * @return a new HighScore object
-     */
-    private HighScore convertRawScore(String score) {
-        if (score == null) {
-            return new HighScore() {
-                public String getName() {
-                    return "NUL";
-                }
-
-                public long getTime() {
-                    return 0;
-                }
-            };
-        }
-        String[] parts = score.split("\\|");
-        return new HighScore() {
-            public String getName() {
-                return parts[0];
-            }
-
-            public long getTime() {
-                return Long.parseLong(parts[1]);
-            }
-        };
-    }
-
-    /**
-     * Handles getting the scores and returns the raw scores and names as a String array
-     * @param board the type of board requested scores
-     * @return
-     */
-    private String[] getScoresHelper(DefaultBoard board) {
-        BufferedReader br;
-        String path = "./src/main/java/project/bomb/vacuum/";
-        String line;
-        String[] highScores = new String[5];
-
-        try {
-            if (board == DefaultBoard.EASY) {
-                br = new BufferedReader(new FileReader(path + "easyhighscores.txt"));
-                for (int i = 0; i < highScores.length; i++) {
-                    line = br.readLine();
-                    highScores[i] = line;
-                }
-            } else if (board == DefaultBoard.INTERMEDIATE) {
-                br = new BufferedReader(new FileReader(path + "intermediatehighscores.txt"));
-                for (int i = 0; i < highScores.length; i++) {
-                    line = br.readLine();
-                    highScores[i] = line;
-                }
-            } else if (board == DefaultBoard.EXPERT) {
-                br = new BufferedReader(new FileReader(path + "experthighscores.txt"));
-                for (int i = 0; i < highScores.length; i++) {
-                    line = br.readLine();
-                    highScores[i] = line;
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("File does not exist!");
-        }
-        return highScores;
     }
 
 }

@@ -2,40 +2,29 @@ package project.bomb.vacuum.view;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import project.bomb.vacuum.*;
 
+/**
+ * The GUI Controller responsible for user interaction.
+ */
 public class GUI extends Application implements View {
 
     private static Controller controller;
     private static Runnable startup;
-    private Stage stage;
-
-    private BorderPane mainPane = new BorderPane();
-    private BombPane bombPane;
     static DefaultBoard board;
 
     public static void setController(Controller controller) {
         GUI.controller = controller;
     }
-
-    private TimerPane timerPane = new TimerPane();
-    private boolean cheating = false;
-    private boolean firstInit = true;
 
     public static void launchGUI() {
         launch();
@@ -45,6 +34,17 @@ public class GUI extends Application implements View {
         GUI.startup = startup;
     }
 
+    private boolean cheating = false;
+    private boolean firstInit = true;
+
+    private Stage stage;
+    private BorderPane mainPane = new BorderPane();
+    private TimerPane timerPane = new TimerPane();
+    private BombPane bombPane;
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start(Stage stage) {
         this.stage = stage;
@@ -72,6 +72,9 @@ public class GUI extends Application implements View {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initializeBoard(int rows, int columns) {
         double widthPadding = 60;
@@ -105,11 +108,17 @@ public class GUI extends Application implements View {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setTileStatuses(TileStatus[] tileStates) {
         this.bombPane.updateTiles(tileStates);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void gameOver(GameOverState gameOverState, long time) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -160,6 +169,9 @@ public class GUI extends Application implements View {
         stringBuilder.append(title).append(score.getName()).append(": ").append(timeString).append('\n');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setTime(long time) {
         timerPane.setTime(time);
