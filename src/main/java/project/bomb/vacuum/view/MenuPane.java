@@ -1,29 +1,28 @@
 package project.bomb.vacuum.view;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import project.bomb.vacuum.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import project.bomb.vacuum.Controller;
-import project.bomb.vacuum.DefaultBoard;
-import project.bomb.vacuum.HighScore;
-import project.bomb.vacuum.HighScores;
+import project.bomb.vacuum.*;
 
 /**
- * @author delaney.satchwell
+ * Holds the main options for the game.
  */
 class MenuPane extends VBox {
 
     static final double BUTTON_WIDTH = 80;
-    private int spacing = -20;
     private Controller controller;
 
+    /**
+     * @param controller the {@link Controller} to link to.
+     */
     MenuPane(Controller controller) {
         this.controller = controller;
         Button easyButton = new Button("Easy");
@@ -145,6 +144,7 @@ class MenuPane extends VBox {
     }
 
     private String formatRow(HighScore easy, HighScore medium, HighScore hard, String title) {
+        int spacing = -20;
         return String.format("%" + spacing + "s%" + spacing + "s%" + spacing + "s", formatScore(easy, title), formatScore(medium, title), formatScore(hard, title));
     }
 
