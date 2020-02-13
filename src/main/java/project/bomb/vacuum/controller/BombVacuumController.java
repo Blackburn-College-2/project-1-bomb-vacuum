@@ -6,8 +6,7 @@ import project.bomb.vacuum.model.BasicModel;
 import project.bomb.vacuum.view.GUI;
 
 /**
- *
- *
+ * The controller for running a game of Bomb Vacuum.
  */
 public class BombVacuumController implements Controller {
 

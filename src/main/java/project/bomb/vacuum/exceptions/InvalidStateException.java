@@ -13,9 +13,6 @@ public class InvalidStateException extends RuntimeException {
         super("Invalid State Exception");
     }
 
-    /**
-     * {@link RuntimeException(String)}
-     */
     public InvalidStateException(String message) {
         super("Invalid State Exception: " + message);
     }
