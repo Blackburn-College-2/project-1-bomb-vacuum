@@ -1,12 +1,18 @@
 package project.bomb.vacuum.controller;
 
 import project.bomb.vacuum.*;
-import project.bomb.vacuum.exceptions.InvalidBoardConfiguration;
 import project.bomb.vacuum.exceptions.InvalidStateException;
 import project.bomb.vacuum.model.BasicModel;
 import project.bomb.vacuum.view.GUI;
 
+/**
+ * The controller for running a game of Bomb Vacuum.
+ */
 public class BombVacuumController implements Controller {
+
+    public static void main(String[] args) {
+        new BombVacuumController();
+    }
 
     private final Model model;
     private View view;
@@ -16,10 +22,9 @@ public class BombVacuumController implements Controller {
 
     private DefaultBoard defaultBoard;
 
-    public static void main(String[] args) {
-        new BombVacuumController();
-    }
-
+    /**
+     * Starts the game
+     */
     public BombVacuumController() {
         this.model = new BasicModel(this);
         GUI.setController(this);
@@ -27,22 +32,28 @@ public class BombVacuumController implements Controller {
         GUI.launchGUI();
     }
 
-    public void setView(View view) {
-        this.view = view;
-    }
 
     // ##### Called By Model #####
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initializeBoard(int rows, int columns) {
         view.initializeBoard(rows, columns);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setTileStatuses(TileStatus[] statuses) {
         view.setTileStatuses(statuses);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void gameOver(GameOverState gameOverState) {
         timer.stopTimer();
@@ -51,6 +62,9 @@ public class BombVacuumController implements Controller {
         view.gameOver(gameOverState, this.timer.getTime());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setTime(long time) {
         view.setTime(time);
@@ -58,15 +72,28 @@ public class BombVacuumController implements Controller {
 
     // ##### Called By View #####
 
+    /**
+     * {@inheritDoc}
+     */
+    public void setView(View view) {
+        this.view = view;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void startNewGame(DefaultBoard board) {
         this.defaultBoard = board;
         this.prepareNewGame();
         model.newGame(board);
     }
-
+  
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void startNewGame(BoardConfiguration boardConfiguration) throws InvalidBoardConfiguration {
+    public void startNewGame(BoardConfiguration boardConfiguration) {
         this.defaultBoard = null;
         this.prepareNewGame();
         model.newGame(boardConfiguration);
@@ -78,6 +105,9 @@ public class BombVacuumController implements Controller {
         timer.resetTimer();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void tileUpdatedByUser(TileAction tileAction, Position position) {
         if (!timerRunning && !gameOver) {
@@ -89,6 +119,9 @@ public class BombVacuumController implements Controller {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HighScores getScores() {
         if (defaultBoard != null) {
@@ -98,16 +131,25 @@ public class BombVacuumController implements Controller {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HighScores getScores(DefaultBoard board) {
         return model.getScores(board);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void startTimer() {
         this.timer.startTimer();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateHighScore(String name) {
         if (this.defaultBoard == null) {
@@ -116,6 +158,9 @@ public class BombVacuumController implements Controller {
         this.model.updateHighScore(this.defaultBoard, name, timer.getTime());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void cheatToggled(boolean cheat) {
         model.cheatToggled(cheat);

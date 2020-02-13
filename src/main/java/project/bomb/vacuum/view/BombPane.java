@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package project.bomb.vacuum.view;
 
 import java.util.HashMap;
@@ -14,11 +9,7 @@ import project.bomb.vacuum.Controller;
 import project.bomb.vacuum.Position;
 import project.bomb.vacuum.TileStatus;
 
-/**
- *
- * @author delaney.satchwell
- */
-class BombPane extends GridPane{
+class BombPane extends GridPane {
 
     private final Controller controller;
     private HashMap<String, ViewTile> tiles = new HashMap<>();

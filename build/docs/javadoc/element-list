@@ -1,0 +1,5 @@
+project.bomb.vacuum
+project.bomb.vacuum.controller
+project.bomb.vacuum.exceptions
+project.bomb.vacuum.model
+project.bomb.vacuum.view

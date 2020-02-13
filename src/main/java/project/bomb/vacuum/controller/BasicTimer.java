@@ -3,22 +3,39 @@ package project.bomb.vacuum.controller;
 import project.bomb.vacuum.Controller;
 import project.bomb.vacuum.Timer;
 
-public class BasicTimer implements Timer {
+/**
+ * Tracks time using a separate {@link Thread}.
+ * <p>
+ * Updates every second.
+ * <p>
+ * Time is tracked in milliseconds.
+ */
+class BasicTimer implements Timer {
 
     private final Controller controller;
     private long time = 0;
     private volatile boolean running = false;
-    private Thread timerThread;
 
+    /**
+     * Creates a timer object.
+     * <p>
+     * The timer will not start until {@link BasicTimer#startTimer()}
+     * is called.
+     *
+     * @param controller the controller that will be notified every second.
+     */
     BasicTimer(Controller controller) {
         this.controller = controller;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void startTimer() {
         if (!running) {
             running = true;
-            timerThread = new Thread(() -> {
+            Thread timerThread = new Thread(() -> {
                 long waitTime = 1000;
                 long lastRunTime = System.currentTimeMillis();
                 long now = lastRunTime;
@@ -43,21 +60,25 @@ public class BasicTimer implements Timer {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stopTimer() {
         running = false;
-        try {
-//            timerThread.interrupt();
-        } catch (Exception ex) {
-            // Don't care
-        }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long getTime() {
         return this.time;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void resetTimer() {
         this.stopTimer();
