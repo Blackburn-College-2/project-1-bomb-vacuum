@@ -35,6 +35,7 @@ public class BombVacuumController implements Controller {
 
 
     // ##### Called By Model #####
+
     /**
      * {@inheritDoc}
      */
@@ -88,7 +89,7 @@ public class BombVacuumController implements Controller {
         this.prepareNewGame();
         model.newGame(board);
     }
-
+  
     /**
      * {@inheritDoc}
      */

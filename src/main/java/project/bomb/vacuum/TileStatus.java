@@ -1,8 +1,5 @@
 package project.bomb.vacuum;
 
-/**
- * Used to update the state of tiles the user is aware of.
- */
 public class TileStatus {
 
     public final Position position;
