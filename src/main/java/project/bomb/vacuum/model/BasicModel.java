@@ -13,6 +13,7 @@ import project.bomb.vacuum.*;
 
 public class BasicModel implements Model {
 
+    private final HighScoreHandler highScoreHandler = new HighScoreHandler();
     private Tile[][] gameModel;
     private final Controller controller;
     private int bombs;
@@ -303,185 +304,17 @@ public class BasicModel implements Model {
      */
     @Override
     public void updateHighScore(DefaultBoard board, String name, long time) {
-        String path = "./src/main/java/project/bomb/vacuum/";
-        HighScore newHighScore = new SimpleHighScore(name, time);
-        if (board == DefaultBoard.EASY) {
-            saveScore(path + "easyhighscores.txt", newHighScore);
-        } else if (board == DefaultBoard.INTERMEDIATE) {
-            saveScore(path + "intermediatehighscores.txt", newHighScore);
-        } else if (board == DefaultBoard.EXPERT) {
-            saveScore(path + "experthighscores.txt", newHighScore);
-        }
+        this.highScoreHandler.saveHighScore(board, name, time);
     }
 
     /**
-     * Saves the score in the correct file
-     * @param path the path to the correct high score file
-     * @param score the score to add
+     * {@inheritDoc }
      */
-    private void saveScore(String path, HighScore score) {
-        String[] rawScores = loadScores(path);
-        HighScore[] currentScores = parseScores(rawScores);
-        HighScore[] newScores = new HighScore[currentScores.length + 1];
-        System.arraycopy(currentScores, 0, newScores, 0, currentScores.length);
-        newScores[newScores.length - 1] = score;
-
-        sortScores(newScores);
-
-        System.arraycopy(newScores, 0, currentScores, 0, currentScores.length);
-        saveScores(path, currentScores);
-    }
-
-    /**
-     * Sorts the high scores in the file from best to worst with best at the top
-     * Must always have 5 scores so handles null values by placing them at the bottom
-     * Sorted using selection sort
-     *
-     * @param scores the scores to be sorted
-     */
-    private void sortScores(HighScore[] scores) {
-        HighScore temp;
-        for (int i = 0; i < scores.length - 1; i++) {
-            int smallest = i;
-            for (int k = i + 1; k < scores.length; k++) {
-                if ((scores[k].getTime() < scores[smallest].getTime() && scores[k].getTime() > 0) || scores[smallest].getTime() == 0) {
-                    smallest = k;
-                }
-            }
-            temp = scores[i];
-            scores[i] = scores[smallest];
-            scores[smallest] = temp;
-        }
-    }
-
-    /**
-     * Compares two long values
-     * @param one the first value
-     * @param two the second value
-     * @return an int representing the comparison. 0 if one and two are equal
-     * 1 if one is greater than two
-     * -1 if two is greater than one
-     */
-    private int compareLong(long one, long two) {
-        if (one == two) {
-            return 0;
-        } else if (one > two) {
-            return 1;
-        } else {
-            return -1;
-        }
-    }
-
-    /**
-     * Takes the String[] scores to be turned into a HighScore[]
-     * @param scores the scores to be converted
-     * @return the proper format for high scores using a HighScore object array
-     */
-    private HighScore[] parseScores(String[] scores) {
-        HighScore[] parsed = new HighScore[scores.length];
-        for (int i = 0; i < scores.length; i++) {
-            parsed[i] = parseScore(scores[i]);
-        }
-        return parsed;
-    }
-
-    /**
-     * Parses the score into the HighScore object
-     * @param score the score to be added to the HighScore object
-     * @return the HighScore object
-     */
-    private HighScore parseScore(String score) {
-        if (score != null) {
-            String[] parts = score.split("\\|");
-            return new SimpleHighScore(parts[0], Long.parseLong(parts[1]));
-        } else {
-            return new SimpleHighScore("NUL", 0);
-        }
-    }
-
-    /**
-     * The model logic for displaying the high scores in each high score file
-     * Simply reads each file and parses them into a String[] to be read
-     * @param path the path to the correct high score file
-     * @return the String array containing the high scores
-     */
-    private String[] loadScores(String path) {
-        String[] scores = new String[5];
-        BufferedReader reader = null;
-        try {
-            File file = new File(path);
-            reader = new BufferedReader(new FileReader(file));
-            for (int i = 0; i < scores.length; i++) {
-                scores[i] = reader.readLine();
-            }
-        } catch (FileNotFoundException ex) {
-            System.out.println("File not found: " + path);
-        } catch (IOException ex) {
-            System.out.println("Failed to read line in file: " + path);
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException ex) {
-                System.out.println("Failed to close reader");
-            }
-        }
-        return scores;
-    }
-
-    /**
-     * Saves the sorted scores in the correct location. Converts the scores into
-     * a String array to be passed to a wrapper method
-     * @param path the file to be added to
-     * @param scores the scores to be added
-     */
-    private void saveScores(String path, HighScore[] scores) {
-        String[] textScores = new String[scores.length];
-        for (int i = 0; i < scores.length; i++) {
-            textScores[i] = String.format("%s|%d", scores[i].getName(), scores[i].getTime());
-        }
-        saveScores(path, textScores);
-    }
-
-    /**
-     * A wrapper method to handle a String[] of scores
-     * @param path the file to be added to
-     * @param scores the scores to be added
-     */
-    private void saveScores(String path, String[] scores) {
-        BufferedWriter writer = null;
-        try {
-            File file = new File(path);
-            writer = new BufferedWriter(new FileWriter(file));
-            for (String score : scores) {
-                writer.write(score + "\n");
-            }
-        } catch (IOException ex) {
-            System.out.println("Failed to create writer: " + path);
-        } finally {
-            try {
-                if (writer != null) {
-                    writer.flush();
-                    writer.close();
-                }
-            } catch (IOException ex) {
-                System.out.println("Failed to close reader");
-            }
-        }
-    }
-
-    /**
-     * Prints the array
-     * @param <T> Java generics representing Type
-     * @param arr the array to be printed
-     */
-    private <T> void printArray(T[] arr) {
-        for (T e : arr) {
-            if (e != null) {
-                System.out.println(e.toString());
-            }
-        }
+    @Override
+    public HighScores getScores(DefaultBoard board) {
+        List<HighScore> scores = this.highScoreHandler.loadSortedScores(board);
+        HighScore[] highScores = scores.toArray(new HighScore[0]);
+        return this.makeHighScores(highScores);
     }
 
     /**
@@ -504,27 +337,6 @@ public class BasicModel implements Model {
         }
 
         this.controller.setTileStatuses(returnedStatus);
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    public HighScores getScores(DefaultBoard board) {
-        String path = "./src/main/java/project/bomb/vacuum/";
-
-        if (board == DefaultBoard.EASY) {
-            path += "easyhighscores.txt";
-        } else if (board == DefaultBoard.INTERMEDIATE) {
-            path += "intermediatehighscores.txt";
-        } else if (board == DefaultBoard.EXPERT) {
-            path += "experthighscores.txt";
-        }
-
-        String[] rawScores = loadScores(path);
-        HighScore[] parsed = this.parseScores(rawScores);
-        this.sortScores(parsed);
-        return this.makeHighScores(parsed);
     }
 
     /**
