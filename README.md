@@ -1,5 +1,11 @@
 # Bomb Vacuum
 
+## To Run This Project
+
+1. Clone the repo.
+1. Open a terminal in the projects root directory.
+1. Run `.\gradlew run`
+
 # Rule #1: NEVER PUSH TO MASTER
 
 Note: If using Windows, use Git Bash as a terminal. 
