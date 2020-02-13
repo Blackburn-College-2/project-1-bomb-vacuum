@@ -3,6 +3,10 @@ package project.bomb.vacuum.controller;
 import project.bomb.vacuum.Controller;
 import project.bomb.vacuum.Timer;
 
+/**
+ * 
+ * @author cordell.stocker
+ */
 public class BasicTimer implements Timer {
 
     private final Controller controller;
@@ -10,10 +14,17 @@ public class BasicTimer implements Timer {
     private volatile boolean running = false;
     private Thread timerThread;
 
+    /**
+     * 
+     * @param controller 
+     */
     BasicTimer(Controller controller) {
         this.controller = controller;
     }
 
+    /**
+     * Starts the timer
+     */
     @Override
     public void startTimer() {
         if (!running) {
@@ -43,6 +54,9 @@ public class BasicTimer implements Timer {
         }
     }
 
+    /**
+     * Stops the timer
+     */
     @Override
     public void stopTimer() {
         running = false;
@@ -53,11 +67,18 @@ public class BasicTimer implements Timer {
         }
     }
 
+    /**
+     * Gets the time
+     * @return the time
+     */
     @Override
     public long getTime() {
         return this.time;
     }
 
+    /**
+     * Resets the timer
+     */
     @Override
     public void resetTimer() {
         this.stopTimer();

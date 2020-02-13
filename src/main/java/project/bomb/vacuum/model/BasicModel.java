@@ -16,6 +16,10 @@ import java.util.List;
 import project.bomb.vacuum.*;
 import project.bomb.vacuum.exceptions.InvalidBoardConfiguration;
 
+/**
+ *
+ * @author rylee.wilson & tyler.braden
+ */
 public class BasicModel implements Model {
 
     private Tile[][] gameModel;
@@ -25,10 +29,19 @@ public class BasicModel implements Model {
     private List<Tile> bombTiles = new ArrayList<>();
     private List<Tile> highlighted = new ArrayList<>();
 
+    /**
+     * Creates the basic model and allows the controller to communicate with it
+     *
+     * @param controller the controller to connect the model and view of Bomb
+     * Vacuum
+     */
     public BasicModel(Controller controller) {
         this.controller = controller;
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public void newGame(DefaultBoard board) {
         switch (board) {
@@ -44,15 +57,18 @@ public class BasicModel implements Model {
         }
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public void newGame(BoardConfiguration boardConfiguration) throws InvalidBoardConfiguration {
         this.newGame(boardConfiguration.rows, boardConfiguration.columns, boardConfiguration.bombs);
     }
 
     /**
-     * @param rows    // The number of rows to assign to the grid
+     * @param rows // The number of rows to assign to the grid
      * @param columns // The number of columns to assign to the grid
-     * @param bombs   // The number of bombs to be placed on the grid
+     * @param bombs // The number of bombs to be placed on the grid
      */
     private void newGame(int rows, int columns, int bombs) {
         this.bombTiles.clear();
@@ -106,7 +122,7 @@ public class BasicModel implements Model {
      * This method will allow you to increment the TileValue when the board is
      * being updated for the controller
      *
-     * @param row    // The target row to be changed
+     * @param row // The target row to be changed
      * @param column // The target column to be changed
      */
     private void incrementTile(int row, int column) {
@@ -121,6 +137,9 @@ public class BasicModel implements Model {
         }
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public void tileUpdatedByUser(TileAction tileAction, Position position) {  // middle?
         Tile tile = gameModel[position.row][position.column];
@@ -136,6 +155,12 @@ public class BasicModel implements Model {
         }
     }
 
+    /**
+     * Handles the action of flagging a tile and updates the controller's tile
+     * statuses
+     *
+     * @param tile the chosen tile to be flagged
+     */
     private void flagTile(Tile tile) {
         TileState tileState = tile.getState() == TileState.FLAGGED ? TileState.NOT_CLICKED : TileState.FLAGGED;
         tile.setState(tileState);
@@ -143,7 +168,14 @@ public class BasicModel implements Model {
         this.controller.setTileStatuses(new TileStatus[]{status});
     }
 
-    private void revealTile(Tile tile) { // this needs fixed
+    /**
+     * Handles the action of revealing a single tile. If the tile is empty, it
+     * will call the recursiveReveal method. If the tile is a bomb, the game
+     * ends
+     *
+     * @param tile the tile to be revealed
+     */
+    private void revealTile(Tile tile) {
         if (tile.getValue() == TileValue.BOMB) {
             endGameStateTransition(GameOverState.LOSE);
             return;
@@ -155,6 +187,12 @@ public class BasicModel implements Model {
         }
     }
 
+    /**
+     * Recursively reveals the tiles around the chosen tile as long as they are
+     * empty or, if they are a number, one tile depth
+     *
+     * @param tile the tile to begin revealing around
+     */
     private void recursiveReveal(Tile tile) {
         if (tile.getState() != TileState.NOT_CLICKED && tile.getState() != TileState.HIGHLIGHTED) {
             return;
@@ -179,6 +217,13 @@ public class BasicModel implements Model {
         this.attemptReveal(position.row + 1, position.column + 1);
     }
 
+    /**
+     * Attempts to reveal the tile unless the tile does not exist such as
+     * checking around corner tiles
+     *
+     * @param row the row of the tile
+     * @param column the column of the tile
+     */
     private void attemptReveal(int row, int column) {
         try {
             Tile otherTile = this.gameModel[row][column];
@@ -188,6 +233,12 @@ public class BasicModel implements Model {
         }
     }
 
+    /**
+     * Highlights the 8 tiles around the chosen tile when the middle mouse
+     * button is pressed unless the tile is revealed already.
+     *
+     * @param tile the starting tile
+     */
     private void highlightTiles(Tile tile) {
         for (Tile tileH : highlighted) {
             if (tileH.getState() == TileState.HIGHLIGHTED) {
@@ -214,6 +265,13 @@ public class BasicModel implements Model {
         this.attemptHighlight(position.row + 1, position.column + 1);
     }
 
+    /**
+     * Attempts to highlight the surrounding tiles unless the tile does not
+     * exist or is already revealed
+     *
+     * @param row
+     * @param column
+     */
     private void attemptHighlight(int row, int column) {
         try {
             Tile tile = this.gameModel[row][column];
@@ -227,6 +285,12 @@ public class BasicModel implements Model {
         }
     }
 
+    /**
+     * Tells the controller to begin the end game process for either the win or
+     * lose state
+     *
+     * @param gameOverState either win or lose
+     */
     private void endGameStateTransition(GameOverState gameOverState) {
         if (gameOverState == GameOverState.LOSE) {
             int bombCount = 0;
@@ -244,6 +308,10 @@ public class BasicModel implements Model {
         this.controller.gameOver(gameOverState);
     }
 
+    /**
+     * {@inheritDoc }
+     */
+    @Override
     public void updateHighScore(DefaultBoard board, String name, long time) {
         String path = "./src/main/java/project/bomb/vacuum/";
         HighScore newHighScore = new SimpleHighScore(name, time);
@@ -256,6 +324,11 @@ public class BasicModel implements Model {
         }
     }
 
+    /**
+     * Saves the score in the correct file
+     * @param path the path to the correct high score file
+     * @param score the score to add
+     */
     private void saveScore(String path, HighScore score) {
         String[] rawScores = loadScores(path);
         HighScore[] currentScores = parseScores(rawScores);
@@ -269,6 +342,13 @@ public class BasicModel implements Model {
         saveScores(path, currentScores);
     }
 
+    /**
+     * Sorts the high scores in the file from best to worst with best at the top
+     * Must always have 5 scores so handles null values by placing them at the bottom
+     * Sorted using selection sort
+     * @param scores the scores to be sorted
+     * @return the sorted array of high scores
+     */
     private HighScore[] sortScores(HighScore[] scores) {
         HighScore temp;
         for (int i = 0; i < scores.length - 1; i++) {
@@ -285,6 +365,14 @@ public class BasicModel implements Model {
         return scores;
     }
 
+    /**
+     * Compares two long values
+     * @param one the first value
+     * @param two the second value
+     * @return an int representing the comparison. 0 if one and two are equal
+     * 1 if one is greater than two
+     * -1 if two is greater than one
+     */
     private int compareLong(long one, long two) {
         if (one == two) {
             return 0;
@@ -295,6 +383,11 @@ public class BasicModel implements Model {
         }
     }
 
+    /**
+     * Takes the String[] scores to be turned into a HighScore[]
+     * @param scores the scores to be converted
+     * @return the proper format for high scores using a HighScore object array
+     */
     private HighScore[] parseScores(String[] scores) {
         HighScore[] parsed = new HighScore[scores.length];
         for (int i = 0; i < scores.length; i++) {
@@ -303,6 +396,11 @@ public class BasicModel implements Model {
         return parsed;
     }
 
+    /**
+     * Parses the score into the HighScore object
+     * @param score the score to be added to the HighScore object
+     * @return the HighScore object
+     */
     private HighScore parseScore(String score) {
         if (score != null) {
             String[] parts = score.split("\\|");
@@ -312,6 +410,12 @@ public class BasicModel implements Model {
         }
     }
 
+    /**
+     * The model logic for displaying the high scores in each high score file
+     * Simply reads each file and parses them into a String[] to be read
+     * @param path the path to the correct high score file
+     * @return the String array containing the high scores
+     */
     private String[] loadScores(String path) {
         String[] scores = new String[5];
         BufferedReader reader = null;
@@ -337,6 +441,12 @@ public class BasicModel implements Model {
         return scores;
     }
 
+    /**
+     * Saves the sorted scores in the correct location. Converts the scores into
+     * a String array to be passed to a wrapper method
+     * @param path the file to be added to
+     * @param scores the scores to be added
+     */
     private void saveScores(String path, HighScore[] scores) {
         String[] textScores = new String[scores.length];
         for (int i = 0; i < scores.length; i++) {
@@ -345,6 +455,11 @@ public class BasicModel implements Model {
         saveScores(path, textScores);
     }
 
+    /**
+     * A wrapper method to handle a String[] of scores
+     * @param path the file to be added to
+     * @param scores the scores to be added
+     */
     private void saveScores(String path, String[] scores) {
         BufferedWriter writer = null;
         try {
@@ -367,6 +482,11 @@ public class BasicModel implements Model {
         }
     }
 
+    /**
+     * Prints the array
+     * @param <T> Java generics representing Type
+     * @param arr the array to be printed
+     */
     private <T> void printArray(T[] arr) {
         for (T e : arr) {
             if (e != null) {
@@ -375,6 +495,9 @@ public class BasicModel implements Model {
         }
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public void cheatToggled(boolean toggle) {
         TileStatus[] returnedStatus = new TileStatus[bombs];
@@ -395,6 +518,9 @@ public class BasicModel implements Model {
         this.controller.setTileStatuses(returnedStatus);
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public HighScores getScores(DefaultBoard board) {
         String path = "./src/main/java/project/bomb/vacuum/";
@@ -413,6 +539,11 @@ public class BasicModel implements Model {
         return this.makeHighScores(parsed);
     }
 
+    /**
+     * Converts a HighScore[] into HighScores
+     * @param scores the scores to be converted
+     * @return the converted scores
+     */
     private HighScores makeHighScores(HighScore[] scores) {
         return new HighScores() {
             @Override
@@ -442,6 +573,12 @@ public class BasicModel implements Model {
         };
     }
 
+    /**
+     * Converts a String variant of a high score from a String to a HighScore
+     * Uses the format name|score
+     * @param score the string to be converted
+     * @return a new HighScore object
+     */
     private HighScore convertRawScore(String score) {
         if (score == null) {
             return new HighScore() {
@@ -466,6 +603,11 @@ public class BasicModel implements Model {
         };
     }
 
+    /**
+     * Handles getting the scores and returns the raw scores and names as a String array
+     * @param board the type of board requested scores
+     * @return
+     */
     private String[] getScoresHelper(DefaultBoard board) {
         BufferedReader br;
         String path = "./src/main/java/project/bomb/vacuum/";

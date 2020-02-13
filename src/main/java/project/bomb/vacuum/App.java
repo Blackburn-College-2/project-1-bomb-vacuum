@@ -5,11 +5,19 @@ package project.bomb.vacuum;
 
 import project.bomb.vacuum.view.GUI;
 
+/**
+ * 
+ * @author rylee.wilson
+ */
 public class App {
     public String getGreeting() {
         return "Hello world.";
     }
 
+    /**
+     * 
+     * @param args 
+     */
     public static void main(String[] args) {
         GUI.launchGUI();
     }

@@ -6,6 +6,10 @@ import project.bomb.vacuum.exceptions.InvalidStateException;
 import project.bomb.vacuum.model.BasicModel;
 import project.bomb.vacuum.view.GUI;
 
+/**
+ * 
+ * @author cordell.stocker
+ */
 public class BombVacuumController implements Controller {
 
     private final Model model;
@@ -33,10 +37,12 @@ public class BombVacuumController implements Controller {
 
     // ##### Called By Model #####
 
+
     @Override
     public void initializeBoard(int rows, int columns) {
         view.initializeBoard(rows, columns);
     }
+
 
     @Override
     public void setTileStatuses(TileStatus[] statuses) {
@@ -64,7 +70,7 @@ public class BombVacuumController implements Controller {
         this.prepareNewGame();
         model.newGame(board);
     }
-
+    
     @Override
     public void startNewGame(BoardConfiguration boardConfiguration) throws InvalidBoardConfiguration {
         this.defaultBoard = null;
@@ -97,6 +103,7 @@ public class BombVacuumController implements Controller {
             return null;
         }
     }
+
 
     @Override
     public HighScores getScores(DefaultBoard board) {

@@ -15,21 +15,38 @@ public class SimpleHighScore implements HighScore {
     private final String name;
     private final long time;
 
+    /**
+     * 
+     * @param name
+     * @param time 
+     */
     SimpleHighScore(String name, long time) {
         this.name = name;
         this.time = time;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public long getTime() {
         return this.time;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public String toString() {
         return String.format("%s -- %d", this.name, this.time);
     }
