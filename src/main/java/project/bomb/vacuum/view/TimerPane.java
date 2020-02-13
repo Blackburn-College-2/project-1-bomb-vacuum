@@ -5,6 +5,9 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 
+/**
+ * Displays a time on the display.
+ */
 class TimerPane extends StackPane {
 
     private Label display = new Label("00:00:00");
@@ -16,12 +19,25 @@ class TimerPane extends StackPane {
         this.setMinHeight(30);
     }
 
+    /**
+     * Sets the time in milliseconds.
+     *
+     * @param time the time in milliseconds.
+     */
     void setTime(long time) {
         String displayedTime = formatTime(time);
 
         Platform.runLater(() -> display.setText(displayedTime));
     }
 
+    /**
+     * Takes in a time in milliseconds and return a String formatted
+     * in the form of "hh:mm:ss" where "h" is hours, "m" is minutes,
+     * and "s" is seconds.
+     *
+     * @param time a time in milliseconds.
+     * @return a formatted String of the time.
+     */
     static String formatTime(long time) {
         int millisInHour = 3600000;
         int millisInMinute = 60000;
