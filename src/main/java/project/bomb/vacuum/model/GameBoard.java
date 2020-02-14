@@ -3,10 +3,7 @@ package project.bomb.vacuum.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import project.bomb.vacuum.Controller;
-import project.bomb.vacuum.Position;
-import project.bomb.vacuum.TileState;
-import project.bomb.vacuum.TileStatus;
+import project.bomb.vacuum.*;
 
 public class GameBoard {
 
@@ -15,26 +12,33 @@ public class GameBoard {
     private final List<Tile> bombs = new ArrayList<>();
     private final List<Tile> highlighted = new ArrayList<>();
     private int tilesLeftToReveal;
+    private boolean gameOver = false;
+    private Position previousHighlightLocation;
 
     private TileModifier recursiveReveal = tile -> {
         if (tile.getState() != TileState.NOT_CLICKED) {
             return;
         }
 
-        if (tile.getValue() != TileValue.BOMB) {
-            this.tilesLeftToReveal--;
-        }
         TileState state = TileState.values()[tile.getValue().ordinal()];
-        this.updateTileState(tile, state);
+        this.updateAndSetTileState(tile, state);
+
+        if (tile.getValue() == TileValue.BOMB){
+            this.gameOver = true;
+            return;
+        }
         if (tile.getValue() != TileValue.EMPTY) {
             return;
+        }
+        if (tile.getValue() != TileValue.BOMB) {
+            this.tilesLeftToReveal--;
         }
 
         modifySurroundingTiles(tile, this.recursiveReveal);
     };
     private TileModifier attemptTileHighlight = tile -> {
         if (tile.getState() == TileState.NOT_CLICKED) {
-            updateTileState(tile, TileState.HIGHLIGHTED);
+            updateAndSetTileState(tile, TileState.HIGHLIGHTED);
         }
     };
     private TileModifier attemptTileIncrement = tile -> {
@@ -50,6 +54,10 @@ public class GameBoard {
     }
 
     public void newGame(int rows, int columns, int bombs) {
+        this.gameOver = false;
+        this.bombs.clear();
+        this.highlighted.clear();
+        this.previousHighlightLocation = null;
         this.tilesLeftToReveal = (rows * columns) - bombs;
         this.initBoard(rows, columns);
         this.placeBombs(rows, columns, bombs);
@@ -91,7 +99,7 @@ public class GameBoard {
         Position position = tile.position;
         for (int row = position.row - 1; row <= position.row + 1; row++) {
             for (int column = position.column - 1; column <= position.column + 1; column++) {
-                if (row != position.row && column != position.column) {
+                if (!(row == position.row && column == position.column)) {
                     this.attemptToModifyTilePosition(row, column, modifier);
                 }
             }
@@ -109,25 +117,82 @@ public class GameBoard {
     public void revealTile(Position position) {
         Tile tile = this.board[position.row][position.column];
         this.recursiveReveal.alterTile(tile);
+        if (this.tilesLeftToReveal <= 0) {
+            this.endGameStateTransition(GameOverState.WIN);
+        }
+        if (this.gameOver) {
+            this.endGameStateTransition(GameOverState.LOSE);
+        }
     }
 
-    public void highlightSurroundingTiles(Position position) {
+    public void flagTile(Position position) {
+        Tile tile = this.board[position.row][position.column];
+        TileState state = null;
+        switch (tile.getState()) {
+            case FLAGGED:
+                state = TileState.NOT_CLICKED;
+                break;
+            case HIGHLIGHTED:
+                // Fall through
+            case NOT_CLICKED:
+                state = TileState.FLAGGED;
+                break;
+            default:
+                state = tile.getState();
+                break;
+        }
+        this.updateAndSetTileState(tile, state);
+    }
+
+    public void highlightTiles(Position position) {
+        deHighlightTiles();
+        if (position == this.previousHighlightLocation) {
+            return;
+        }
+        this.previousHighlightLocation = position;
         Tile tile = this.board[position.row][position.column];
         this.modifySurroundingTiles(tile, this.attemptTileHighlight);
     }
 
-    private void deHighlightTile() {
+    private void deHighlightTiles() {
         for (Tile highlighted : this.highlighted) {
             // If the tile is still highlighted, in case it was revealed.
             if (highlighted.getState() == TileState.HIGHLIGHTED) {
-                updateTileState(highlighted, TileState.NOT_CLICKED);
+                updateAndSetTileState(highlighted, TileState.NOT_CLICKED);
             }
         }
     }
 
-    private void updateTileState(Tile tile, TileState state) {
+    private void endGameStateTransition(GameOverState gameOverState) {
+        if (gameOverState == GameOverState.LOSE) {
+            for (Tile bombTile : bombs) {
+                this.updateAndSetTileState(bombTile, TileState.BOMB);
+            }
+        }
+
+        this.controller.gameOver(gameOverState);
+    }
+
+    private void updateAndSetTileState(Tile tile, TileState state) {
         tile.setState(state);
         this.controller.setTileStatuses(new TileStatus[]{new TileStatus(state, tile.position)});
+    }
+
+    private void updateTileState(Tile tile, TileState state) {
+        this.controller.setTileStatuses(new TileStatus[]{new TileStatus(state, tile.position)});
+    }
+
+    public void cheatToggle(boolean toggle) {
+        // We lie
+        if (toggle) {
+            for (Tile bombTile : bombs) {
+                this.updateTileState(bombTile, TileState.BOMB);
+            }
+        } else {
+            for (Tile bombTile : bombs) {
+                this.updateTileState(bombTile, bombTile.getState());
+            }
+        }
     }
 
 }
