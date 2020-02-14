@@ -104,4 +104,6 @@ public interface Controller {
      */
     void setTime(long time);
 
+    void setBombCounter(int bombs);
+
 }

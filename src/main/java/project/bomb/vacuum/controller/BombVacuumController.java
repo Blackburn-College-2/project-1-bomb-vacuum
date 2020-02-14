@@ -166,4 +166,9 @@ public class BombVacuumController implements Controller {
         model.cheatToggled(cheat);
     }
 
+    @Override
+    public void setBombCounter(int bombs) {
+        this.view.setBombCounter(bombs);
+    }
+
 }

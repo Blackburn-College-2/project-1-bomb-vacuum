@@ -6,10 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import project.bomb.vacuum.*;
 
 /**
@@ -57,6 +54,8 @@ class MenuPane extends VBox {
     private void setHighScoresActionAndSize(Button button) {
         button.setOnMouseClicked(mouseEvent -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.getDialogPane().setMinWidth(500);
             alert.setContentText(renderHighScores());
             alert.setHeaderText("High Scores");
             alert.setTitle("High Scores");

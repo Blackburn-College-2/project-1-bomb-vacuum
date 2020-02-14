@@ -2,12 +2,14 @@ package project.bomb.vacuum.view;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -40,6 +42,7 @@ public class GUI extends Application implements View {
     private Stage stage;
     private BorderPane mainPane = new BorderPane();
     private TimerPane timerPane = new TimerPane();
+    private BombCounter bombCounter = new BombCounter();
     private BombPane bombPane;
 
     /**
@@ -52,7 +55,10 @@ public class GUI extends Application implements View {
         controller.setView(this);
 
         mainPane.setRight(new MenuPane(controller));
-        mainPane.setTop(timerPane);
+        HBox top = new HBox(this.bombCounter, this.timerPane);
+        top.setAlignment(Pos.CENTER);
+        top.setSpacing(100);
+        mainPane.setTop(top);
 
         Scene scene = new Scene(mainPane, 50, 50);
         setKeyboardHandler(scene);
@@ -161,12 +167,19 @@ public class GUI extends Application implements View {
                 controller.updateHighScore(nameField.getText());
             }
         });
+        alert.setWidth(1900);
+
         alert.show();
     }
 
     private void appendScore(StringBuilder stringBuilder, String title, HighScore score) {
         String timeString = TimerPane.formatTime(score.getTime());
         stringBuilder.append(title).append(score.getName()).append(": ").append(timeString).append('\n');
+    }
+
+    @Override
+    public void setBombCounter(int bombs) {
+        this.bombCounter.setCounter(bombs);
     }
 
     /**

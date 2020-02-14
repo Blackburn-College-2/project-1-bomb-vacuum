@@ -32,7 +32,7 @@ public class HighScoreHandler {
         try {
             writer = new BufferedWriter(new FileWriter(file, true));
             String score = this.formatScore(name, time);
-            writer.append('\n').append(score);
+            writer.append(score).append('\n');
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -128,7 +128,9 @@ public class HighScoreHandler {
         String[] parts;
         for (String rawScore : rawScores) {
             parts = this.parseScore(rawScore);
-            scores.add(new SimpleHighScore(parts[0], Long.parseLong(parts[1])));
+            if (parts.length == 2) {
+                scores.add(new SimpleHighScore(parts[0], Long.parseLong(parts[1])));
+            }
         }
 
         return scores;

@@ -1,6 +1,6 @@
 package project.bomb.vacuum.model;
 
-import java.io.*;
+import java.util.List;
 import project.bomb.vacuum.*;
 
 public class BasicModel implements Model {
@@ -103,32 +103,61 @@ public class BasicModel implements Model {
      * @return the converted scores
      */
     private HighScores makeHighScores(HighScore[] scores) {
-        return new HighScores() {
-            @Override
-            public HighScore getFirst() {
-                return scores[0];
-            }
+        if (scores.length > 4) {
+            return new HighScores() {
+                @Override
+                public HighScore getFirst() {
+                    return scores[0];
+                }
 
-            @Override
-            public HighScore getSecond() {
-                return scores[1];
-            }
+                @Override
+                public HighScore getSecond() {
+                    return scores[1];
+                }
 
-            @Override
-            public HighScore getThird() {
-                return scores[2];
-            }
+                @Override
+                public HighScore getThird() {
+                    return scores[2];
+                }
 
-            @Override
-            public HighScore getFourth() {
-                return scores[3];
-            }
+                @Override
+                public HighScore getFourth() {
+                    return scores[3];
+                }
 
-            @Override
-            public HighScore getFifth() {
-                return scores[4];
-            }
-        };
+                @Override
+                public HighScore getFifth() {
+                    return scores[4];
+                }
+            };
+        } else {
+            return new HighScores() {
+                @Override
+                public HighScore getFirst() {
+                    return new SimpleHighScore("NUL", 0);
+                }
+
+                @Override
+                public HighScore getSecond() {
+                    return new SimpleHighScore("NUL", 0);
+                }
+
+                @Override
+                public HighScore getThird() {
+                    return new SimpleHighScore("NUL", 0);
+                }
+
+                @Override
+                public HighScore getFourth() {
+                    return new SimpleHighScore("NUL", 0);
+                }
+
+                @Override
+                public HighScore getFifth() {
+                    return new SimpleHighScore("NUL", 0);
+                }
+            };
+        }
     }
 
 }

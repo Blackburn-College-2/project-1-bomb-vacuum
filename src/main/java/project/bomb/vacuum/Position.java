@@ -24,4 +24,11 @@ public class Position {
     public String toString() {
         return String.format("(%s, %s)", row, column);
     }
+
+    public boolean equals(Object other) {
+        if (other instanceof Position) {
+            return this.row == ((Position)other).row && this.column == ((Position)other).column;
+        }
+        return false;
+    }
 }

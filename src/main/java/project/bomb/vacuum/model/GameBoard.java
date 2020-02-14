@@ -11,6 +11,7 @@ public class GameBoard {
     private Tile[][] board;
     private final List<Tile> bombs = new ArrayList<>();
     private final List<Tile> highlighted = new ArrayList<>();
+    private final List<Tile> flagged = new ArrayList<>();
     private int tilesLeftToReveal;
     private boolean gameOver = false;
     private Position previousHighlightLocation;
@@ -22,6 +23,7 @@ public class GameBoard {
 
         TileState state = TileState.values()[tile.getValue().ordinal()];
         this.updateAndSetTileState(tile, state);
+        this.tilesLeftToReveal--;
 
         if (tile.getValue() == TileValue.BOMB){
             this.gameOver = true;
@@ -30,14 +32,11 @@ public class GameBoard {
         if (tile.getValue() != TileValue.EMPTY) {
             return;
         }
-        if (tile.getValue() != TileValue.BOMB) {
-            this.tilesLeftToReveal--;
-        }
-
         modifySurroundingTiles(tile, this.recursiveReveal);
     };
     private TileModifier attemptTileHighlight = tile -> {
         if (tile.getState() == TileState.NOT_CLICKED) {
+            this.highlighted.add(tile);
             updateAndSetTileState(tile, TileState.HIGHLIGHTED);
         }
     };
@@ -57,11 +56,13 @@ public class GameBoard {
         this.gameOver = false;
         this.bombs.clear();
         this.highlighted.clear();
+        this.flagged.clear();
         this.previousHighlightLocation = null;
         this.tilesLeftToReveal = (rows * columns) - bombs;
         this.initBoard(rows, columns);
         this.placeBombs(rows, columns, bombs);
         this.updateBombsSurroundingTiles();
+        this.updateBombCounter();
     }
 
     private void initBoard(int rows, int columns) {
@@ -127,30 +128,35 @@ public class GameBoard {
 
     public void flagTile(Position position) {
         Tile tile = this.board[position.row][position.column];
-        TileState state = null;
+        TileState state;
         switch (tile.getState()) {
             case FLAGGED:
                 state = TileState.NOT_CLICKED;
+                this.flagged.remove(tile);
                 break;
             case HIGHLIGHTED:
                 // Fall through
             case NOT_CLICKED:
                 state = TileState.FLAGGED;
+                this.flagged.add(tile);
                 break;
             default:
                 state = tile.getState();
                 break;
         }
+        this.updateBombCounter();
         this.updateAndSetTileState(tile, state);
     }
 
     public void highlightTiles(Position position) {
         deHighlightTiles();
-        if (position == this.previousHighlightLocation) {
+        this.highlighted.clear();
+        if (position.equals(this.previousHighlightLocation)) {
             return;
         }
         this.previousHighlightLocation = position;
         Tile tile = this.board[position.row][position.column];
+        this.highlighted.add(tile);
         this.modifySurroundingTiles(tile, this.attemptTileHighlight);
     }
 
@@ -193,6 +199,10 @@ public class GameBoard {
                 this.updateTileState(bombTile, bombTile.getState());
             }
         }
+    }
+
+    private void updateBombCounter() {
+        this.controller.setBombCounter(this.bombs.size() - this.flagged.size());
     }
 
 }

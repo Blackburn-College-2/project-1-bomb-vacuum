@@ -44,4 +44,6 @@ public interface View {
      * @param time the time to display.
      */
     void setTime(long time);
+
+    void setBombCounter(int bombs);
 }
