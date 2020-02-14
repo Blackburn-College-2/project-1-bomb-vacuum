@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 public class BombCounter extends Label {
 
     public BombCounter() {
-        this.setStyle("-fx-font: 27px");
+        this.setStyle("-fx-font-size: 15px");
     }
 
     public void setCounter(int bombs) {
