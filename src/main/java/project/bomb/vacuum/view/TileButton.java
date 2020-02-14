@@ -1,5 +1,6 @@
 package project.bomb.vacuum.view;
 
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
@@ -66,12 +67,14 @@ class TileButton extends StackPane {
      * @param isFlagged true to flag this tile, otherwise false.
      */
     void setFlag(boolean isFlagged) {
-        this.isFlagged = isFlagged;
-        if (isFlagged) {
-            this.button.setText("F");
-        } else {
-            this.button.setText("");
-        }
+        Platform.runLater(() -> {
+            this.isFlagged = isFlagged;
+            if (isFlagged) {
+                this.button.setText("F");
+            } else {
+                this.button.setText("");
+            }
+        });
     }
 
     /**
@@ -80,13 +83,15 @@ class TileButton extends StackPane {
      * @param highlight true to highlight this tile, false otherwise.
      */
     void highlight(boolean highlight) {
-        if (highlight) {
-            this.button.setStyle("-fx-border-color: rgba(255, 0, 0, .9)");
-            this.getChildren().add(0, highlighter);
-        } else {
-            this.button.setStyle("");
-            this.getChildren().remove(highlighter);
-        }
+        Platform.runLater(() -> {
+            if (highlight) {
+                this.button.setStyle("-fx-border-color: rgba(255, 0, 0, .9)");
+                this.getChildren().add(0, highlighter);
+            } else {
+                this.button.setStyle("");
+                this.getChildren().remove(highlighter);
+            }
+        });
     }
 
 }

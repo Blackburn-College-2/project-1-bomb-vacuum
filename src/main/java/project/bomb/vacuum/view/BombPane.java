@@ -14,7 +14,7 @@ class BombPane extends GridPane {
     private final Controller controller;
     private HashMap<String, ViewTile> tiles = new HashMap<>();
 
-    private static final int TILE_SIZE = 25;
+    private static final int TILE_SIZE = 35;
 
     BombPane(Controller controller, int columns, int rows) {
         this.controller = controller;
