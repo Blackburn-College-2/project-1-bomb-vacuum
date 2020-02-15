@@ -45,6 +45,7 @@ public class ViewTile2 extends StackPane {
         this.setSize(tile, this.size, 0.9);
         this.getChildren().remove(this.tile);
         this.getChildren().add(tile);
+        this.tile = tile;
     }
 
     private void setSize(Region region, double size) {
@@ -61,6 +62,7 @@ public class ViewTile2 extends StackPane {
     void highlight(boolean highlight) {
         Platform.runLater(() -> {
             if (highlight) {
+                this.flag(false);
                 this.setStyle(HIGHLIGHT_STYLE);
             } else {
                 this.setStyle(DEFAULT_STYLE);
@@ -70,6 +72,7 @@ public class ViewTile2 extends StackPane {
 
     void flag(boolean flag) {
         if (flag) {
+            this.highlight(false);
             this.tile.setText("F");
         } else {
             this.tile.setText("");

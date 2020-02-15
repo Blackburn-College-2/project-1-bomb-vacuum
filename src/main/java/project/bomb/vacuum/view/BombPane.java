@@ -2,9 +2,10 @@ package project.bomb.vacuum.view;
 
 import java.util.HashMap;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
 import project.bomb.vacuum.Controller;
 import project.bomb.vacuum.Position;
 import project.bomb.vacuum.TileStatus;
@@ -34,13 +35,13 @@ class BombPane extends GridPane {
                 ViewTile2 viewTile = new ViewTile2(controller, row, column, TILE_SIZE);
                 this.tiles.put(convertPositionToKey(row, column), viewTile);
                 this.add(viewTile, column, row, 1, 1);
-                placeButton(controller, row, column);
+                placeButton(row, column);
             }
         }
     }
 
-    private void placeButton(Controller controller, int row, int column) {
-        TileButton tile = new TileButton();
+    private void placeButton(int row, int column) {
+        Button tile = new Button();
         this.setTile(tile, row, column);
     }
 
@@ -50,8 +51,10 @@ class BombPane extends GridPane {
         this.setTile(tile, row, column);
     }
 
-    private void setTile(Region tile, int row, int column) {
-        this.tiles.get(convertPositionToKey(row, column)).setTile(tile);
+    private void setTile(Labeled tile, int row, int column) {
+        ViewTile2 viewTile = this.tiles.get(convertPositionToKey(row, column));
+        viewTile.highlight(false);
+        viewTile.setTile(tile);
     }
 
     private String convertPositionToKey(Position position) {
@@ -66,11 +69,9 @@ class BombPane extends GridPane {
         for (TileStatus tileStatus : tileStatuses) {
             Position position = tileStatus.position;
             int state = tileStatus.state.ordinal();
+            // State is a number or EMPTY
             if (state < 9) {
-                String message = "";
-                if (state > 0) {
-                    message += state;
-                }
+                String message = state == 0 ? "" : String.valueOf(state);
                 placeLabel(message, position.row, position.column);
             } else {
                 switch (tileStatus.state) {
@@ -78,16 +79,11 @@ class BombPane extends GridPane {
                         placeLabel("B", position.row, position.column);
                         break;
                     case FLAGGED:
-                        if (this.getViewTile(position).getTile() instanceof Label) {
-                            placeButton(controller, position.row, position.column);
-                        }
+                        placeButton(position.row, position.column);
                         flagTile(position);
                         break;
                     case NOT_CLICKED:
-                        if (this.getViewTile(position).getTile() instanceof Label) {
-                            placeButton(controller, position.row, position.column);
-                        }
-                        unFlagTile(position);
+                        placeButton(position.row, position.column);
                         deHighlightTile(position);
                         break;
                     case HIGHLIGHTED:
@@ -101,30 +97,30 @@ class BombPane extends GridPane {
     }
 
     private void flagTile(Position position) {
-        TileButton tile = (TileButton) this.getViewTile(position).getTile();
-        tile.setFlag(true);
+        ViewTile2 tile = this.getViewTile(position);
+        tile.flag(true);
     }
 
     private void unFlagTile(Position position) {
-        TileButton tile = (TileButton) this.getViewTile(position).getTile();
-        tile.setFlag(false);
+        ViewTile2 tile = this.getViewTile(position);
+        tile.flag(false);
     }
 
     private void highlightTile(Position position) {
-        TileButton tile = (TileButton) this.getViewTile(position).getTile();
+        ViewTile2 tile = this.getViewTile(position);
         tile.highlight(true);
     }
 
     private void deHighlightTile(Position position) {
-        TileButton tile = (TileButton) this.getViewTile(position).getTile();
+        ViewTile2 tile = this.getViewTile(position);
         tile.highlight(false);
     }
 
-    private ViewTile getViewTile(Position position) {
+    private ViewTile2 getViewTile(Position position) {
         return this.getViewTile(position.row, position.column);
     }
 
-    private ViewTile getViewTile(int row, int column) {
+    private ViewTile2 getViewTile(int row, int column) {
         return this.tiles.get(convertPositionToKey(row, column));
     }
 }
