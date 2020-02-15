@@ -17,7 +17,7 @@ public class GameBoard {
     private Position previousHighlightLocation;
 
     private TileModifier recursiveReveal = tile -> {
-        if (tile.getState() != TileState.NOT_CLICKED) {
+        if (!(tile.getState() == TileState.NOT_CLICKED || tile.getState() == TileState.HIGHLIGHTED)) {
             return;
         }
 
@@ -131,7 +131,7 @@ public class GameBoard {
         TileState state;
         switch (tile.getState()) {
             case FLAGGED:
-                state = TileState.NOT_CLICKED;
+                state = this.highlighted.contains(tile) ? TileState.HIGHLIGHTED : TileState.NOT_CLICKED;
                 this.flagged.remove(tile);
                 break;
             case HIGHLIGHTED:
@@ -149,13 +149,22 @@ public class GameBoard {
     }
 
     public void highlightTiles(Position position) {
-        deHighlightTiles();
-        this.highlighted.clear();
-        if (position.equals(this.previousHighlightLocation)) {
+        Tile tile = this.board[position.row][position.column];
+        if (!(tile.getState().ordinal() <= 8)) {
             return;
         }
+        if (position.equals(this.previousHighlightLocation)) {
+            if (this.highlighted.size() > 0) {
+                this.deHighlightTiles();
+                this.highlighted.clear();
+                return;
+            }
+        }
+        this.deHighlightTiles();
+        this.highlighted.clear();
+
         this.previousHighlightLocation = position;
-        Tile tile = this.board[position.row][position.column];
+
         this.highlighted.add(tile);
         this.modifySurroundingTiles(tile, this.attemptTileHighlight);
     }
