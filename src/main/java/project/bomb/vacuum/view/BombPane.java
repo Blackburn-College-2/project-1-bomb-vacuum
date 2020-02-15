@@ -12,7 +12,7 @@ import project.bomb.vacuum.TileStatus;
 class BombPane extends GridPane {
 
     private final Controller controller;
-    private HashMap<String, ViewTile> tiles = new HashMap<>();
+    private HashMap<String, ViewTile2> tiles = new HashMap<>();
 
     private static final int TILE_SIZE = 30;
 
@@ -31,7 +31,7 @@ class BombPane extends GridPane {
     private void populateGrid(Controller controller, int columns, int rows) {
         for (int column = 0; column < columns; column++) {
             for (int row = 0; row < rows; row++) {
-                ViewTile viewTile = new ViewTile(TILE_SIZE, TILE_SIZE);
+                ViewTile2 viewTile = new ViewTile2(controller, row, column, TILE_SIZE);
                 this.tiles.put(convertPositionToKey(row, column), viewTile);
                 this.add(viewTile, column, row, 1, 1);
                 placeButton(controller, row, column);
@@ -40,7 +40,7 @@ class BombPane extends GridPane {
     }
 
     private void placeButton(Controller controller, int row, int column) {
-        TileButton tile = new TileButton(controller, row, column, TILE_SIZE);
+        TileButton tile = new TileButton();
         this.setTile(tile, row, column);
     }
 

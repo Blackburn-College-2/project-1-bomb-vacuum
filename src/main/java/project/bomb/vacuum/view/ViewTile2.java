@@ -1,6 +1,8 @@
 package project.bomb.vacuum.view;
 
 import javafx.application.Platform;
+import javafx.geometry.Pos;
+import javafx.scene.control.Labeled;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import project.bomb.vacuum.Controller;
@@ -14,18 +16,19 @@ public class ViewTile2 extends StackPane {
     private final Controller controller;
     private final Position position;
     private final double size;
-    private Region tile;
+    private Labeled tile;
 
     public ViewTile2(Controller controller, int row, int column, double size) {
         this.controller = controller;
         this.position = new Position(row, column);
         this.size = size;
 
+        this.setAlignment(Pos.CENTER);
         this.setStyle(DEFAULT_STYLE);
         this.setSize(this, size);
     }
 
-    public void setTile(Region tile) {
+    public void setTile(Labeled tile) {
         tile.setOnMouseClicked(event -> {
             switch (event.getButton()) {
                 case PRIMARY:
@@ -39,12 +42,17 @@ public class ViewTile2 extends StackPane {
                     break;
             }
         });
-        this.setSize(tile, this.size);
+        this.setSize(tile, this.size, 0.9);
         this.getChildren().remove(this.tile);
         this.getChildren().add(tile);
     }
 
     private void setSize(Region region, double size) {
+        this.setSize(region, size, 1);
+    }
+
+    private void setSize(Region region, double size, double scale) {
+        size *= scale;
         region.setMinSize(size, size);
         region.setPrefSize(size, size);
         region.setMaxSize(size, size);
@@ -58,5 +66,13 @@ public class ViewTile2 extends StackPane {
                 this.setStyle(DEFAULT_STYLE);
             }
         });
+    }
+
+    void flag(boolean flag) {
+        if (flag) {
+            this.tile.setText("F");
+        } else {
+            this.tile.setText("");
+        }
     }
 }
