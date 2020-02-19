@@ -136,7 +136,7 @@ public class GUI extends Application implements View {
         } else {
             header.append("You lost, but gg.");
         }
-        header.append("Your time was: ").append(TimerPane.formatTime(time)).append('\n');
+        header.append("Your time was: ").append(Util.formatTime(time)).append('\n');
         alert.setHeaderText(header.toString());
 
         TextField nameField = new TextField();
@@ -153,14 +153,14 @@ public class GUI extends Application implements View {
             pane.getChildren().add(box);
         }
 
-        HighScores scores = controller.getScores();
-        if (scores != null) {
-            appendScore(message, "1. ", scores.getFirst());
-            appendScore(message, "2. ", scores.getSecond());
-            appendScore(message, "3. ", scores.getThird());
-            appendScore(message, "4. ", scores.getFourth());
-            appendScore(message, "5. ", scores.getFifth());
-        }
+//        HighScores scores = controller.getScores();
+//        if (scores != null) {
+//            appendScore(message, "1. ", scores.getFirst());
+//            appendScore(message, "2. ", scores.getSecond());
+//            appendScore(message, "3. ", scores.getThird());
+//            appendScore(message, "4. ", scores.getFourth());
+//            appendScore(message, "5. ", scores.getFifth());
+//        }
         alert.setContentText(message.toString());
         alert.setOnCloseRequest(dialogEvent -> {
             if (GUI.board != null) {
@@ -173,7 +173,7 @@ public class GUI extends Application implements View {
     }
 
     private void appendScore(StringBuilder stringBuilder, String title, HighScore score) {
-        String timeString = TimerPane.formatTime(score.getTime());
+        String timeString = Util.formatTime(score.getTime());
         stringBuilder.append(title).append(score.getName()).append(": ").append(timeString).append('\n');
     }
 
