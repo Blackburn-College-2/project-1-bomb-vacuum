@@ -82,10 +82,8 @@ public class BasicModel implements Model {
      * {@inheritDoc }
      */
     @Override
-    public HighScores getScores(DefaultBoard board) {
-        List<HighScore> scores = this.highScoreHandler.loadSortedScores(board);
-        HighScore[] highScores = scores.toArray(new HighScore[0]);
-        return this.makeHighScores(highScores);
+    public List<HighScore> getScores(DefaultBoard board) {
+        return this.highScoreHandler.loadSortedScores(board);
     }
 
     /**
@@ -94,70 +92,6 @@ public class BasicModel implements Model {
     @Override
     public void cheatToggled(boolean toggle) {
         this.gameBoard.cheatToggle(toggle);
-    }
-
-    /**
-     * Converts a HighScore[] into HighScores
-     *
-     * @param scores the scores to be converted
-     * @return the converted scores
-     */
-    private HighScores makeHighScores(HighScore[] scores) {
-        if (scores.length > 4) {
-            return new HighScores() {
-                @Override
-                public HighScore getFirst() {
-                    return scores[0];
-                }
-
-                @Override
-                public HighScore getSecond() {
-                    return scores[1];
-                }
-
-                @Override
-                public HighScore getThird() {
-                    return scores[2];
-                }
-
-                @Override
-                public HighScore getFourth() {
-                    return scores[3];
-                }
-
-                @Override
-                public HighScore getFifth() {
-                    return scores[4];
-                }
-            };
-        } else {
-            return new HighScores() {
-                @Override
-                public HighScore getFirst() {
-                    return new SimpleHighScore("NUL", 0);
-                }
-
-                @Override
-                public HighScore getSecond() {
-                    return new SimpleHighScore("NUL", 0);
-                }
-
-                @Override
-                public HighScore getThird() {
-                    return new SimpleHighScore("NUL", 0);
-                }
-
-                @Override
-                public HighScore getFourth() {
-                    return new SimpleHighScore("NUL", 0);
-                }
-
-                @Override
-                public HighScore getFifth() {
-                    return new SimpleHighScore("NUL", 0);
-                }
-            };
-        }
     }
 
 }

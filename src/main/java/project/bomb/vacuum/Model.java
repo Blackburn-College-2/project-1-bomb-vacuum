@@ -1,5 +1,7 @@
 package project.bomb.vacuum;
 
+import java.util.List;
+
 /**
  * The base for a model controller, in the MVC paradigm, to play
  * a game of Bomb Vacuum.
@@ -44,7 +46,7 @@ public interface Model {
      * @param board the board to get scores for.
      * @return the high scores for the specified board.
      */
-    HighScores getScores(DefaultBoard board);
+    List<HighScore> getScores(DefaultBoard board);
 
     /**
      * @param cheat true to show all bombs, false to hide bombs.

@@ -16,12 +16,14 @@ class MenuPane extends VBox {
 
     static final double BUTTON_WIDTH = 80;
     private Controller controller;
+    private final HighScoresAlert highScoresAlert;
 
     /**
      * @param controller the {@link Controller} to link to.
      */
     MenuPane(Controller controller) {
         this.controller = controller;
+        highScoresAlert = new HighScoresAlert(controller);
         Button easyButton = new Button("Easy");
         Button hardButton = new Button("Hard");
         Button mediumButton = new Button("Medium");
@@ -53,13 +55,7 @@ class MenuPane extends VBox {
 
     private void setHighScoresActionAndSize(Button button) {
         button.setOnMouseClicked(mouseEvent -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-            alert.getDialogPane().setMinWidth(500);
-            alert.setContentText(renderHighScores());
-            alert.setHeaderText("High Scores");
-            alert.setTitle("High Scores");
-            alert.show();
+            this.highScoresAlert.displayHighScores();
         });
         this.setButtonWidth(button);
     }
@@ -129,15 +125,15 @@ class MenuPane extends VBox {
 
     private String renderHighScores() {
         StringBuilder sb = new StringBuilder();
-        HighScores easyScores = controller.getScores(DefaultBoard.EASY);
-        HighScores mediumScores = controller.getScores(DefaultBoard.INTERMEDIATE);
-        HighScores hardScores = controller.getScores(DefaultBoard.EXPERT);
-        sb.append(String.format("%-27s%-22s%-20s", "Easy", "Medium", "Hard")).append('\n');
-        sb.append(formatRow(easyScores.getFirst(), mediumScores.getFirst(), hardScores.getFirst(), "1. ")).append('\n');
-        sb.append(formatRow(easyScores.getSecond(), mediumScores.getSecond(), hardScores.getSecond(), "2. ")).append('\n');
-        sb.append(formatRow(easyScores.getThird(), mediumScores.getThird(), hardScores.getThird(), "3. ")).append('\n');
-        sb.append(formatRow(easyScores.getFourth(), mediumScores.getFourth(), hardScores.getFourth(), "4. ")).append('\n');
-        sb.append(formatRow(easyScores.getFifth(), mediumScores.getFifth(), hardScores.getFifth(), "5. ")).append('\n');
+//        HighScores easyScores = controller.getScores(DefaultBoard.EASY);
+//        HighScores mediumScores = controller.getScores(DefaultBoard.INTERMEDIATE);
+//        HighScores hardScores = controller.getScores(DefaultBoard.EXPERT);
+//        sb.append(String.format("%-27s%-22s%-20s", "Easy", "Medium", "Hard")).append('\n');
+//        sb.append(formatRow(easyScores.getFirst(), mediumScores.getFirst(), hardScores.getFirst(), "1. ")).append('\n');
+//        sb.append(formatRow(easyScores.getSecond(), mediumScores.getSecond(), hardScores.getSecond(), "2. ")).append('\n');
+//        sb.append(formatRow(easyScores.getThird(), mediumScores.getThird(), hardScores.getThird(), "3. ")).append('\n');
+//        sb.append(formatRow(easyScores.getFourth(), mediumScores.getFourth(), hardScores.getFourth(), "4. ")).append('\n');
+//        sb.append(formatRow(easyScores.getFifth(), mediumScores.getFifth(), hardScores.getFifth(), "5. ")).append('\n');
 
         return sb.toString();
     }
@@ -148,7 +144,7 @@ class MenuPane extends VBox {
     }
 
     private String formatScore(HighScore score, String title) {
-        return String.format(title + "%-4s%s", score.getName(), TimerPane.formatTime(score.getTime()));
+        return String.format(title + "%-4s%s", score.getName(), Util.formatTime(score.getTime()));
     }
 
 }

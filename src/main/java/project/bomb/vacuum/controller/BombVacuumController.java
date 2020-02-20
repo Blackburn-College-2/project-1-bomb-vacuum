@@ -1,5 +1,6 @@
 package project.bomb.vacuum.controller;
 
+import java.util.List;
 import project.bomb.vacuum.*;
 import project.bomb.vacuum.exceptions.InvalidStateException;
 import project.bomb.vacuum.model.BasicModel;
@@ -123,7 +124,7 @@ public class BombVacuumController implements Controller {
      * {@inheritDoc}
      */
     @Override
-    public HighScores getScores() {
+    public List<HighScore> getScores() {
         if (defaultBoard != null) {
             return model.getScores(defaultBoard);
         } else {
@@ -135,7 +136,7 @@ public class BombVacuumController implements Controller {
      * {@inheritDoc}
      */
     @Override
-    public HighScores getScores(DefaultBoard board) {
+    public List<HighScore> getScores(DefaultBoard board) {
         return model.getScores(board);
     }
 

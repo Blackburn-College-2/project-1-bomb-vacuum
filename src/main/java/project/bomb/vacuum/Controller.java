@@ -1,5 +1,7 @@
 package project.bomb.vacuum;
 
+import java.util.List;
+
 /**
  * Handles the communications between a {@link View} and {@link Model}
  */
@@ -39,14 +41,14 @@ public interface Controller {
      *
      * @return the high scores for the board.
      */
-    HighScores getScores();
+    List<HighScore> getScores();
 
     /**
      * Gets the high scores for the specified type of default board.
      *
      * @return the high scores for the specified board.
      */
-    HighScores getScores(DefaultBoard board);
+    List<HighScore> getScores(DefaultBoard board);
 
     /**
      * @param cheat true to show all bombs, false to hide bombs.
