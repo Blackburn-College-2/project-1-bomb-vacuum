@@ -14,7 +14,7 @@ import project.bomb.vacuum.*;
  */
 class MenuPane extends VBox {
 
-    static final double BUTTON_WIDTH = 80;
+    static final double BUTTON_WIDTH = 110;
     private Controller controller;
     private final HighScoresAlert highScoresAlert;
 
@@ -47,7 +47,6 @@ class MenuPane extends VBox {
         button.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
                 controller.startNewGame(board);
-                GUI.board = board;
             }
         });
         this.setButtonWidth(button);
@@ -110,7 +109,6 @@ class MenuPane extends VBox {
                         Integer.parseInt(bombs.getText())
 
                 ));
-                GUI.board = null;
             });
 
             alert.show();
@@ -121,30 +119,6 @@ class MenuPane extends VBox {
         button.setMinWidth(BUTTON_WIDTH);
         button.setMaxWidth(BUTTON_WIDTH);
         button.setPrefWidth(BUTTON_WIDTH);
-    }
-
-    private String renderHighScores() {
-        StringBuilder sb = new StringBuilder();
-//        HighScores easyScores = controller.getScores(DefaultBoard.EASY);
-//        HighScores mediumScores = controller.getScores(DefaultBoard.INTERMEDIATE);
-//        HighScores hardScores = controller.getScores(DefaultBoard.EXPERT);
-//        sb.append(String.format("%-27s%-22s%-20s", "Easy", "Medium", "Hard")).append('\n');
-//        sb.append(formatRow(easyScores.getFirst(), mediumScores.getFirst(), hardScores.getFirst(), "1. ")).append('\n');
-//        sb.append(formatRow(easyScores.getSecond(), mediumScores.getSecond(), hardScores.getSecond(), "2. ")).append('\n');
-//        sb.append(formatRow(easyScores.getThird(), mediumScores.getThird(), hardScores.getThird(), "3. ")).append('\n');
-//        sb.append(formatRow(easyScores.getFourth(), mediumScores.getFourth(), hardScores.getFourth(), "4. ")).append('\n');
-//        sb.append(formatRow(easyScores.getFifth(), mediumScores.getFifth(), hardScores.getFifth(), "5. ")).append('\n');
-
-        return sb.toString();
-    }
-
-    private String formatRow(HighScore easy, HighScore medium, HighScore hard, String title) {
-        int spacing = -20;
-        return String.format("%" + spacing + "s%" + spacing + "s%" + spacing + "s", formatScore(easy, title), formatScore(medium, title), formatScore(hard, title));
-    }
-
-    private String formatScore(HighScore score, String title) {
-        return String.format(title + "%-4s%s", score.getName(), Util.formatTime(score.getTime()));
     }
 
 }

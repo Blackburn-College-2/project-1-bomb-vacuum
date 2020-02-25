@@ -97,7 +97,7 @@ public interface Controller {
      *
      * @param gameOverState if the game is a win or loss.
      */
-    void gameOver(GameOverState gameOverState);
+    void gameOver(GameOverState gameOverState, boolean newHighScore);
 
     /**
      * Sets the time displayed.

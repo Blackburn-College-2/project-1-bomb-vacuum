@@ -22,7 +22,6 @@ public class GUI extends Application implements View {
 
     private static Controller controller;
     private static Runnable startup;
-    static DefaultBoard board;
 
     public static void setController(Controller controller) {
         GUI.controller = controller;
@@ -66,7 +65,9 @@ public class GUI extends Application implements View {
         stage.setResizable(false);
         stage.show();
 
-        GUI.startup.run();
+        Thread game = new Thread(GUI.startup);
+        game.setDaemon(true);
+        game.start();
     }
 
     private void setKeyboardHandler(Scene scene) {
@@ -83,35 +84,39 @@ public class GUI extends Application implements View {
      */
     @Override
     public void initializeBoard(int rows, int columns) {
-        double widthPadding = 60;
-        double heightPadding = 70;
-        // BombPane constructor is columns, rows....
-        this.bombPane = new BombPane(controller, columns, rows);
-        mainPane.setCenter(this.bombPane);
+        Platform.runLater(() -> {
+            double widthPadding = 60;
+            double heightPadding = 70;
+            // BombPane constructor is columns, rows....
+            this.bombPane = new BombPane(controller, columns, rows);
+            mainPane.setCenter(this.bombPane);
 
-        double screenWidth = this.bombPane.getMinWidth() + MenuPane.BUTTON_WIDTH + widthPadding;
-        double screenHeight = this.bombPane.getMinHeight() + timerPane.getMinHeight() + heightPadding;
-        stage.setHeight(screenHeight);
-        stage.setWidth(screenWidth);
+            double screenWidth = this.bombPane.getMinWidth() + MenuPane.BUTTON_WIDTH + widthPadding;
+            double screenHeight = this.bombPane.getMinHeight() + timerPane.getMinHeight() + heightPadding;
+            stage.setHeight(screenHeight);
+            stage.setWidth(screenWidth);
 
-        if (firstInit) {
-            firstInit = false;
-            Thread hotfixThread = new Thread(() -> {
-                for (int i = 0; i < 3; i++) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+            if (firstInit) {
+                firstInit = false;
+                Thread hotfixThread = new Thread(() -> {
+                    for (int i = 0; i < 3; i++) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Platform.runLater(() -> {
+                            if (stage.getHeight() < 100) {
+                                stage.setHeight(screenHeight);
+                                stage.setWidth(screenWidth);
+                            }
+                        });
                     }
-                    Platform.runLater(() -> {
-                        stage.setHeight(screenHeight);
-                        stage.setWidth(screenWidth);
-                    });
-                }
-            });
-            hotfixThread.setDaemon(true);
-            hotfixThread.start();
-        }
+                });
+                hotfixThread.setDaemon(true);
+                hotfixThread.start();
+            }
+        });
     }
 
     /**
@@ -126,7 +131,7 @@ public class GUI extends Application implements View {
      * {@inheritDoc}
      */
     @Override
-    public void gameOver(GameOverState gameOverState, long time) {
+    public void gameOver(GameOverState gameOverState, long time, boolean newHighScore) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over");
         StringBuilder message = new StringBuilder();
@@ -140,7 +145,7 @@ public class GUI extends Application implements View {
         alert.setHeaderText(header.toString());
 
         TextField nameField = new TextField();
-        if (GUI.board != null) {
+        if (newHighScore) {
             Pane pane = alert.getDialogPane();
             Label nameLabel = new Label("Enter a 3 character tag");
             nameLabel.setMinWidth(200);
@@ -153,17 +158,9 @@ public class GUI extends Application implements View {
             pane.getChildren().add(box);
         }
 
-//        HighScores scores = controller.getScores();
-//        if (scores != null) {
-//            appendScore(message, "1. ", scores.getFirst());
-//            appendScore(message, "2. ", scores.getSecond());
-//            appendScore(message, "3. ", scores.getThird());
-//            appendScore(message, "4. ", scores.getFourth());
-//            appendScore(message, "5. ", scores.getFifth());
-//        }
         alert.setContentText(message.toString());
         alert.setOnCloseRequest(dialogEvent -> {
-            if (GUI.board != null) {
+            if (newHighScore) {
                 controller.updateHighScore(nameField.getText());
             }
         });
@@ -172,14 +169,14 @@ public class GUI extends Application implements View {
         alert.show();
     }
 
-    private void appendScore(StringBuilder stringBuilder, String title, HighScore score) {
-        String timeString = Util.formatTime(score.getTime());
-        stringBuilder.append(title).append(score.getName()).append(": ").append(timeString).append('\n');
-    }
-
     @Override
     public void setBombCounter(int bombs) {
         this.bombCounter.setCounter(bombs);
+    }
+
+    @Override
+    public String getUserName(int maxChars) {
+        return null;
     }
 
     /**
