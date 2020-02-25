@@ -13,7 +13,7 @@ import project.bomb.vacuum.TileStatus;
 class BombPane extends GridPane {
 
     private final Controller controller;
-    private HashMap<String, ViewTile2> tiles = new HashMap<>();
+    private HashMap<String, ViewTile> tiles = new HashMap<>();
 
     private static final int TILE_SIZE = 30;
 
@@ -32,7 +32,7 @@ class BombPane extends GridPane {
     private void populateGrid(Controller controller, int columns, int rows) {
         for (int column = 0; column < columns; column++) {
             for (int row = 0; row < rows; row++) {
-                ViewTile2 viewTile = new ViewTile2(controller, row, column, TILE_SIZE);
+                ViewTile viewTile = new ViewTile(controller, row, column, TILE_SIZE);
                 this.tiles.put(convertPositionToKey(row, column), viewTile);
                 this.add(viewTile, column, row, 1, 1);
                 placeButton(row, column);
@@ -52,7 +52,7 @@ class BombPane extends GridPane {
     }
 
     private void setTile(Labeled tile, int row, int column) {
-        ViewTile2 viewTile = this.tiles.get(convertPositionToKey(row, column));
+        ViewTile viewTile = this.tiles.get(convertPositionToKey(row, column));
         viewTile.highlight(false);
         viewTile.setTile(tile);
     }
@@ -97,30 +97,30 @@ class BombPane extends GridPane {
     }
 
     private void flagTile(Position position) {
-        ViewTile2 tile = this.getViewTile(position);
+        ViewTile tile = this.getViewTile(position);
         tile.flag(true);
     }
 
     private void unFlagTile(Position position) {
-        ViewTile2 tile = this.getViewTile(position);
+        ViewTile tile = this.getViewTile(position);
         tile.flag(false);
     }
 
     private void highlightTile(Position position) {
-        ViewTile2 tile = this.getViewTile(position);
+        ViewTile tile = this.getViewTile(position);
         tile.highlight(true);
     }
 
     private void deHighlightTile(Position position) {
-        ViewTile2 tile = this.getViewTile(position);
+        ViewTile tile = this.getViewTile(position);
         tile.highlight(false);
     }
 
-    private ViewTile2 getViewTile(Position position) {
+    private ViewTile getViewTile(Position position) {
         return this.getViewTile(position.row, position.column);
     }
 
-    private ViewTile2 getViewTile(int row, int column) {
+    private ViewTile getViewTile(int row, int column) {
         return this.tiles.get(convertPositionToKey(row, column));
     }
 }

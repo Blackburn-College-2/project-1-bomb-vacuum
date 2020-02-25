@@ -9,7 +9,7 @@ import project.bomb.vacuum.Controller;
 import project.bomb.vacuum.Position;
 import project.bomb.vacuum.TileAction;
 
-public class ViewTile2 extends StackPane {
+public class ViewTile extends StackPane {
 
     private final static String DEFAULT_STYLE = "-fx-border-color: rgba(100, 100, 100, 0.2); -fx-stroke-width: 0.3px";
     private final static String HIGHLIGHT_STYLE = "-fx-border-color: rgba(255, 0, 0, .9)";
@@ -18,7 +18,7 @@ public class ViewTile2 extends StackPane {
     private final double size;
     private Labeled tile;
 
-    public ViewTile2(Controller controller, int row, int column, double size) {
+    public ViewTile(Controller controller, int row, int column, double size) {
         this.controller = controller;
         this.position = new Position(row, column);
         this.size = size;
