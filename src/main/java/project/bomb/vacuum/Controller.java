@@ -72,6 +72,11 @@ public interface Controller {
      * @param name the name of the player.
      */
     void updateHighScore(String name);
+    
+    /**
+     * @return a board validator 
+    */
+    BoardValidator getBoardValidator();
 
     // ##### Calls from the Model.
 

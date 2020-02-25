@@ -40,6 +40,12 @@ public interface Model {
      */
     void updateHighScore(DefaultBoard board, String name, long time);
 
+    
+    /**
+     * @return a board validator 
+    */
+    BoardValidator getBoardValidator();
+    
     /**
      * Gets the high scores for the specified type of default board.
      *

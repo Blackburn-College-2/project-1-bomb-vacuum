@@ -172,4 +172,8 @@ public class BombVacuumController implements Controller {
         this.view.setBombCounter(bombs);
     }
 
+    @Override
+    public BoardValidator getBoardValidator() {
+        return this.model.getBoardValidator();
+    }
 }
