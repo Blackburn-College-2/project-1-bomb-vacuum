@@ -23,16 +23,19 @@ public class GameBoard {
         }
 
         TileState state = TileState.values()[tile.getValue().ordinal()];
-        this.updateAndSetTileState(tile, state);
-        this.tilesLeftToReveal--;
 
         if (tile.getValue() == TileValue.BOMB){
             if (this.cheating) {
                 return;
             }
+            this.updateAndSetTileState(tile, state);
             this.gameOver = true;
             return;
         }
+
+        this.updateAndSetTileState(tile, state);
+        this.tilesLeftToReveal--;
+
         if (tile.getValue() != TileValue.EMPTY) {
             return;
         }

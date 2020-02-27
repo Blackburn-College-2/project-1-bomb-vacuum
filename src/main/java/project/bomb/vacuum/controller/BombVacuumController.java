@@ -173,4 +173,19 @@ public class BombVacuumController implements Controller {
     public BoardValidator getBoardValidator() {
         return this.model.getBoardValidator();
     }
+
+    @Override
+    public NameValidator getNameValidator() {
+        return this.model.getNameValidator();
+    }
+
+    @Override
+    public void saveBoardConfig(BoardConfiguration configuration) {
+        this.model.saveBoardConfig(configuration);
+    }
+
+    @Override
+    public BoardConfiguration getSavedBoardConfig() {
+        return this.model.getSavedBoardConfig();
+    }
 }

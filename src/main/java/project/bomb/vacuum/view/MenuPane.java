@@ -1,12 +1,14 @@
 package project.bomb.vacuum.view;
 
+import java.util.Optional;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import project.bomb.vacuum.*;
 
 /**
@@ -43,6 +45,24 @@ class MenuPane extends VBox {
         this.setHighScoresActionAndSize(highScoresButton);
     }
 
+    private void testBoardConfig(TextField rows, TextField columns, TextField bombs, Label error) {
+        BoardValidator validator = controller.getBoardValidator();
+        boolean isValid = false;
+        try {
+            isValid = validator.validate(new BoardConfiguration(
+                    Integer.parseInt(rows.getText()),
+                    Integer.parseInt(columns.getText()),
+                    Integer.parseInt(bombs.getText()))
+            );
+        } catch (Exception ex) {
+            // ignore
+        }
+        validConfig = isValid;
+        Platform.runLater(() -> {
+            error.setVisible(!validConfig);
+        });
+    }
+
     private void setButtonActionAndSize(Button button, DefaultBoard board) {
         button.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
@@ -59,6 +79,8 @@ class MenuPane extends VBox {
         this.setButtonWidth(button);
     }
 
+    private volatile boolean validConfig = false;
+
     private void setCustomActionAndSize(Button button) {
         this.setButtonWidth(button);
         button.setOnMouseClicked(mouseEvent -> {
@@ -66,14 +88,36 @@ class MenuPane extends VBox {
             alert.setHeaderText("Create Custom Game");
             alert.setTitle("Create Custom Game");
             Pane pane = alert.getDialogPane();
+            pane.setMinHeight(200);
 
+            BoardConfiguration prevConfig = controller.getSavedBoardConfig();
+
+            Label error = new Label("Invalid Board Config");
+            error.setTextFill(Color.RED);
+            error.setVisible(true);
+            error.setMinWidth(240);
             TextField bombs = new TextField();
             TextField rows = new TextField();
             TextField columns = new TextField();
 
+            if (prevConfig != null) {
+                rows.setText("" + prevConfig.rows);
+                columns.setText("" + prevConfig.columns);
+                bombs.setText("" + prevConfig.bombs);
+            }
+
+            testBoardConfig(rows, columns, bombs, error);
+
+            rows.textProperty().addListener((observable, oldValue, newValue) -> testBoardConfig(rows, columns, bombs, error));
+            columns.textProperty().addListener((observable, oldValue, newValue) -> testBoardConfig(rows, columns, bombs, error));
+            bombs.textProperty().addListener((observable, oldValue, newValue) -> testBoardConfig(rows, columns, bombs, error));
+
             Label bombsLabel = new Label("Bombs");
+            bombsLabel.setMinWidth(100);
             Label rowsLabel = new Label("Rows");
+            rowsLabel.setMinWidth(100);
             Label columnsLabel = new Label("Columns");
+            columnsLabel.setMinWidth(100);
 
             VBox bombBox = new VBox(bombsLabel, bombs);
             bombBox.setSpacing(5);
@@ -90,28 +134,36 @@ class MenuPane extends VBox {
             columns.setMinWidth(30);
 
             HBox options = new HBox(rowBox, columnBox, bombBox);
+            VBox all = new VBox(error, options);
+            all.setSpacing(5);
+            all.setAlignment(Pos.CENTER);
             options.setSpacing(40);
-//            options.setStyle("-fx-border-color: BLUE; -fx-stroke-width: 4px");
             options.setMaxHeight(100);
 
             StackPane mainPane = new StackPane();
             mainPane.setAlignment(Pos.CENTER);
+            mainPane.getChildren().add(all);
             pane.getChildren().add(mainPane);
-            mainPane.getChildren().add(options);
 
-            options.translateYProperty().bind(pane.heightProperty().multiply(0.5));
-            options.translateXProperty().bind(pane.widthProperty().multiply(0.5));
+            mainPane.translateYProperty().bind(pane.heightProperty().multiply(0.5));
+            mainPane.translateXProperty().bind(pane.widthProperty().multiply(0.5));
 
-            alert.setOnCloseRequest(dialogEvent -> {
-                controller.startNewGame(new BoardConfiguration(
-                        Integer.parseInt(rows.getText()),
-                        Integer.parseInt(columns.getText()),
-                        Integer.parseInt(bombs.getText())
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isEmpty()) {
+                return;
+            }
+            if (result.get() == ButtonType.OK) {
+                if (validConfig) {
+                    BoardConfiguration configuration = new BoardConfiguration(
+                            Integer.parseInt(rows.getText()),
+                            Integer.parseInt(columns.getText()),
+                            Integer.parseInt(bombs.getText())
 
-                ));
-            });
-
-            alert.show();
+                    );
+                    controller.saveBoardConfig(configuration);
+                    controller.startNewGame(configuration);
+                }
+            }
         });
     }
 

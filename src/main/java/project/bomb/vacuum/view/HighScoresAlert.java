@@ -1,6 +1,5 @@
 package project.bomb.vacuum.view;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.Alert;
@@ -17,19 +16,25 @@ public class HighScoresAlert {
 
     private final Controller controller;
 
-    private static final Font FONT = new Font("COURIER NEW", 12);
+    private static Font font = new Font("", 12);
 
     public HighScoresAlert(Controller controller) {
         this.controller = controller;
     }
 
-
     public void displayHighScores() {
+        String OS = System.getProperty("os.name");
+        if (OS.contains("win") && !font.getFamily().equals("Courier New")) {
+            font = new Font("Courier New", 12);
+        } else if (OS.contains("Linux") && !font.getFamily().equals("DejaVu Sans Mono")) {
+            font = new Font("DejaVu Sans Mono", 12);
+        }
+
         HBox highScorePane = new HBox();
         for (DefaultBoard board : DefaultBoard.values()) {
             List<HighScore> scores = controller.getScores(board);
             Label title = new Label(" " + board.toString());
-            title.setFont(FONT);
+            title.setFont(font);
             VBox vBox = new VBox(title);
             vBox.getChildren().addAll(this.createScoreLabels(scores));
             vBox.setMinWidth(125);
@@ -56,7 +61,7 @@ public class HighScoresAlert {
             HighScore score = scores.get(i);
             String message = String.format("%2d. %-4s%s", (i + 1), score.getName(), Util.formatTime(score.getTime()));
             Label label = new Label(message);
-            label.setFont(FONT);
+            label.setFont(font);
             list.add(label);
         }
         return list;

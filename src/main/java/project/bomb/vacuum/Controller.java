@@ -78,6 +78,12 @@ public interface Controller {
     */
     BoardValidator getBoardValidator();
 
+    NameValidator getNameValidator();
+
+    void saveBoardConfig(BoardConfiguration configuration);
+
+    BoardConfiguration getSavedBoardConfig();
+
     // ##### Calls from the Model.
 
     /**

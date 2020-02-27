@@ -2,9 +2,15 @@ package project.bomb.vacuum.view;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -12,6 +18,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import project.bomb.vacuum.*;
 
@@ -127,11 +134,16 @@ public class GUI extends Application implements View {
         this.bombPane.updateTiles(tileStates);
     }
 
+    private volatile boolean nameOK = false;
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void gameOver(GameOverState gameOverState, long time, boolean newHighScore) {
+        nameOK = true;
+        NameValidator nameValidator = controller.getNameValidator();
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over");
         StringBuilder message = new StringBuilder();
@@ -145,23 +157,40 @@ public class GUI extends Application implements View {
         alert.setHeaderText(header.toString());
 
         TextField nameField = new TextField();
+        nameField.setPrefColumnCount(4);
+        Label errorLabel = new Label("TAG MUST BE 3 CHARACTERS LONG");
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setMinWidth(200);
+        errorLabel.setVisible(false);
+        nameField.textProperty().addListener((observable, oldValue, newValue) -> {
+            nameOK = nameValidator.validate(newValue);
+            errorLabel.setVisible(!nameOK);
+        });
         if (newHighScore) {
+            nameOK = false;
             Pane pane = alert.getDialogPane();
             Label nameLabel = new Label("Enter a 3 character tag");
             nameLabel.setMinWidth(200);
             nameField.setMinWidth(40);
-            VBox box = new VBox(nameLabel, nameField);
-//        box.setAlignment(Pos.CENTER);
+            VBox box = new VBox(errorLabel, nameLabel, nameField);
             box.setMinWidth(600);
             box.translateXProperty().bind(pane.widthProperty().multiply(0.6));
             box.translateYProperty().bind(pane.heightProperty().multiply(0.5));
             pane.getChildren().add(box);
         }
 
+        alert.getDialogPane().lookupButton(ButtonType.OK).addEventFilter(ActionEvent.ACTION, event -> {
+            if (!nameOK) {
+                event.consume();
+            }
+        });
+
         alert.setContentText(message.toString());
         alert.setOnCloseRequest(dialogEvent -> {
             if (newHighScore) {
-                controller.updateHighScore(nameField.getText());
+                if (nameOK) {
+                    controller.updateHighScore(nameField.getText());
+                }
             }
         });
         alert.setWidth(1900);

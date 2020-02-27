@@ -45,6 +45,12 @@ public interface Model {
      * @return a board validator 
     */
     BoardValidator getBoardValidator();
+
+    NameValidator getNameValidator();
+
+    void saveBoardConfig(BoardConfiguration configuration);
+
+    BoardConfiguration getSavedBoardConfig();
     
     /**
      * Gets the high scores for the specified type of default board.

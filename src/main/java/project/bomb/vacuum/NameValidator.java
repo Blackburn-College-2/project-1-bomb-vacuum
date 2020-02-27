@@ -10,5 +10,7 @@ package project.bomb.vacuum;
  * @author delaney.satchwell
  */
 public interface NameValidator {
+
+    boolean validate(String name);
     
 }

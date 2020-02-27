@@ -8,6 +8,7 @@ public class BasicModel implements Model {
     private final Timer timer;
     private final GameBoard gameBoard;
     private final HighScoreHandler highScoreHandler = new HighScoreHandler();
+    private final CustomConfigSaver configSaver = new CustomConfigSaver();
     private final Controller controller;
     private final BoardValidator validator = (boardConfig) -> {
         boolean validRows = false;
@@ -25,6 +26,7 @@ public class BasicModel implements Model {
         
         return validRows && validColumns && validBombs;
     };
+    private final NameValidator nameValidator = (name) -> name.length() == 3;
 
     private DefaultBoard currentBoard;
     private boolean timerRunning;
@@ -145,6 +147,21 @@ public class BasicModel implements Model {
     @Override
     public BoardValidator getBoardValidator() {
         return this.validator;
+    }
+
+    public NameValidator getNameValidator() {
+        return this.nameValidator;
+    }
+
+    @Override
+    public void saveBoardConfig(BoardConfiguration configuration) {
+        this.configSaver.saveConfig(configuration);
+    }
+
+    @Override
+    public BoardConfiguration getSavedBoardConfig() {
+        return this.configSaver.getSavedConfig();
+    }
 
     @Override
     public long getTime() {
