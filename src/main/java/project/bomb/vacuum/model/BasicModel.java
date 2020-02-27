@@ -9,6 +9,22 @@ public class BasicModel implements Model {
     private final GameBoard gameBoard;
     private final HighScoreHandler highScoreHandler = new HighScoreHandler();
     private final Controller controller;
+    private final BoardValidator validator = (boardConfig) -> {
+        boolean validRows = false;
+        boolean validColumns = false;
+        boolean validBombs = false;
+        if(boardConfig.rows >= 2 && boardConfig.rows <= 50){
+            validRows = true;
+        }
+        if (boardConfig.columns >= 2 && boardConfig.columns <= 50){
+            validColumns = true;
+        }
+        if (boardConfig.bombs >= 1 && boardConfig.bombs < (boardConfig.rows * boardConfig.columns)){
+            validBombs = true;
+        }
+        
+        return validRows && validColumns && validBombs;
+    };
 
     private DefaultBoard currentBoard;
     private boolean timerRunning;
@@ -17,7 +33,7 @@ public class BasicModel implements Model {
      * Creates the basic model and allows the controller to communicate with it
      *
      * @param controller the controller to connect the model and view of Bomb
-     *                   Vacuum
+     * Vacuum
      */
     public BasicModel(Controller controller) {
         this.controller = controller;
@@ -73,9 +89,9 @@ public class BasicModel implements Model {
     }
 
     /**
-     * @param rows    the number of rows to assign to the grid
+     * @param rows the number of rows to assign to the grid
      * @param columns the number of columns to assign to the grid
-     * @param bombs   the number of bombs to be placed on the grid
+     * @param bombs the number of bombs to be placed on the grid
      */
     private void newGame(int rows, int columns, int bombs) {
         this.timer.stop();
@@ -125,6 +141,10 @@ public class BasicModel implements Model {
     public void cheatToggled(boolean toggle) {
         this.gameBoard.cheatToggle(toggle);
     }
+
+    @Override
+    public BoardValidator getBoardValidator() {
+        return this.validator;
 
     @Override
     public long getTime() {
