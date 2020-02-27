@@ -2,6 +2,8 @@ package project.bomb.vacuum.view;
 
 import java.util.Optional;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
@@ -152,6 +154,11 @@ class MenuPane extends VBox {
             mainPane.translateYProperty().bind(pane.heightProperty().multiply(0.5));
             mainPane.translateXProperty().bind(pane.widthProperty().multiply(0.5));
 
+            alert.getDialogPane().lookupButton(ButtonType.OK).addEventFilter(ActionEvent.ACTION, event -> {
+                if (!validConfig) {
+                    event.consume();
+                }
+            });
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isEmpty()) {
                 return;
