@@ -2,14 +2,18 @@ package project.bomb.vacuum.view;
 
 import java.util.Optional;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import project.bomb.vacuum.*;
+import project.bomb.vacuum.BoardConfiguration;
+import project.bomb.vacuum.BoardValidator;
+import project.bomb.vacuum.Controller;
+import project.bomb.vacuum.DefaultBoard;
 
 /**
  * Holds the main options for the game.
