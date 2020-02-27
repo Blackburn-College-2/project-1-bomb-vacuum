@@ -5,6 +5,7 @@ import project.bomb.vacuum.*;
 
 public class BasicModel implements Model {
 
+    private final Timer timer;
     private final GameBoard gameBoard;
     private final HighScoreHandler highScoreHandler = new HighScoreHandler();
     private final Controller controller;
@@ -25,6 +26,9 @@ public class BasicModel implements Model {
         return validRows && validColumns && validBombs;
     };
 
+    private DefaultBoard currentBoard;
+    private boolean timerRunning;
+
     /**
      * Creates the basic model and allows the controller to communicate with it
      *
@@ -33,7 +37,8 @@ public class BasicModel implements Model {
      */
     public BasicModel(Controller controller) {
         this.controller = controller;
-        this.gameBoard = new GameBoard(controller);
+        this.gameBoard = new GameBoard(this);
+        this.timer = new BasicTimer(controller);
     }
 
     /**
@@ -41,6 +46,7 @@ public class BasicModel implements Model {
      */
     @Override
     public void newGame(DefaultBoard board) {
+        this.currentBoard = board;
         switch (board) {
             case EASY:
                 newGame(8, 8, 10);
@@ -59,7 +65,27 @@ public class BasicModel implements Model {
      */
     @Override
     public void newGame(BoardConfiguration boardConfiguration) {
+        this.currentBoard = this.isSameAsDefaultBoard(boardConfiguration);
         this.newGame(boardConfiguration.rows, boardConfiguration.columns, boardConfiguration.bombs);
+    }
+
+    private DefaultBoard isSameAsDefaultBoard(BoardConfiguration configuration) {
+        DefaultBoard board = null;
+        int rows = configuration.rows;
+        int columns = configuration.columns;
+        int bombs = configuration.bombs;
+
+        if (rows == columns) {
+            if (rows == 8 && bombs == 10) {
+                board = DefaultBoard.EASY;
+            } else if (rows == 16 && bombs == 40) {
+                board = DefaultBoard.INTERMEDIATE;
+            } else if (rows == 24 && bombs == 99) {
+                board = DefaultBoard.EXPERT;
+            }
+        }
+
+        return board;
     }
 
     /**
@@ -68,6 +94,8 @@ public class BasicModel implements Model {
      * @param bombs the number of bombs to be placed on the grid
      */
     private void newGame(int rows, int columns, int bombs) {
+        this.timer.stop();
+        this.timer.reset();
         this.gameBoard.newGame(rows, columns, bombs);
         this.controller.initializeBoard(rows, columns);
     }
@@ -76,7 +104,11 @@ public class BasicModel implements Model {
      * {@inheritDoc }
      */
     @Override
-    public void tileUpdatedByUser(TileAction tileAction, Position position) {  // middle?
+    public void tileUpdatedByUser(TileAction tileAction, Position position) {
+        if (!timerRunning) {
+            timerRunning = true;
+            this.timer.start();
+        }
         if (tileAction == TileAction.FLAG_TILE) {
             this.gameBoard.flagTile(position);
         } else if (tileAction == TileAction.REVEAL_TILE) {
@@ -113,6 +145,29 @@ public class BasicModel implements Model {
     @Override
     public BoardValidator getBoardValidator() {
         return this.validator;
+
+    @Override
+    public long getTime() {
+        return this.timer.getTime();
+    }
+
+    void gameOver(GameOverState gameOverState) {
+        timerRunning = false;
+        this.timer.stop();
+        if (this.currentBoard != null && gameOverState == GameOverState.WIN) {
+            boolean betterTime = this.highScoreHandler.isNewHighScore(this.currentBoard, this.timer.getTime());
+            this.controller.gameOver(gameOverState, betterTime);
+        } else {
+            this.controller.gameOver(gameOverState, false);
+        }
+    }
+
+    void setTileStatuses(TileStatus[] statuses) {
+        this.controller.setTileStatuses(statuses);
+    }
+
+    void setBombCounter(int bombs) {
+        this.controller.setBombCounter(bombs);
     }
 
 }

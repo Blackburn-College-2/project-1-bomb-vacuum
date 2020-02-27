@@ -58,4 +58,6 @@ public interface Model {
      * @param cheat true to show all bombs, false to hide bombs.
      */
     void cheatToggled(boolean cheat);
+
+    long getTime();
 }

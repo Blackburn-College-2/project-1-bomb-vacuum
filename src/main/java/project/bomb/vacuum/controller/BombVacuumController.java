@@ -17,7 +17,6 @@ public class BombVacuumController implements Controller {
 
     private final Model model;
     private View view;
-    private Timer timer = new BasicTimer(this);
     private boolean timerRunning = false;
     private boolean gameOver = false;
 
@@ -56,11 +55,10 @@ public class BombVacuumController implements Controller {
      * {@inheritDoc}
      */
     @Override
-    public void gameOver(GameOverState gameOverState) {
-        timer.stopTimer();
+    public void gameOver(GameOverState gameOverState, boolean newHighScore) {
         timerRunning = false;
         gameOver = true;
-        view.gameOver(gameOverState, this.timer.getTime());
+        view.gameOver(gameOverState, this.model.getTime(), newHighScore);
     }
 
     /**
@@ -103,7 +101,6 @@ public class BombVacuumController implements Controller {
     private void prepareNewGame() {
         timerRunning = false;
         gameOver = false;
-        timer.resetTimer();
     }
 
     /**
@@ -145,7 +142,7 @@ public class BombVacuumController implements Controller {
      */
     @Override
     public void startTimer() {
-        this.timer.startTimer();
+
     }
 
     /**
@@ -156,7 +153,7 @@ public class BombVacuumController implements Controller {
         if (this.defaultBoard == null) {
             throw new InvalidStateException("Not playing a default board configuration");
         }
-        this.model.updateHighScore(this.defaultBoard, name, timer.getTime());
+        this.model.updateHighScore(this.defaultBoard, name, this.model.getTime());
     }
 
     /**

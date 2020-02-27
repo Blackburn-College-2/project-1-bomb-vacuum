@@ -14,7 +14,7 @@ public interface Timer {
      * Consecutive calls to this method, without first stopping this
      * timer, SHOULD be ignored.
      */
-    void startTimer();
+    void start();
 
     /**
      * Stops tracking time.
@@ -22,7 +22,7 @@ public interface Timer {
      * If this timer has not been started, the call to this method
      * SHOULD be ignored.
      */
-    void stopTimer();
+    void stop();
 
     /**
      * SHOULD include the amount of time that is currently being
@@ -38,5 +38,5 @@ public interface Timer {
      * <p>
      * MAY also stop the timer.
      */
-    void resetTimer();
+    void reset();
 }

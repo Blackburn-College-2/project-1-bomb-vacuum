@@ -36,7 +36,7 @@ public interface View {
     /**
      * The user has won or lost, let them know!
      */
-    void gameOver(GameOverState gameOverState, long time);
+    void gameOver(GameOverState gameOverState, long time, boolean newHighScore);
 
     /**
      * Set the displayed time.
@@ -46,4 +46,6 @@ public interface View {
     void setTime(long time);
 
     void setBombCounter(int bombs);
+
+    String getUserName(int maxChars);
 }
