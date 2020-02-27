@@ -8,6 +8,7 @@ import project.bomb.vacuum.HighScore;
 
 public class HighScoreHandler {
 
+    private final static int SCORES_TO_KEEP = 5;
     private final static String SCORES_URL = "./src/main/java/project/bomb/vacuum/scores/";
     private final static String EASY_SCORES_URL = SCORES_URL + "easy.txt";
     private final static String INTERMEDIATE_SCORES_URL = SCORES_URL + "intermediate.txt";
@@ -15,7 +16,14 @@ public class HighScoreHandler {
 
     public void saveHighScore(DefaultBoard board, String name, long time) {
         String URL = this.selectScoreURL(board);
-        this.saveHighScore(URL, name, time);
+        List<HighScore> currentScores = this.loadSortedScores(board);
+
+        HighScore newScore = this.parseScore(String.format("%s|%d", name, time));
+        currentScores.add(newScore);
+        this.sortScores(currentScores);
+        currentScores = currentScores.subList(0, SCORES_TO_KEEP);
+
+        this.saveHighScores(currentScores, URL);
     }
 
     public List<HighScore> loadSortedScores(DefaultBoard board) {
@@ -26,13 +34,15 @@ public class HighScoreHandler {
         return scores;
     }
 
-    private void saveHighScore(String scoreURL, String name, long time) {
+    private void saveHighScores(List<HighScore> scores, String scoreURL) {
         File file = new File(scoreURL);
         BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new FileWriter(file, true));
-            String score = this.formatScore(name, time);
-            writer.append(score).append('\n');
+            writer = new BufferedWriter(new FileWriter(file));
+            for (HighScore scoreV : scores) {
+                String score = this.formatScore(scoreV.getName(), scoreV.getTime());
+                writer.append(score).append('\n');
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -67,10 +77,6 @@ public class HighScoreHandler {
         return String.format("%s|%d", name, time);
     }
 
-    private String[] parseScore(String rawScore) {
-        return rawScore.split("\\|");
-    }
-
     /**
      * Returns a list of HighScore objects loaded from a file.
      * <p>
@@ -93,7 +99,9 @@ public class HighScoreHandler {
         try {
             input = new BufferedReader(new FileReader(file));
             while ((score = input.readLine()) != null) {
-                rawScores.add(score);
+                if (score.length() > 0) {
+                    rawScores.add(score);
+                }
             }
             scores = parseScores(rawScores);
         } catch (FileNotFoundException e) {
@@ -125,15 +133,19 @@ public class HighScoreHandler {
     private List<HighScore> parseScores(List<String> rawScores) {
         List<HighScore> scores = new ArrayList<>();
 
-        String[] parts;
         for (String rawScore : rawScores) {
-            parts = this.parseScore(rawScore);
-            if (parts.length == 2) {
-                scores.add(new SimpleHighScore(parts[0], Long.parseLong(parts[1])));
-            }
+            scores.add(this.parseScore(rawScore));
         }
 
         return scores;
+    }
+
+    private HighScore parseScore(String rawScore) {
+        String[] parts = rawScore.split("\\|");
+        if (parts.length != 2) {
+            throw new RuntimeException("Invalid Raw Score");
+        }
+        return new SimpleHighScore(parts[0], Long.parseLong(parts[1]));
     }
 
     private void sortScores(List<HighScore> scores) {
@@ -147,5 +159,14 @@ public class HighScoreHandler {
                 return 0;
             }
         });
+    }
+
+    public boolean isNewHighScore(DefaultBoard board, long time) {
+        List<HighScore> scores = this.loadSortedScores(board);
+        boolean better = false;
+        for (HighScore score : scores) {
+            better = better || time < score.getTime();
+        }
+        return better;
     }
 }

@@ -7,13 +7,14 @@ import project.bomb.vacuum.*;
 
 public class GameBoard {
 
-    private final Controller controller;
+    private final BasicModel model;
     private Tile[][] board;
     private final List<Tile> bombs = new ArrayList<>();
     private final List<Tile> highlighted = new ArrayList<>();
     private final List<Tile> flagged = new ArrayList<>();
     private int tilesLeftToReveal;
     private boolean gameOver = false;
+    private boolean cheating = false;
     private Position previousHighlightLocation;
 
     private TileModifier recursiveReveal = tile -> {
@@ -26,6 +27,9 @@ public class GameBoard {
         this.tilesLeftToReveal--;
 
         if (tile.getValue() == TileValue.BOMB){
+            if (this.cheating) {
+                return;
+            }
             this.gameOver = true;
             return;
         }
@@ -48,12 +52,13 @@ public class GameBoard {
         tile.setValue(TileValue.values()[nextTileValue]);
     };
 
-    public GameBoard(Controller controller) {
-        this.controller = controller;
+    public GameBoard(BasicModel model) {
+        this.model = model;
     }
 
     public void newGame(int rows, int columns, int bombs) {
         this.gameOver = false;
+        this.cheating = false;
         this.bombs.clear();
         this.highlighted.clear();
         this.flagged.clear();
@@ -185,19 +190,20 @@ public class GameBoard {
             }
         }
 
-        this.controller.gameOver(gameOverState);
+        this.model.gameOver(gameOverState);
     }
 
     private void updateAndSetTileState(Tile tile, TileState state) {
         tile.setState(state);
-        this.controller.setTileStatuses(new TileStatus[]{new TileStatus(state, tile.position)});
+        this.updateTileState(tile, state);
     }
 
     private void updateTileState(Tile tile, TileState state) {
-        this.controller.setTileStatuses(new TileStatus[]{new TileStatus(state, tile.position)});
+        this.model.setTileStatuses(new TileStatus[]{new TileStatus(state, tile.position)});
     }
 
     public void cheatToggle(boolean toggle) {
+        this.cheating = toggle;
         // We lie
         if (toggle) {
             for (Tile bombTile : bombs) {
@@ -211,7 +217,7 @@ public class GameBoard {
     }
 
     private void updateBombCounter() {
-        this.controller.setBombCounter(this.bombs.size() - this.flagged.size());
+        this.model.setBombCounter(this.bombs.size() - this.flagged.size());
     }
 
 }

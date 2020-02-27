@@ -1,4 +1,4 @@
-package project.bomb.vacuum.controller;
+package project.bomb.vacuum.model;
 
 import project.bomb.vacuum.Controller;
 import project.bomb.vacuum.Timer;
@@ -19,7 +19,7 @@ class BasicTimer implements Timer {
     /**
      * Creates a timer object.
      * <p>
-     * The timer will not start until {@link BasicTimer#startTimer()}
+     * The timer will not start until {@link BasicTimer#start()}
      * is called.
      *
      * @param controller the controller that will be notified every second.
@@ -32,7 +32,7 @@ class BasicTimer implements Timer {
      * {@inheritDoc}
      */
     @Override
-    public void startTimer() {
+    public void start() {
         if (!running) {
             running = true;
             Thread timerThread = new Thread(() -> {
@@ -64,7 +64,7 @@ class BasicTimer implements Timer {
      * {@inheritDoc}
      */
     @Override
-    public void stopTimer() {
+    public void stop() {
         running = false;
     }
 
@@ -80,8 +80,8 @@ class BasicTimer implements Timer {
      * {@inheritDoc}
      */
     @Override
-    public void resetTimer() {
-        this.stopTimer();
+    public void reset() {
+        this.stop();
         controller.setTime(0);
         time = 0;
     }
