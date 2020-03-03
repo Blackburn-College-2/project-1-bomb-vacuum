@@ -30,6 +30,28 @@ public class BasicModel implements Model {
 
     private DefaultBoard currentBoard;
     private boolean timerRunning;
+    
+    /**
+     * Gets the minimum amount of bombs for a given board configuration
+     * 
+     * @param rows the number of rows on the board
+     * @param columns the number of columns on the board
+     * @return the min amount of bombs
+     */
+    public int getMinBombs(int rows, int columns){
+    return 1;
+    }
+    /**
+     * Gets the maximum amount of bombs for a given board configuration
+     * @param rows the number of rows on the board
+     * @param columns the number of columns on the board
+     * @return the max amount of bombs
+     */
+    
+    public int getMaxBombs(int rows, int columns){
+    return (rows * columns -1);
+    }
+    
 
     /**
      * Creates the basic model and allows the controller to communicate with it
