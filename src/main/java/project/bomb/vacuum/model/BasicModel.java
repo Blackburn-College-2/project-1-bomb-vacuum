@@ -14,50 +14,50 @@ public class BasicModel implements Model {
         boolean validRows = false;
         boolean validColumns = false;
         boolean validBombs = false;
-        if(boardConfig.rows >= 2 && boardConfig.rows <= 50){
+        if (boardConfig.rows >= 2 && boardConfig.rows <= 50) {
             validRows = true;
         }
-        if (boardConfig.columns >= 2 && boardConfig.columns <= 50){
+        if (boardConfig.columns >= 2 && boardConfig.columns <= 50) {
             validColumns = true;
         }
-        if (boardConfig.bombs >= 1 && boardConfig.bombs < (boardConfig.rows * boardConfig.columns)){
+        if (boardConfig.bombs >= 1 && boardConfig.bombs < (boardConfig.rows * boardConfig.columns)) {
             validBombs = true;
         }
-        
+
         return validRows && validColumns && validBombs;
     };
     private final NameValidator nameValidator = (name) -> name.length() == 3;
 
     private DefaultBoard currentBoard;
     private boolean timerRunning;
-    
+
     /**
      * Gets the minimum amount of bombs for a given board configuration
-     * 
-     * @param rows the number of rows on the board
+     *
+     * @param rows    the number of rows on the board
      * @param columns the number of columns on the board
      * @return the min amount of bombs
      */
-    public int getMinBombs(int rows, int columns){
-    return 1;
+    public int getMinBombs(int rows, int columns) {
+        return 1;
     }
+
     /**
      * Gets the maximum amount of bombs for a given board configuration
-     * @param rows the number of rows on the board
+     *
+     * @param rows    the number of rows on the board
      * @param columns the number of columns on the board
      * @return the max amount of bombs
      */
-    
-    public int getMaxBombs(int rows, int columns){
-    return (rows * columns -1);
+    public int getMaxBombs(int rows, int columns) {
+        return (rows * columns - 1);
     }
-    
 
     /**
      * Creates the basic model and allows the controller to communicate with it
      *
      * @param controller the controller to connect the model and view of Bomb
-     * Vacuum
+     *                   Vacuum
      */
     public BasicModel(Controller controller) {
         this.controller = controller;
@@ -113,9 +113,9 @@ public class BasicModel implements Model {
     }
 
     /**
-     * @param rows the number of rows to assign to the grid
+     * @param rows    the number of rows to assign to the grid
      * @param columns the number of columns to assign to the grid
-     * @param bombs the number of bombs to be placed on the grid
+     * @param bombs   the number of bombs to be placed on the grid
      */
     private void newGame(int rows, int columns, int bombs) {
         this.timer.stop();
@@ -146,8 +146,8 @@ public class BasicModel implements Model {
      * {@inheritDoc }
      */
     @Override
-    public void updateHighScore(DefaultBoard board, String name, long time) {
-        this.highScoreHandler.saveHighScore(board, name, time);
+    public void updateHighScore(String name, long time) {
+        this.highScoreHandler.saveHighScore(this.currentBoard, name, time);
     }
 
     /**
@@ -156,6 +156,14 @@ public class BasicModel implements Model {
     @Override
     public List<HighScore> getScores(DefaultBoard board) {
         return this.highScoreHandler.loadSortedScores(board);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<HighScore> getScores() {
+        return this.getScores(this.currentBoard);
     }
 
     /**
@@ -173,6 +181,16 @@ public class BasicModel implements Model {
 
     public NameValidator getNameValidator() {
         return this.nameValidator;
+    }
+
+    @Override
+    public BoardConfiguration getMinBoardConfig() {
+        return new BoardConfiguration(2, 2, 1);
+    }
+
+    @Override
+    public BoardConfiguration getMaxBoardConfig() {
+        return new BoardConfiguration(50, 50, (50 * 50) - 1);
     }
 
     @Override
@@ -201,12 +219,28 @@ public class BasicModel implements Model {
         }
     }
 
-    void setTileStatuses(TileStatus[] statuses) {
-        this.controller.setTileStatuses(statuses);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addBombsRemainingListener(ChangeListener<Integer> listener) {
+        this.gameBoard.addBombsRemainingListener(listener);
     }
 
-    void setBombCounter(int bombs) {
-        this.controller.setBombCounter(bombs);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addBoardListener(BoardListener listener) {
+        this.gameBoard.addBoardListener(listener);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean usingDefaultBoard() {
+        return this.currentBoard != null;
     }
 
 }

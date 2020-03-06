@@ -20,8 +20,6 @@ public class BombVacuumController implements Controller {
     private boolean timerRunning = false;
     private boolean gameOver = false;
 
-    private DefaultBoard defaultBoard;
-
     /**
      * Starts the game
      */
@@ -47,14 +45,6 @@ public class BombVacuumController implements Controller {
      * {@inheritDoc}
      */
     @Override
-    public void setTileStatuses(TileStatus[] statuses) {
-        view.setTileStatuses(statuses);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void gameOver(GameOverState gameOverState, boolean newHighScore) {
         timerRunning = false;
         gameOver = true;
@@ -67,6 +57,16 @@ public class BombVacuumController implements Controller {
     @Override
     public void setTime(long time) {
         view.setTime(time);
+    }
+
+    @Override
+    public int getMaxBombs(int rows, int columns) {
+        return this.model.getMaxBombs(rows, columns);
+    }
+
+    @Override
+    public int getMinBombs(int rows, int columns) {
+        return this.model.getMinBombs(rows, columns);
     }
 
     // ##### Called By View #####
@@ -83,7 +83,6 @@ public class BombVacuumController implements Controller {
      */
     @Override
     public void startNewGame(DefaultBoard board) {
-        this.defaultBoard = board;
         this.prepareNewGame();
         model.newGame(board);
     }
@@ -93,7 +92,6 @@ public class BombVacuumController implements Controller {
      */
     @Override
     public void startNewGame(BoardConfiguration boardConfiguration) {
-        this.defaultBoard = null;
         this.prepareNewGame();
         model.newGame(boardConfiguration);
     }
@@ -122,11 +120,7 @@ public class BombVacuumController implements Controller {
      */
     @Override
     public List<HighScore> getScores() {
-        if (defaultBoard != null) {
-            return model.getScores(defaultBoard);
-        } else {
-            return null;
-        }
+        return this.model.usingDefaultBoard() ? model.getScores() : null;
     }
 
     /**
@@ -150,10 +144,10 @@ public class BombVacuumController implements Controller {
      */
     @Override
     public void updateHighScore(String name) {
-        if (this.defaultBoard == null) {
+        if (!this.model.usingDefaultBoard()) {
             throw new InvalidStateException("Not playing a default board configuration");
         }
-        this.model.updateHighScore(this.defaultBoard, name, this.model.getTime());
+        this.model.updateHighScore(name, this.model.getTime());
     }
 
     /**
@@ -162,11 +156,6 @@ public class BombVacuumController implements Controller {
     @Override
     public void cheatToggled(boolean cheat) {
         model.cheatToggled(cheat);
-    }
-
-    @Override
-    public void setBombCounter(int bombs) {
-        this.view.setBombCounter(bombs);
     }
 
     @Override
@@ -187,5 +176,23 @@ public class BombVacuumController implements Controller {
     @Override
     public BoardConfiguration getSavedBoardConfig() {
         return this.model.getSavedBoardConfig();
+    }
+
+    @Override
+    public void addBombsRemainingListener(ChangeListener<Integer> listener) {
+        this.model.addBombsRemainingListener(listener);
+    }
+
+    @Override
+    public void addBoardListener(BoardListener listener) {
+        this.model.addBoardListener(listener);
+    }
+
+    public BoardConfiguration getMinBoardConfig() {
+        return this.model.getMinBoardConfig();
+    }
+
+    public BoardConfiguration getMaxBoardConfig() {
+        return this.model.getMaxBoardConfig();
     }
 }

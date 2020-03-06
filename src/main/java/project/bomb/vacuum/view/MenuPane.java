@@ -53,6 +53,54 @@ class MenuPane extends VBox {
 
     private void testBoardConfig(TextField rows, TextField columns, TextField bombs, Label error) {
         BoardValidator validator = controller.getBoardValidator();
+        BoardConfiguration min = controller.getMinBoardConfig();
+        BoardConfiguration max = controller.getMaxBoardConfig();
+
+        try {
+            if (Integer.parseInt(rows.getText()) < min.rows) {
+                rows.setText(String.valueOf(min.rows));
+            }
+            if (Integer.parseInt(rows.getText()) > max.rows) {
+                rows.setText(String.valueOf(max.rows));
+            }
+        } catch (Exception e) {
+            if (rows.getText().length() != 0) {
+                rows.setText(String.valueOf(min.rows));
+            }
+        }
+
+        try {
+            if (Integer.parseInt(columns.getText()) < min.columns) {
+                columns.setText(String.valueOf(min.columns));
+            }
+            if (Integer.parseInt(columns.getText()) > max.columns) {
+                columns.setText(String.valueOf(max.columns));
+            }
+        } catch (Exception e) {
+            if (columns.getText().length() != 0) {
+                columns.setText(String.valueOf(max.columns));
+            }
+        }
+
+        try {
+            int minBombs = controller.getMinBombs(Integer.parseInt(rows.getText()), Integer.parseInt(columns.getText()));
+            int maxBombs = controller.getMaxBombs(Integer.parseInt(rows.getText()), Integer.parseInt(columns.getText()));
+            if (Integer.parseInt(bombs.getText()) < minBombs) {
+                bombs.setText(String.valueOf(minBombs));
+            }
+            if (Integer.parseInt(bombs.getText()) > maxBombs) {
+                bombs.setText(String.valueOf(maxBombs));
+            }
+        } catch (Exception e) {
+//            try {
+//                int minBombs = controller.getMinBombs(Integer.parseInt(rows.getText()), Integer.parseInt(rows.getText()));
+//                bombs.setText(String.valueOf(minBombs));
+//            } catch (Exception ex) {
+//                // ignore
+//            }
+//            bombs.setText(String.valueOf(min.bombs));
+        }
+
         boolean isValid = false;
         try {
             isValid = validator.validate(new BoardConfiguration(

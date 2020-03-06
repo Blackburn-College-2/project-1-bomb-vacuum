@@ -73,7 +73,7 @@ public class ViewTile extends StackPane {
     void flag(boolean flag) {
         if (flag) {
             this.highlight(false);
-            this.tile.setText("F");
+            this.tile.setText("?");
         } else {
             this.tile.setText("");
         }

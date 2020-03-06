@@ -84,6 +84,17 @@ public interface Controller {
 
     BoardConfiguration getSavedBoardConfig();
 
+    /**
+     * @param listener the listener to be notified when bombs remaining changes.
+     */
+    void addBombsRemainingListener(ChangeListener<Integer> listener);
+
+    /**
+     *
+     * @param listener the listener to be notified when tiles are changed.
+     */
+    void addBoardListener(BoardListener listener);
+
     // ##### Calls from the Model.
 
     /**
@@ -95,13 +106,6 @@ public interface Controller {
      * @param columns how many columns in the tile grid.
      */
     void initializeBoard(int rows, int columns);
-
-    /**
-     * Notifies the Controller of tiles that have (maybe) changed.
-     *
-     * @param statuses the status of tiles that have been updated.
-     */
-    void setTileStatuses(TileStatus[] statuses);
 
     /**
      * Signals that the game has ended.
@@ -117,6 +121,12 @@ public interface Controller {
      */
     void setTime(long time);
 
-    void setBombCounter(int bombs);
+    int getMaxBombs(int rows, int columns);
+
+    int getMinBombs(int rows, int columns);
+
+    BoardConfiguration getMinBoardConfig();
+
+    BoardConfiguration getMaxBoardConfig();
 
 }

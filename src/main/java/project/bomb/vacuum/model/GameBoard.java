@@ -8,6 +8,8 @@ import project.bomb.vacuum.*;
 public class GameBoard {
 
     private final BasicModel model;
+    private final List<ChangeListener<Integer>> bombsRemainingListeners = new ArrayList<>();
+    private final List<BoardListener> boardListeners = new ArrayList<>();
     private Tile[][] board;
     private final List<Tile> bombs = new ArrayList<>();
     private final List<Tile> highlighted = new ArrayList<>();
@@ -202,7 +204,9 @@ public class GameBoard {
     }
 
     private void updateTileState(Tile tile, TileState state) {
-        this.model.setTileStatuses(new TileStatus[]{new TileStatus(state, tile.position)});
+        for (BoardListener listener : this.boardListeners) {
+            listener.updateTileStatuses(new TileStatus[]{new TileStatus(state, tile.position)});
+        }
     }
 
     public void cheatToggle(boolean toggle) {
@@ -219,8 +223,20 @@ public class GameBoard {
         }
     }
 
+    public void addBombsRemainingListener(ChangeListener<Integer> listener) {
+        this.bombsRemainingListeners.add(listener);
+    }
+
+    public void addBoardListener(BoardListener listener) {
+        this.boardListeners.add(listener);
+    }
+
     private void updateBombCounter() {
-        this.model.setBombCounter(this.bombs.size() - this.flagged.size());
+        int bombs = this.bombs.size() - this.flagged.size();
+        bombs = Math.max(bombs, 0);
+        for (ChangeListener<Integer> listener : this.bombsRemainingListeners) {
+            listener.onChange(0, bombs);
+        }
     }
 
 }

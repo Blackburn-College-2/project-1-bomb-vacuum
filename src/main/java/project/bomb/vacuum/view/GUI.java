@@ -72,9 +72,15 @@ public class GUI extends Application implements View {
         stage.setResizable(false);
         stage.show();
 
+        connectModel();
+
         Thread game = new Thread(GUI.startup);
         game.setDaemon(true);
         game.start();
+    }
+
+    private void connectModel() {
+        GUI.controller.addBombsRemainingListener(this.bombCounter.getChangeListener());
     }
 
     private void setKeyboardHandler(Scene scene) {
@@ -96,6 +102,7 @@ public class GUI extends Application implements View {
             double heightPadding = 70;
             // BombPane constructor is columns, rows....
             this.bombPane = new BombPane(controller, columns, rows);
+            GUI.controller.addBoardListener(this.bombPane.getBoardListener());
             mainPane.setCenter(this.bombPane);
 
             double screenWidth = this.bombPane.getMinWidth() + MenuPane.BUTTON_WIDTH + widthPadding;
@@ -124,14 +131,6 @@ public class GUI extends Application implements View {
                 hotfixThread.start();
             }
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTileStatuses(TileStatus[] tileStates) {
-        this.bombPane.updateTiles(tileStates);
     }
 
     private volatile boolean nameOK = false;
@@ -196,16 +195,6 @@ public class GUI extends Application implements View {
         alert.setWidth(1900);
 
         alert.show();
-    }
-
-    @Override
-    public void setBombCounter(int bombs) {
-        this.bombCounter.setCounter(bombs);
-    }
-
-    @Override
-    public String getUserName(int maxChars) {
-        return null;
     }
 
     /**

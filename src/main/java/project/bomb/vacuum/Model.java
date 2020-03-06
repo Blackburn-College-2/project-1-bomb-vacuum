@@ -34,28 +34,30 @@ public interface Model {
     void newGame(BoardConfiguration boardConfiguration);
 
     /**
-     * @param board the board played.
-     * @param name  the player's name.
-     * @param time  how long in milliseconds the game took.
+     * @param name the player's name.
+     * @param time how long in milliseconds the game took.
      */
-    void updateHighScore(DefaultBoard board, String name, long time);
+    void updateHighScore(String name, long time);
 
-    
     /**
-     * @return a board validator 
-    */
+     * @return a board validator
+     */
     BoardValidator getBoardValidator();
 
     NameValidator getNameValidator();
-    
+
+    BoardConfiguration getMinBoardConfig();
+
+    BoardConfiguration getMaxBoardConfig();
+
     int getMaxBombs(int rows, int columns);
-    
+
     int getMinBombs(int rows, int columns);
 
     void saveBoardConfig(BoardConfiguration configuration);
 
     BoardConfiguration getSavedBoardConfig();
-    
+
     /**
      * Gets the high scores for the specified type of default board.
      *
@@ -65,9 +67,31 @@ public interface Model {
     List<HighScore> getScores(DefaultBoard board);
 
     /**
+     * Gets the high scores for the current default board.
+     *
+     * @return the scores for the current default board.
+     */
+    List<HighScore> getScores();
+
+    /**
      * @param cheat true to show all bombs, false to hide bombs.
      */
     void cheatToggled(boolean cheat);
 
     long getTime();
+
+    /**
+     * @param listener the listener to be notified when bombs remaining changes.
+     */
+    void addBombsRemainingListener(ChangeListener<Integer> listener);
+
+    /**
+     * @param listener the listener to be notified when tiles are changed.
+     */
+    void addBoardListener(BoardListener listener);
+
+    /**
+     * @return if a default board configuration is currently being used,
+     */
+    boolean usingDefaultBoard();
 }
