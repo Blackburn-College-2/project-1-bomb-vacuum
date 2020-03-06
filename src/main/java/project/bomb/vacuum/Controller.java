@@ -1,5 +1,7 @@
 package project.bomb.vacuum;
 
+import java.util.List;
+
 /**
  * Handles the communications between a {@link View} and {@link Model}
  */
@@ -39,14 +41,14 @@ public interface Controller {
      *
      * @return the high scores for the board.
      */
-    HighScores getScores();
+    List<HighScore> getScores();
 
     /**
      * Gets the high scores for the specified type of default board.
      *
      * @return the high scores for the specified board.
      */
-    HighScores getScores(DefaultBoard board);
+    List<HighScore> getScores(DefaultBoard board);
 
     /**
      * @param cheat true to show all bombs, false to hide bombs.
@@ -70,6 +72,28 @@ public interface Controller {
      * @param name the name of the player.
      */
     void updateHighScore(String name);
+    
+    /**
+     * @return a board validator 
+    */
+    BoardValidator getBoardValidator();
+
+    NameValidator getNameValidator();
+
+    void saveBoardConfig(BoardConfiguration configuration);
+
+    BoardConfiguration getSavedBoardConfig();
+
+    /**
+     * @param listener the listener to be notified when bombs remaining changes.
+     */
+    void addBombsRemainingListener(ChangeListener<Integer> listener);
+
+    /**
+     *
+     * @param listener the listener to be notified when tiles are changed.
+     */
+    void addBoardListener(BoardListener listener);
 
     // ##### Calls from the Model.
 
@@ -84,18 +108,11 @@ public interface Controller {
     void initializeBoard(int rows, int columns);
 
     /**
-     * Notifies the Controller of tiles that have (maybe) changed.
-     *
-     * @param statuses the status of tiles that have been updated.
-     */
-    void setTileStatuses(TileStatus[] statuses);
-
-    /**
      * Signals that the game has ended.
      *
      * @param gameOverState if the game is a win or loss.
      */
-    void gameOver(GameOverState gameOverState);
+    void gameOver(GameOverState gameOverState, boolean newHighScore);
 
     /**
      * Sets the time displayed.
@@ -103,5 +120,13 @@ public interface Controller {
      * @param time the time to display.
      */
     void setTime(long time);
+
+    int getMaxBombs(int rows, int columns);
+
+    int getMinBombs(int rows, int columns);
+
+    BoardConfiguration getMinBoardConfig();
+
+    BoardConfiguration getMaxBoardConfig();
 
 }

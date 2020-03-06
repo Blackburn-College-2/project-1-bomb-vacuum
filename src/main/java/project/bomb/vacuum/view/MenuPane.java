@@ -1,30 +1,37 @@
 package project.bomb.vacuum.view;
 
+import java.util.Optional;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import project.bomb.vacuum.*;
+import javafx.scene.paint.Color;
+import project.bomb.vacuum.BoardConfiguration;
+import project.bomb.vacuum.BoardValidator;
+import project.bomb.vacuum.Controller;
+import project.bomb.vacuum.DefaultBoard;
 
 /**
  * Holds the main options for the game.
  */
 class MenuPane extends VBox {
 
-    static final double BUTTON_WIDTH = 80;
+    static final double BUTTON_WIDTH = 110;
     private Controller controller;
+    private final HighScoresAlert highScoresAlert;
 
     /**
      * @param controller the {@link Controller} to link to.
      */
     MenuPane(Controller controller) {
         this.controller = controller;
+        highScoresAlert = new HighScoresAlert(controller);
         Button easyButton = new Button("Easy");
         Button hardButton = new Button("Hard");
         Button mediumButton = new Button("Medium");
@@ -44,11 +51,76 @@ class MenuPane extends VBox {
         this.setHighScoresActionAndSize(highScoresButton);
     }
 
+    private void testBoardConfig(TextField rows, TextField columns, TextField bombs, Label error) {
+        BoardValidator validator = controller.getBoardValidator();
+        BoardConfiguration min = controller.getMinBoardConfig();
+        BoardConfiguration max = controller.getMaxBoardConfig();
+
+        try {
+            if (Integer.parseInt(rows.getText()) < min.rows) {
+                rows.setText(String.valueOf(min.rows));
+            }
+            if (Integer.parseInt(rows.getText()) > max.rows) {
+                rows.setText(String.valueOf(max.rows));
+            }
+        } catch (Exception e) {
+            if (rows.getText().length() != 0) {
+                rows.setText(String.valueOf(min.rows));
+            }
+        }
+
+        try {
+            if (Integer.parseInt(columns.getText()) < min.columns) {
+                columns.setText(String.valueOf(min.columns));
+            }
+            if (Integer.parseInt(columns.getText()) > max.columns) {
+                columns.setText(String.valueOf(max.columns));
+            }
+        } catch (Exception e) {
+            if (columns.getText().length() != 0) {
+                columns.setText(String.valueOf(max.columns));
+            }
+        }
+
+        try {
+            int minBombs = controller.getMinBombs(Integer.parseInt(rows.getText()), Integer.parseInt(columns.getText()));
+            int maxBombs = controller.getMaxBombs(Integer.parseInt(rows.getText()), Integer.parseInt(columns.getText()));
+            if (Integer.parseInt(bombs.getText()) < minBombs) {
+                bombs.setText(String.valueOf(minBombs));
+            }
+            if (Integer.parseInt(bombs.getText()) > maxBombs) {
+                bombs.setText(String.valueOf(maxBombs));
+            }
+        } catch (Exception e) {
+//            try {
+//                int minBombs = controller.getMinBombs(Integer.parseInt(rows.getText()), Integer.parseInt(rows.getText()));
+//                bombs.setText(String.valueOf(minBombs));
+//            } catch (Exception ex) {
+//                // ignore
+//            }
+//            bombs.setText(String.valueOf(min.bombs));
+        }
+
+        boolean isValid = false;
+        try {
+            isValid = validator.validate(new BoardConfiguration(
+                    Integer.parseInt(rows.getText()),
+                    Integer.parseInt(columns.getText()),
+                    Integer.parseInt(bombs.getText()))
+            );
+        } catch (Exception ex) {
+            // ignore
+        }
+        validConfig = isValid;
+        Platform.runLater(() -> {
+            error.setVisible(!validConfig);
+        });
+    }
+
     private void setButtonActionAndSize(Button button, DefaultBoard board) {
         button.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
                 controller.startNewGame(board);
-                GUI.board = board;
             }
         });
         this.setButtonWidth(button);
@@ -56,14 +128,12 @@ class MenuPane extends VBox {
 
     private void setHighScoresActionAndSize(Button button) {
         button.setOnMouseClicked(mouseEvent -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText(renderHighScores());
-            alert.setHeaderText("High Scores");
-            alert.setTitle("High Scores");
-            alert.show();
+            this.highScoresAlert.displayHighScores();
         });
         this.setButtonWidth(button);
     }
+
+    private volatile boolean validConfig = false;
 
     private void setCustomActionAndSize(Button button) {
         this.setButtonWidth(button);
@@ -72,14 +142,36 @@ class MenuPane extends VBox {
             alert.setHeaderText("Create Custom Game");
             alert.setTitle("Create Custom Game");
             Pane pane = alert.getDialogPane();
+            pane.setMinHeight(200);
 
+            BoardConfiguration prevConfig = controller.getSavedBoardConfig();
+
+            Label error = new Label("Invalid Board Config");
+            error.setTextFill(Color.RED);
+            error.setVisible(true);
+            error.setMinWidth(240);
             TextField bombs = new TextField();
             TextField rows = new TextField();
             TextField columns = new TextField();
 
+            if (prevConfig != null) {
+                rows.setText("" + prevConfig.rows);
+                columns.setText("" + prevConfig.columns);
+                bombs.setText("" + prevConfig.bombs);
+            }
+
+            testBoardConfig(rows, columns, bombs, error);
+
+            rows.textProperty().addListener((observable, oldValue, newValue) -> testBoardConfig(rows, columns, bombs, error));
+            columns.textProperty().addListener((observable, oldValue, newValue) -> testBoardConfig(rows, columns, bombs, error));
+            bombs.textProperty().addListener((observable, oldValue, newValue) -> testBoardConfig(rows, columns, bombs, error));
+
             Label bombsLabel = new Label("Bombs");
+            bombsLabel.setMinWidth(100);
             Label rowsLabel = new Label("Rows");
+            rowsLabel.setMinWidth(100);
             Label columnsLabel = new Label("Columns");
+            columnsLabel.setMinWidth(100);
 
             VBox bombBox = new VBox(bombsLabel, bombs);
             bombBox.setSpacing(5);
@@ -96,29 +188,41 @@ class MenuPane extends VBox {
             columns.setMinWidth(30);
 
             HBox options = new HBox(rowBox, columnBox, bombBox);
+            VBox all = new VBox(error, options);
+            all.setSpacing(5);
+            all.setAlignment(Pos.CENTER);
             options.setSpacing(40);
-//            options.setStyle("-fx-border-color: BLUE; -fx-stroke-width: 4px");
             options.setMaxHeight(100);
 
             StackPane mainPane = new StackPane();
             mainPane.setAlignment(Pos.CENTER);
+            mainPane.getChildren().add(all);
             pane.getChildren().add(mainPane);
-            mainPane.getChildren().add(options);
 
-            options.translateYProperty().bind(pane.heightProperty().multiply(0.5));
-            options.translateXProperty().bind(pane.widthProperty().multiply(0.5));
+            mainPane.translateYProperty().bind(pane.heightProperty().multiply(0.5));
+            mainPane.translateXProperty().bind(pane.widthProperty().multiply(0.5));
 
-            alert.setOnCloseRequest(dialogEvent -> {
-                controller.startNewGame(new BoardConfiguration(
-                        Integer.parseInt(rows.getText()),
-                        Integer.parseInt(columns.getText()),
-                        Integer.parseInt(bombs.getText())
-
-                ));
-                GUI.board = null;
+            alert.getDialogPane().lookupButton(ButtonType.OK).addEventFilter(ActionEvent.ACTION, event -> {
+                if (!validConfig) {
+                    event.consume();
+                }
             });
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isEmpty()) {
+                return;
+            }
+            if (result.get() == ButtonType.OK) {
+                if (validConfig) {
+                    BoardConfiguration configuration = new BoardConfiguration(
+                            Integer.parseInt(rows.getText()),
+                            Integer.parseInt(columns.getText()),
+                            Integer.parseInt(bombs.getText())
 
-            alert.show();
+                    );
+                    controller.saveBoardConfig(configuration);
+                    controller.startNewGame(configuration);
+                }
+            }
         });
     }
 
@@ -126,30 +230,6 @@ class MenuPane extends VBox {
         button.setMinWidth(BUTTON_WIDTH);
         button.setMaxWidth(BUTTON_WIDTH);
         button.setPrefWidth(BUTTON_WIDTH);
-    }
-
-    private String renderHighScores() {
-        StringBuilder sb = new StringBuilder();
-        HighScores easyScores = controller.getScores(DefaultBoard.EASY);
-        HighScores mediumScores = controller.getScores(DefaultBoard.INTERMEDIATE);
-        HighScores hardScores = controller.getScores(DefaultBoard.EXPERT);
-        sb.append(String.format("%-27s%-22s%-20s", "Easy", "Medium", "Hard")).append('\n');
-        sb.append(formatRow(easyScores.getFirst(), mediumScores.getFirst(), hardScores.getFirst(), "1. ")).append('\n');
-        sb.append(formatRow(easyScores.getSecond(), mediumScores.getSecond(), hardScores.getSecond(), "2. ")).append('\n');
-        sb.append(formatRow(easyScores.getThird(), mediumScores.getThird(), hardScores.getThird(), "3. ")).append('\n');
-        sb.append(formatRow(easyScores.getFourth(), mediumScores.getFourth(), hardScores.getFourth(), "4. ")).append('\n');
-        sb.append(formatRow(easyScores.getFifth(), mediumScores.getFifth(), hardScores.getFifth(), "5. ")).append('\n');
-
-        return sb.toString();
-    }
-
-    private String formatRow(HighScore easy, HighScore medium, HighScore hard, String title) {
-        int spacing = -20;
-        return String.format("%" + spacing + "s%" + spacing + "s%" + spacing + "s", formatScore(easy, title), formatScore(medium, title), formatScore(hard, title));
-    }
-
-    private String formatScore(HighScore score, String title) {
-        return String.format(title + "%-4s%s", score.getName(), TimerPane.formatTime(score.getTime()));
     }
 
 }

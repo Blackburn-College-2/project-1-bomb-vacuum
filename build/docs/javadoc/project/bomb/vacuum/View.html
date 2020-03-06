@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":1,"i2":6,"i3":6,"i4":6,"i5":1};
+var data = {"i0":6,"i1":1,"i2":6,"i3":6,"i4":1};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -176,8 +176,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#gameOver(project.bomb.vacuum.GameOverState,long)">gameOver</a></span>&#8203;(<a href="GameOverState.html" title="enum in project.bomb.vacuum">GameOverState</a>&nbsp;gameOverState,
-        long&nbsp;time)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#gameOver(project.bomb.vacuum.GameOverState,long,boolean)">gameOver</a></span>&#8203;(<a href="GameOverState.html" title="enum in project.bomb.vacuum">GameOverState</a>&nbsp;gameOverState,
+        long&nbsp;time,
+        boolean&nbsp;newHighScore)</code></th>
 <td class="colLast">
 <div class="block">The user has won or lost, let them know!</div>
 </td>
@@ -197,19 +198,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTileStatuses(project.bomb.vacuum.TileStatus%5B%5D)">setTileStatuses</a></span>&#8203;(<a href="TileStatus.html" title="class in project.bomb.vacuum">TileStatus</a>[]&nbsp;tileStates)</code></th>
-<td class="colLast">
-<div class="block">Sets the state of the specified tiles.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTime(long)">setTime</a></span>&#8203;(long&nbsp;time)</code></th>
 <td class="colLast">
 <div class="block">Set the displayed time.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>static void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setView(project.bomb.vacuum.View)">setView</a></span>&#8203;(<a href="View.html" title="interface in project.bomb.vacuum">View</a>&nbsp;view)</code></th>
 <td class="colLast">&nbsp;</td>
@@ -285,28 +279,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="setTileStatuses(project.bomb.vacuum.TileStatus[])">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setTileStatuses</h4>
-<pre class="methodSignature">void&nbsp;setTileStatuses&#8203;(<a href="TileStatus.html" title="class in project.bomb.vacuum">TileStatus</a>[]&nbsp;tileStates)</pre>
-<div class="block">Sets the state of the specified tiles.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>tileStates</code> - the tiles that need updated in the view.</dd>
-</dl>
-</li>
-</ul>
-<a id="gameOver(project.bomb.vacuum.GameOverState,long)">
+<a id="gameOver(project.bomb.vacuum.GameOverState,long,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>gameOver</h4>
 <pre class="methodSignature">void&nbsp;gameOver&#8203;(<a href="GameOverState.html" title="enum in project.bomb.vacuum">GameOverState</a>&nbsp;gameOverState,
-              long&nbsp;time)</pre>
+              long&nbsp;time,
+              boolean&nbsp;newHighScore)</pre>
 <div class="block">The user has won or lost, let them know!</div>
 </li>
 </ul>

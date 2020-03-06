@@ -2,22 +2,22 @@ package project.bomb.vacuum.view;
 
 import java.util.HashMap;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
+import project.bomb.vacuum.BoardListener;
 import project.bomb.vacuum.Controller;
 import project.bomb.vacuum.Position;
 import project.bomb.vacuum.TileStatus;
 
 class BombPane extends GridPane {
 
-    private final Controller controller;
     private HashMap<String, ViewTile> tiles = new HashMap<>();
-
-    private static final int TILE_SIZE = 25;
+    private BoardListener listener = this::updateTiles;
+    private static final int TILE_SIZE = 30;
 
     BombPane(Controller controller, int columns, int rows) {
-        this.controller = controller;
         populateGrid(controller, columns, rows);
 
         double height = (BombPane.TILE_SIZE * rows);
@@ -28,19 +28,26 @@ class BombPane extends GridPane {
         this.setPrefSize(width, height);
     }
 
+    /**
+     * Populates the displayed grid with buttons for tiles.
+     *
+     * @param controller the controller to use.
+     * @param columns    the number of columns.
+     * @param rows       the number of rows.
+     */
     private void populateGrid(Controller controller, int columns, int rows) {
         for (int column = 0; column < columns; column++) {
             for (int row = 0; row < rows; row++) {
-                ViewTile viewTile = new ViewTile(TILE_SIZE, TILE_SIZE);
+                ViewTile viewTile = new ViewTile(controller, row, column, TILE_SIZE);
                 this.tiles.put(convertPositionToKey(row, column), viewTile);
                 this.add(viewTile, column, row, 1, 1);
-                placeButton(controller, row, column);
+                placeButton(row, column);
             }
         }
     }
 
-    private void placeButton(Controller controller, int row, int column) {
-        TileButton tile = new TileButton(controller, row, column, TILE_SIZE);
+    private void placeButton(int row, int column) {
+        Button tile = new Button();
         this.setTile(tile, row, column);
     }
 
@@ -50,27 +57,23 @@ class BombPane extends GridPane {
         this.setTile(tile, row, column);
     }
 
-    private void setTile(Region tile, int row, int column) {
-        this.tiles.get(convertPositionToKey(row, column)).setTile(tile);
-    }
-
-    private String convertPositionToKey(Position position) {
-        return convertPositionToKey(position.row, position.column);
+    private void setTile(Labeled tile, int row, int column) {
+        ViewTile viewTile = this.tiles.get(convertPositionToKey(row, column));
+        viewTile.highlight(false);
+        viewTile.setTile(tile);
     }
 
     private String convertPositionToKey(int row, int column) {
         return String.format("%d-%d", row, column);
     }
 
-    void updateTiles(TileStatus[] tileStatuses) {
+    private void updateTiles(TileStatus[] tileStatuses) {
         for (TileStatus tileStatus : tileStatuses) {
             Position position = tileStatus.position;
             int state = tileStatus.state.ordinal();
+            // State is a number or EMPTY
             if (state < 9) {
-                String message = "";
-                if (state > 0) {
-                    message += state;
-                }
+                String message = state == 0 ? "" : String.valueOf(state);
                 placeLabel(message, position.row, position.column);
             } else {
                 switch (tileStatus.state) {
@@ -78,16 +81,11 @@ class BombPane extends GridPane {
                         placeLabel("B", position.row, position.column);
                         break;
                     case FLAGGED:
-                        if (this.getViewTile(position).getTile() instanceof Label) {
-                            placeButton(controller, position.row, position.column);
-                        }
+                        placeButton(position.row, position.column);
                         flagTile(position);
                         break;
                     case NOT_CLICKED:
-                        if (this.getViewTile(position).getTile() instanceof Label) {
-                            placeButton(controller, position.row, position.column);
-                        }
-                        unFlagTile(position);
+                        placeButton(position.row, position.column);
                         deHighlightTile(position);
                         break;
                     case HIGHLIGHTED:
@@ -101,22 +99,17 @@ class BombPane extends GridPane {
     }
 
     private void flagTile(Position position) {
-        TileButton tile = (TileButton) this.getViewTile(position).getTile();
-        tile.setFlag(true);
-    }
-
-    private void unFlagTile(Position position) {
-        TileButton tile = (TileButton) this.getViewTile(position).getTile();
-        tile.setFlag(false);
+        ViewTile tile = this.getViewTile(position);
+        tile.flag(true);
     }
 
     private void highlightTile(Position position) {
-        TileButton tile = (TileButton) this.getViewTile(position).getTile();
+        ViewTile tile = this.getViewTile(position);
         tile.highlight(true);
     }
 
     private void deHighlightTile(Position position) {
-        TileButton tile = (TileButton) this.getViewTile(position).getTile();
+        ViewTile tile = this.getViewTile(position);
         tile.highlight(false);
     }
 
@@ -126,5 +119,9 @@ class BombPane extends GridPane {
 
     private ViewTile getViewTile(int row, int column) {
         return this.tiles.get(convertPositionToKey(row, column));
+    }
+
+    public BoardListener getBoardListener() {
+        return this.listener;
     }
 }

@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":9,"i3":9,"i4":9,"i5":10,"i6":10,"i7":10};
+var data = {"i0":10,"i1":10,"i2":9,"i3":9,"i4":9,"i5":10,"i6":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -228,8 +228,9 @@ implements <a href="../View.html" title="interface in project.bomb.vacuum">View<
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#gameOver(project.bomb.vacuum.GameOverState,long)">gameOver</a></span>&#8203;(<a href="../GameOverState.html" title="enum in project.bomb.vacuum">GameOverState</a>&nbsp;gameOverState,
-        long&nbsp;time)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#gameOver(project.bomb.vacuum.GameOverState,long,boolean)">gameOver</a></span>&#8203;(<a href="../GameOverState.html" title="enum in project.bomb.vacuum">GameOverState</a>&nbsp;gameOverState,
+        long&nbsp;time,
+        boolean&nbsp;newHighScore)</code></th>
 <td class="colLast">
 <div class="block">The user has won or lost, let them know!</div>
 </td>
@@ -259,19 +260,12 @@ implements <a href="../View.html" title="interface in project.bomb.vacuum">View<
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTileStatuses(project.bomb.vacuum.TileStatus%5B%5D)">setTileStatuses</a></span>&#8203;(<a href="../TileStatus.html" title="class in project.bomb.vacuum">TileStatus</a>[]&nbsp;tileStates)</code></th>
-<td class="colLast">
-<div class="block">Sets the state of the specified tiles.</div>
-</td>
-</tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTime(long)">setTime</a></span>&#8203;(long&nbsp;time)</code></th>
 <td class="colLast">
 <div class="block">Set the displayed time.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#start(javafx.stage.Stage)">start</a></span>&#8203;(javafx.stage.Stage&nbsp;stage)</code></th>
 </tr>
@@ -383,34 +377,19 @@ implements <a href="../View.html" title="interface in project.bomb.vacuum">View<
 </dl>
 </li>
 </ul>
-<a id="setTileStatuses(project.bomb.vacuum.TileStatus[])">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setTileStatuses</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setTileStatuses&#8203;(<a href="../TileStatus.html" title="class in project.bomb.vacuum">TileStatus</a>[]&nbsp;tileStates)</pre>
-<div class="block">Sets the state of the specified tiles.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../View.html#setTileStatuses(project.bomb.vacuum.TileStatus%5B%5D)">setTileStatuses</a></code>&nbsp;in interface&nbsp;<code><a href="../View.html" title="interface in project.bomb.vacuum">View</a></code></dd>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>tileStates</code> - the tiles that need updated in the view.</dd>
-</dl>
-</li>
-</ul>
-<a id="gameOver(project.bomb.vacuum.GameOverState,long)">
+<a id="gameOver(project.bomb.vacuum.GameOverState,long,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>gameOver</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;gameOver&#8203;(<a href="../GameOverState.html" title="enum in project.bomb.vacuum">GameOverState</a>&nbsp;gameOverState,
-                     long&nbsp;time)</pre>
+                     long&nbsp;time,
+                     boolean&nbsp;newHighScore)</pre>
 <div class="block">The user has won or lost, let them know!</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../View.html#gameOver(project.bomb.vacuum.GameOverState,long)">gameOver</a></code>&nbsp;in interface&nbsp;<code><a href="../View.html" title="interface in project.bomb.vacuum">View</a></code></dd>
+<dd><code><a href="../View.html#gameOver(project.bomb.vacuum.GameOverState,long,boolean)">gameOver</a></code>&nbsp;in interface&nbsp;<code><a href="../View.html" title="interface in project.bomb.vacuum">View</a></code></dd>
 </dl>
 </li>
 </ul>

@@ -2,14 +2,23 @@ package project.bomb.vacuum.view;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import project.bomb.vacuum.*;
 
@@ -20,7 +29,6 @@ public class GUI extends Application implements View {
 
     private static Controller controller;
     private static Runnable startup;
-    static DefaultBoard board;
 
     public static void setController(Controller controller) {
         GUI.controller = controller;
@@ -40,6 +48,7 @@ public class GUI extends Application implements View {
     private Stage stage;
     private BorderPane mainPane = new BorderPane();
     private TimerPane timerPane = new TimerPane();
+    private BombCounter bombCounter = new BombCounter();
     private BombPane bombPane;
 
     /**
@@ -52,7 +61,10 @@ public class GUI extends Application implements View {
         controller.setView(this);
 
         mainPane.setRight(new MenuPane(controller));
-        mainPane.setTop(timerPane);
+        HBox top = new HBox(this.bombCounter, this.timerPane);
+        top.setAlignment(Pos.CENTER);
+        top.setSpacing(100);
+        mainPane.setTop(top);
 
         Scene scene = new Scene(mainPane, 50, 50);
         setKeyboardHandler(scene);
@@ -60,7 +72,15 @@ public class GUI extends Application implements View {
         stage.setResizable(false);
         stage.show();
 
-        GUI.startup.run();
+        connectModel();
+
+        Thread game = new Thread(GUI.startup);
+        game.setDaemon(true);
+        game.start();
+    }
+
+    private void connectModel() {
+        GUI.controller.addBombsRemainingListener(this.bombCounter.getChangeListener());
     }
 
     private void setKeyboardHandler(Scene scene) {
@@ -77,50 +97,52 @@ public class GUI extends Application implements View {
      */
     @Override
     public void initializeBoard(int rows, int columns) {
-        double widthPadding = 60;
-        double heightPadding = 70;
-        // BombPane constructor is columns, rows....
-        this.bombPane = new BombPane(controller, columns, rows);
-        mainPane.setCenter(this.bombPane);
+        Platform.runLater(() -> {
+            double widthPadding = 60;
+            double heightPadding = 70;
+            // BombPane constructor is columns, rows....
+            this.bombPane = new BombPane(controller, columns, rows);
+            GUI.controller.addBoardListener(this.bombPane.getBoardListener());
+            mainPane.setCenter(this.bombPane);
 
-        double screenWidth = this.bombPane.getMinWidth() + MenuPane.BUTTON_WIDTH + widthPadding;
-        double screenHeight = this.bombPane.getMinHeight() + timerPane.getMinHeight() + heightPadding;
-        stage.setHeight(screenHeight);
-        stage.setWidth(screenWidth);
+            double screenWidth = Math.max(this.bombPane.getMinWidth() + MenuPane.BUTTON_WIDTH + widthPadding, 400);
+            double screenHeight = Math.max(this.bombPane.getMinHeight() + timerPane.getMinHeight() + heightPadding, 400);
+            stage.setHeight(screenHeight);
+            stage.setWidth(screenWidth);
 
-        if (firstInit) {
-            firstInit = false;
-            Thread hotfixThread = new Thread(() -> {
-                for (int i = 0; i < 3; i++) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+            if (firstInit) {
+                firstInit = false;
+                Thread hotfixThread = new Thread(() -> {
+                    for (int i = 0; i < 3; i++) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Platform.runLater(() -> {
+                            if (stage.getHeight() < 100) {
+                                stage.setHeight(screenHeight);
+                                stage.setWidth(screenWidth);
+                            }
+                        });
                     }
-                    Platform.runLater(() -> {
-                        stage.setHeight(screenHeight);
-                        stage.setWidth(screenWidth);
-                    });
-                }
-            });
-            hotfixThread.setDaemon(true);
-            hotfixThread.start();
-        }
+                });
+                hotfixThread.setDaemon(true);
+                hotfixThread.start();
+            }
+        });
     }
+
+    private volatile boolean nameOK = false;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setTileStatuses(TileStatus[] tileStates) {
-        this.bombPane.updateTiles(tileStates);
-    }
+    public void gameOver(GameOverState gameOverState, long time, boolean newHighScore) {
+        nameOK = true;
+        NameValidator nameValidator = controller.getNameValidator();
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void gameOver(GameOverState gameOverState, long time) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over");
         StringBuilder message = new StringBuilder();
@@ -130,43 +152,49 @@ public class GUI extends Application implements View {
         } else {
             header.append("You lost, but gg.");
         }
-        header.append("Your time was: ").append(TimerPane.formatTime(time)).append('\n');
+        header.append("Your time was: ").append(Util.formatTime(time)).append('\n');
         alert.setHeaderText(header.toString());
 
         TextField nameField = new TextField();
-        if (GUI.board != null) {
+        nameField.setPrefColumnCount(4);
+        Label errorLabel = new Label("TAG MUST BE 3 CHARACTERS LONG");
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setMinWidth(200);
+        errorLabel.setVisible(false);
+        nameField.textProperty().addListener((observable, oldValue, newValue) -> {
+            nameOK = nameValidator.validate(newValue);
+            errorLabel.setVisible(!nameOK);
+        });
+        if (newHighScore) {
+            nameOK = false;
             Pane pane = alert.getDialogPane();
             Label nameLabel = new Label("Enter a 3 character tag");
             nameLabel.setMinWidth(200);
             nameField.setMinWidth(40);
-            VBox box = new VBox(nameLabel, nameField);
-//        box.setAlignment(Pos.CENTER);
+            VBox box = new VBox(errorLabel, nameLabel, nameField);
             box.setMinWidth(600);
             box.translateXProperty().bind(pane.widthProperty().multiply(0.6));
             box.translateYProperty().bind(pane.heightProperty().multiply(0.5));
             pane.getChildren().add(box);
         }
 
-        HighScores scores = controller.getScores();
-        if (scores != null) {
-            appendScore(message, "1. ", scores.getFirst());
-            appendScore(message, "2. ", scores.getSecond());
-            appendScore(message, "3. ", scores.getThird());
-            appendScore(message, "4. ", scores.getFourth());
-            appendScore(message, "5. ", scores.getFifth());
-        }
-        alert.setContentText(message.toString());
-        alert.setOnCloseRequest(dialogEvent -> {
-            if (GUI.board != null) {
-                controller.updateHighScore(nameField.getText());
+        alert.getDialogPane().lookupButton(ButtonType.OK).addEventFilter(ActionEvent.ACTION, event -> {
+            if (!nameOK) {
+                event.consume();
             }
         });
-        alert.show();
-    }
 
-    private void appendScore(StringBuilder stringBuilder, String title, HighScore score) {
-        String timeString = TimerPane.formatTime(score.getTime());
-        stringBuilder.append(title).append(score.getName()).append(": ").append(timeString).append('\n');
+        alert.setContentText(message.toString());
+        alert.setOnCloseRequest(dialogEvent -> {
+            if (newHighScore) {
+                if (nameOK) {
+                    controller.updateHighScore(nameField.getText());
+                }
+            }
+        });
+        alert.setWidth(1900);
+
+        alert.show();
     }
 
     /**

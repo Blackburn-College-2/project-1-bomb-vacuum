@@ -27,16 +27,9 @@ public interface View {
     void initializeBoard(int rows, int columns);
 
     /**
-     * Sets the state of the specified tiles.
-     *
-     * @param tileStates the tiles that need updated in the view.
-     */
-    void setTileStatuses(TileStatus[] tileStates);
-
-    /**
      * The user has won or lost, let them know!
      */
-    void gameOver(GameOverState gameOverState, long time);
+    void gameOver(GameOverState gameOverState, long time, boolean newHighScore);
 
     /**
      * Set the displayed time.
@@ -44,4 +37,5 @@ public interface View {
      * @param time the time to display.
      */
     void setTime(long time);
+
 }

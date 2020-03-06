@@ -158,21 +158,21 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#resetTimer()">resetTimer</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#reset()">reset</a></span>()</code></th>
 <td class="colLast">
 <div class="block">SHOULD set the total time passed to zero.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#startTimer()">startTimer</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#start()">start</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Starts tracking time from when this method is called.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#stopTimer()">stopTimer</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#stop()">stop</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Stops tracking time.</div>
 </td>
@@ -194,26 +194,26 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="startTimer()">
+<a id="start()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>startTimer</h4>
-<pre class="methodSignature">void&nbsp;startTimer()</pre>
+<h4>start</h4>
+<pre class="methodSignature">void&nbsp;start()</pre>
 <div class="block">Starts tracking time from when this method is called.
  <p>
  Consecutive calls to this method, without first stopping this
  timer, SHOULD be ignored.</div>
 </li>
 </ul>
-<a id="stopTimer()">
+<a id="stop()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>stopTimer</h4>
-<pre class="methodSignature">void&nbsp;stopTimer()</pre>
+<h4>stop</h4>
+<pre class="methodSignature">void&nbsp;stop()</pre>
 <div class="block">Stops tracking time.
  <p>
  If this timer has not been started, the call to this method
@@ -236,13 +236,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="resetTimer()">
+<a id="reset()">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>resetTimer</h4>
-<pre class="methodSignature">void&nbsp;resetTimer()</pre>
+<h4>reset</h4>
+<pre class="methodSignature">void&nbsp;reset()</pre>
 <div class="block">SHOULD set the total time passed to zero.
  <p>
  MAY also stop the timer.</div>
