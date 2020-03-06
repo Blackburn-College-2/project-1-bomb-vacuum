@@ -47,6 +47,10 @@ public interface Model {
     BoardValidator getBoardValidator();
 
     NameValidator getNameValidator();
+    
+    int getMaxBombs(int rows, int columns);
+    
+    int getMinBombs(int rows, int columns);
 
     void saveBoardConfig(BoardConfiguration configuration);
 
