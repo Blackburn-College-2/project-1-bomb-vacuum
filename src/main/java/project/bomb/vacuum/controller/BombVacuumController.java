@@ -25,8 +25,9 @@ public class BombVacuumController implements Controller {
      */
     public BombVacuumController() {
         this.model = new BasicModel(this);
+        BoardConfiguration lastSave = this.model.getSavedBoardConfig();
         GUI.setController(this);
-        GUI.setStartup(() -> model.newGame(DefaultBoard.INTERMEDIATE));
+        GUI.setStartup(() -> model.newGame(lastSave));
         GUI.launchGUI();
     }
 

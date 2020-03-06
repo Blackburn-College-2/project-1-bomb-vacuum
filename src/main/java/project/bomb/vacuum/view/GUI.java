@@ -105,8 +105,8 @@ public class GUI extends Application implements View {
             GUI.controller.addBoardListener(this.bombPane.getBoardListener());
             mainPane.setCenter(this.bombPane);
 
-            double screenWidth = this.bombPane.getMinWidth() + MenuPane.BUTTON_WIDTH + widthPadding;
-            double screenHeight = this.bombPane.getMinHeight() + timerPane.getMinHeight() + heightPadding;
+            double screenWidth = Math.max(this.bombPane.getMinWidth() + MenuPane.BUTTON_WIDTH + widthPadding, 400);
+            double screenHeight = Math.max(this.bombPane.getMinHeight() + timerPane.getMinHeight() + heightPadding, 400);
             stage.setHeight(screenHeight);
             stage.setWidth(screenWidth);
 

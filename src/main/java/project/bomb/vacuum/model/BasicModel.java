@@ -190,7 +190,7 @@ public class BasicModel implements Model {
 
     @Override
     public BoardConfiguration getMaxBoardConfig() {
-        return new BoardConfiguration(50, 50, (50 * 50) - 1);
+        return new BoardConfiguration(25, 35, (25 * 35) - 1);
     }
 
     @Override
