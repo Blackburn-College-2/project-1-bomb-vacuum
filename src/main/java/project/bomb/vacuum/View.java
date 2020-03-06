@@ -10,10 +10,20 @@ public interface View {
      */
     ViewContainer container = new ViewContainer();
 
+    /**
+     * Gets the stored view.
+     *
+     * @return the stored view.
+     */
     static View getView() {
         return container.getView();
     }
 
+    /**
+     * Stores the given view.
+     *
+     * @param view the view to store.
+     */
     static void setView(View view) {
         container.setView(view);
     }
@@ -21,7 +31,7 @@ public interface View {
     /**
      * Creates a new board of tiles using the specified size.
      *
-     * @param rows number of rows in the tile grid.
+     * @param rows    number of rows in the tile grid.
      * @param columns number of columns in the tile grid.
      */
     void initializeBoard(int rows, int columns);

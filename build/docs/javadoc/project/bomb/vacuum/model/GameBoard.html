@@ -154,7 +154,10 @@ extends java.lang.Object</pre>
 </tr>
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(project.bomb.vacuum.model.BasicModel)">GameBoard</a></span>&#8203;(<a href="BasicModel.html" title="class in project.bomb.vacuum.model">BasicModel</a>&nbsp;model)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Creates a game board to store the state of the game and
+ handle interactions.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -177,39 +180,53 @@ extends java.lang.Object</pre>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addBoardListener(project.bomb.vacuum.BoardListener)">addBoardListener</a></span>&#8203;(<a href="../BoardListener.html" title="interface in project.bomb.vacuum">BoardListener</a>&nbsp;listener)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Adds a listener to the game board.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addBombsRemainingListener(project.bomb.vacuum.ChangeListener)">addBombsRemainingListener</a></span>&#8203;(<a href="../ChangeListener.html" title="interface in project.bomb.vacuum">ChangeListener</a>&lt;java.lang.Integer&gt;&nbsp;listener)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Adds a listener to the number of bombs remaining.</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#cheatToggle(boolean)">cheatToggle</a></span>&#8203;(boolean&nbsp;toggle)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">If true reveals the location of all bombs, and ignores clicks on bombs.</div>
+</td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#flagTile(project.bomb.vacuum.Position)">flagTile</a></span>&#8203;(<a href="../Position.html" title="class in project.bomb.vacuum">Position</a>&nbsp;position)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Flags the tile at the specified location.</div>
+</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#highlightTiles(project.bomb.vacuum.Position)">highlightTiles</a></span>&#8203;(<a href="../Position.html" title="class in project.bomb.vacuum">Position</a>&nbsp;position)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Highlights the unclicked tiles around the specified location.</div>
+</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#newGame(int,int,int)">newGame</a></span>&#8203;(int&nbsp;rows,
        int&nbsp;columns,
        int&nbsp;bombs)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Creates a new board with the specified parametesr.</div>
+</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#revealTile(project.bomb.vacuum.Position)">revealTile</a></span>&#8203;(<a href="../Position.html" title="class in project.bomb.vacuum">Position</a>&nbsp;position)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Reveals the tile location specified.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -242,6 +259,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>GameBoard</h4>
 <pre>public&nbsp;GameBoard&#8203;(<a href="BasicModel.html" title="class in project.bomb.vacuum.model">BasicModel</a>&nbsp;model)</pre>
+<div class="block">Creates a game board to store the state of the game and
+ handle interactions.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>model</code> - the model hooks to use.</dd>
+</dl>
 </li>
 </ul>
 </li>
@@ -263,6 +286,13 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;newGame&#8203;(int&nbsp;rows,
                     int&nbsp;columns,
                     int&nbsp;bombs)</pre>
+<div class="block">Creates a new board with the specified parametesr.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>rows</code> - the number of rows to use.</dd>
+<dd><code>columns</code> - the number of columns to use.</dd>
+<dd><code>bombs</code> - the number of bombs to use.</dd>
+</dl>
 </li>
 </ul>
 <a id="revealTile(project.bomb.vacuum.Position)">
@@ -272,6 +302,14 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>revealTile</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;revealTile&#8203;(<a href="../Position.html" title="class in project.bomb.vacuum">Position</a>&nbsp;position)</pre>
+<div class="block">Reveals the tile location specified.
+ <p>
+ If the location is a 0 tile, will expand the reveal in all
+ directions until only numbered tiles are reachable.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>position</code> - the tile location to reveal.</dd>
+</dl>
 </li>
 </ul>
 <a id="flagTile(project.bomb.vacuum.Position)">
@@ -281,6 +319,11 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>flagTile</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;flagTile&#8203;(<a href="../Position.html" title="class in project.bomb.vacuum">Position</a>&nbsp;position)</pre>
+<div class="block">Flags the tile at the specified location.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>position</code> - the location to flag.</dd>
+</dl>
 </li>
 </ul>
 <a id="highlightTiles(project.bomb.vacuum.Position)">
@@ -290,6 +333,11 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>highlightTiles</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;highlightTiles&#8203;(<a href="../Position.html" title="class in project.bomb.vacuum">Position</a>&nbsp;position)</pre>
+<div class="block">Highlights the unclicked tiles around the specified location.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>position</code> - the location to use.</dd>
+</dl>
 </li>
 </ul>
 <a id="cheatToggle(boolean)">
@@ -299,6 +347,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>cheatToggle</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;cheatToggle&#8203;(boolean&nbsp;toggle)</pre>
+<div class="block">If true reveals the location of all bombs, and ignores clicks on bombs.
+ Otherwise hides the bombs under unclicked tiles.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>toggle</code> - true to enable cheating, otherwise false.</dd>
+</dl>
 </li>
 </ul>
 <a id="addBombsRemainingListener(project.bomb.vacuum.ChangeListener)">
@@ -308,6 +362,11 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>addBombsRemainingListener</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addBombsRemainingListener&#8203;(<a href="../ChangeListener.html" title="interface in project.bomb.vacuum">ChangeListener</a>&lt;java.lang.Integer&gt;&nbsp;listener)</pre>
+<div class="block">Adds a listener to the number of bombs remaining.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>listener</code> - the listener to add.</dd>
+</dl>
 </li>
 </ul>
 <a id="addBoardListener(project.bomb.vacuum.BoardListener)">
@@ -317,6 +376,11 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>addBoardListener</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addBoardListener&#8203;(<a href="../BoardListener.html" title="interface in project.bomb.vacuum">BoardListener</a>&nbsp;listener)</pre>
+<div class="block">Adds a listener to the game board.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>listener</code> - the listener to add.</dd>
+</dl>
 </li>
 </ul>
 </li>

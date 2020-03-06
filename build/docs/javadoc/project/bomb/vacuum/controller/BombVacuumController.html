@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":9,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":9,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -185,12 +185,10 @@ implements <a href="../Controller.html" title="interface in project.bomb.vacuum"
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addBoardListener(project.bomb.vacuum.BoardListener)">addBoardListener</a></span>&#8203;(<a href="../BoardListener.html" title="interface in project.bomb.vacuum">BoardListener</a>&nbsp;listener)</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addBombsRemainingListener(project.bomb.vacuum.ChangeListener)">addBombsRemainingListener</a></span>&#8203;(<a href="../ChangeListener.html" title="interface in project.bomb.vacuum">ChangeListener</a>&lt;java.lang.Integer&gt;&nbsp;listener)</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
@@ -207,39 +205,32 @@ implements <a href="../Controller.html" title="interface in project.bomb.vacuum"
 <tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../BoardValidator.html" title="interface in project.bomb.vacuum">BoardValidator</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getBoardValidator()">getBoardValidator</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMaxBoardConfig()">getMaxBoardConfig</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMaxBombs(int,int)">getMaxBombs</a></span>&#8203;(int&nbsp;rows,
            int&nbsp;columns)</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMinBoardConfig()">getMinBoardConfig</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMinBombs(int,int)">getMinBombs</a></span>&#8203;(int&nbsp;rows,
            int&nbsp;columns)</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../NameValidator.html" title="interface in project.bomb.vacuum">NameValidator</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNameValidator()">getNameValidator</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSavedBoardConfig()">getSavedBoardConfig</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../HighScore.html" title="interface in project.bomb.vacuum">HighScore</a>&gt;</code></td>
@@ -271,7 +262,9 @@ implements <a href="../Controller.html" title="interface in project.bomb.vacuum"
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#saveBoardConfig(project.bomb.vacuum.BoardConfiguration)">saveBoardConfig</a></span>&#8203;(<a href="../BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;configuration)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Saves the board configuration.</div>
+</td>
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
@@ -300,20 +293,13 @@ implements <a href="../Controller.html" title="interface in project.bomb.vacuum"
 </tr>
 <tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#startTimer()">startTimer</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Starts the timer.</div>
-</td>
-</tr>
-<tr id="i21" class="rowColor">
-<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#tileUpdatedByUser(project.bomb.vacuum.TileAction,project.bomb.vacuum.Position)">tileUpdatedByUser</a></span>&#8203;(<a href="../TileAction.html" title="enum in project.bomb.vacuum">TileAction</a>&nbsp;tileAction,
                  <a href="../Position.html" title="class in project.bomb.vacuum">Position</a>&nbsp;position)</code></th>
 <td class="colLast">
 <div class="block">Called when a tile has been altered by the user.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateHighScore(java.lang.String)">updateHighScore</a></span>&#8203;(java.lang.String&nbsp;name)</code></th>
 <td class="colLast">
@@ -437,6 +423,11 @@ implements <a href="../Controller.html" title="interface in project.bomb.vacuum"
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../Controller.html#getMaxBombs(int,int)">getMaxBombs</a></code>&nbsp;in interface&nbsp;<code><a href="../Controller.html" title="interface in project.bomb.vacuum">Controller</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>rows</code> - the number of rows.</dd>
+<dd><code>columns</code> - the number of columns.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the maximum number of bombs for the given rows and columns.</dd>
 </dl>
 </li>
 </ul>
@@ -451,6 +442,11 @@ implements <a href="../Controller.html" title="interface in project.bomb.vacuum"
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../Controller.html#getMinBombs(int,int)">getMinBombs</a></code>&nbsp;in interface&nbsp;<code><a href="../Controller.html" title="interface in project.bomb.vacuum">Controller</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>rows</code> - the number of rows.</dd>
+<dd><code>columns</code> - the number of columns.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the minimum number of bombs for the given rows and columns.</dd>
 </dl>
 </li>
 </ul>
@@ -464,6 +460,8 @@ implements <a href="../Controller.html" title="interface in project.bomb.vacuum"
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../Controller.html#setView(project.bomb.vacuum.View)">setView</a></code>&nbsp;in interface&nbsp;<code><a href="../Controller.html" title="interface in project.bomb.vacuum">Controller</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>view</code> - the view to use.</dd>
 </dl>
 </li>
 </ul>
@@ -552,20 +550,6 @@ implements <a href="../Controller.html" title="interface in project.bomb.vacuum"
 </dl>
 </li>
 </ul>
-<a id="startTimer()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>startTimer</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;startTimer()</pre>
-<div class="block">Starts the timer.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../Controller.html#startTimer()">startTimer</a></code>&nbsp;in interface&nbsp;<code><a href="../Controller.html" title="interface in project.bomb.vacuum">Controller</a></code></dd>
-</dl>
-</li>
-</ul>
 <a id="updateHighScore(java.lang.String)">
 <!--   -->
 </a>
@@ -628,6 +612,8 @@ implements <a href="../Controller.html" title="interface in project.bomb.vacuum"
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../Controller.html#getNameValidator()">getNameValidator</a></code>&nbsp;in interface&nbsp;<code><a href="../Controller.html" title="interface in project.bomb.vacuum">Controller</a></code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the name validator to use.</dd>
 </dl>
 </li>
 </ul>
@@ -638,9 +624,12 @@ implements <a href="../Controller.html" title="interface in project.bomb.vacuum"
 <li class="blockList">
 <h4>saveBoardConfig</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;saveBoardConfig&#8203;(<a href="../BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;configuration)</pre>
+<div class="block">Saves the board configuration.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../Controller.html#saveBoardConfig(project.bomb.vacuum.BoardConfiguration)">saveBoardConfig</a></code>&nbsp;in interface&nbsp;<code><a href="../Controller.html" title="interface in project.bomb.vacuum">Controller</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>configuration</code> - the configuration to save.</dd>
 </dl>
 </li>
 </ul>
@@ -654,6 +643,8 @@ implements <a href="../Controller.html" title="interface in project.bomb.vacuum"
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../Controller.html#getSavedBoardConfig()">getSavedBoardConfig</a></code>&nbsp;in interface&nbsp;<code><a href="../Controller.html" title="interface in project.bomb.vacuum">Controller</a></code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the saved board configuration.</dd>
 </dl>
 </li>
 </ul>
@@ -697,6 +688,8 @@ implements <a href="../Controller.html" title="interface in project.bomb.vacuum"
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../Controller.html#getMinBoardConfig()">getMinBoardConfig</a></code>&nbsp;in interface&nbsp;<code><a href="../Controller.html" title="interface in project.bomb.vacuum">Controller</a></code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the smallest valid board configuration.</dd>
 </dl>
 </li>
 </ul>
@@ -710,6 +703,8 @@ implements <a href="../Controller.html" title="interface in project.bomb.vacuum"
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../Controller.html#getMaxBoardConfig()">getMaxBoardConfig</a></code>&nbsp;in interface&nbsp;<code><a href="../Controller.html" title="interface in project.bomb.vacuum">Controller</a></code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the largest valid board configuration.</dd>
 </dl>
 </li>
 </ul>

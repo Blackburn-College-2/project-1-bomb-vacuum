@@ -121,6 +121,9 @@ class BombPane extends GridPane {
         return this.tiles.get(convertPositionToKey(row, column));
     }
 
+    /**
+     * @return the listener that will update this board display.
+     */
     public BoardListener getBoardListener() {
         return this.listener;
     }

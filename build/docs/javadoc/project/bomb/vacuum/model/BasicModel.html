@@ -196,12 +196,10 @@ implements <a href="../Model.html" title="interface in project.bomb.vacuum">Mode
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../BoardValidator.html" title="interface in project.bomb.vacuum">BoardValidator</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getBoardValidator()">getBoardValidator</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMaxBoardConfig()">getMaxBoardConfig</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>int</code></td>
@@ -214,7 +212,6 @@ implements <a href="../Model.html" title="interface in project.bomb.vacuum">Mode
 <tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMinBoardConfig()">getMinBoardConfig</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>int</code></td>
@@ -227,12 +224,10 @@ implements <a href="../Model.html" title="interface in project.bomb.vacuum">Mode
 <tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../NameValidator.html" title="interface in project.bomb.vacuum">NameValidator</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNameValidator()">getNameValidator</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSavedBoardConfig()">getSavedBoardConfig</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../HighScore.html" title="interface in project.bomb.vacuum">HighScore</a>&gt;</code></td>
@@ -251,7 +246,9 @@ implements <a href="../Model.html" title="interface in project.bomb.vacuum">Mode
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>long</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTime()">getTime</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Get the time for the current game.</div>
+</td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
@@ -270,7 +267,9 @@ implements <a href="../Model.html" title="interface in project.bomb.vacuum">Mode
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#saveBoardConfig(project.bomb.vacuum.BoardConfiguration)">saveBoardConfig</a></span>&#8203;(<a href="../BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;configuration)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Saves the board configuration.</div>
+</td>
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
@@ -522,6 +521,8 @@ implements <a href="../Model.html" title="interface in project.bomb.vacuum">Mode
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../Model.html#getNameValidator()">getNameValidator</a></code>&nbsp;in interface&nbsp;<code><a href="../Model.html" title="interface in project.bomb.vacuum">Model</a></code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the name validator to use.</dd>
 </dl>
 </li>
 </ul>
@@ -535,6 +536,8 @@ implements <a href="../Model.html" title="interface in project.bomb.vacuum">Mode
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../Model.html#getMinBoardConfig()">getMinBoardConfig</a></code>&nbsp;in interface&nbsp;<code><a href="../Model.html" title="interface in project.bomb.vacuum">Model</a></code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the smallest valid board configuration.</dd>
 </dl>
 </li>
 </ul>
@@ -548,6 +551,8 @@ implements <a href="../Model.html" title="interface in project.bomb.vacuum">Mode
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../Model.html#getMaxBoardConfig()">getMaxBoardConfig</a></code>&nbsp;in interface&nbsp;<code><a href="../Model.html" title="interface in project.bomb.vacuum">Model</a></code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the largest valid board configuration.</dd>
 </dl>
 </li>
 </ul>
@@ -558,9 +563,12 @@ implements <a href="../Model.html" title="interface in project.bomb.vacuum">Mode
 <li class="blockList">
 <h4>saveBoardConfig</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;saveBoardConfig&#8203;(<a href="../BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;configuration)</pre>
+<div class="block">Saves the board configuration.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../Model.html#saveBoardConfig(project.bomb.vacuum.BoardConfiguration)">saveBoardConfig</a></code>&nbsp;in interface&nbsp;<code><a href="../Model.html" title="interface in project.bomb.vacuum">Model</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>configuration</code> - the configuration to save.</dd>
 </dl>
 </li>
 </ul>
@@ -574,6 +582,8 @@ implements <a href="../Model.html" title="interface in project.bomb.vacuum">Mode
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../Model.html#getSavedBoardConfig()">getSavedBoardConfig</a></code>&nbsp;in interface&nbsp;<code><a href="../Model.html" title="interface in project.bomb.vacuum">Model</a></code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the saved board configuration.</dd>
 </dl>
 </li>
 </ul>
@@ -584,9 +594,12 @@ implements <a href="../Model.html" title="interface in project.bomb.vacuum">Mode
 <li class="blockList">
 <h4>getTime</h4>
 <pre class="methodSignature">public&nbsp;long&nbsp;getTime()</pre>
+<div class="block">Get the time for the current game.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../Model.html#getTime()">getTime</a></code>&nbsp;in interface&nbsp;<code><a href="../Model.html" title="interface in project.bomb.vacuum">Model</a></code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the time for the current game.</dd>
 </dl>
 </li>
 </ul>

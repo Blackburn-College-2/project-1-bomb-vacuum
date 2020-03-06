@@ -13,6 +13,7 @@ public class SimpleHighScore implements HighScore {
 
     /**
      * Creates a new SimpleHighScore
+     *
      * @param name the name associated with the score
      * @param time the time from the game
      */
@@ -22,8 +23,7 @@ public class SimpleHighScore implements HighScore {
     }
 
     /**
-     * Gets the SimpleHighScore's name
-     * @return the name
+     * {@inheritDoc}
      */
     @Override
     public String getName() {
@@ -31,18 +31,13 @@ public class SimpleHighScore implements HighScore {
     }
 
     /**
-     * Gets the SimpleHighScore's time
-     * @return the time
+     * {@inheritDoc}
      */
     @Override
     public long getTime() {
         return this.time;
     }
-    
-    /**
-     * Formats the HighScore as a string
-     * @return the formatted HighScore including name and time as a string
-     */
+
     public String toString() {
         return String.format("%s -- %d", this.name, this.time);
     }

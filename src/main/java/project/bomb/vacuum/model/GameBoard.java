@@ -26,7 +26,7 @@ public class GameBoard {
 
         TileState state = TileState.values()[tile.getValue().ordinal()];
 
-        if (tile.getValue() == TileValue.BOMB){
+        if (tile.getValue() == TileValue.BOMB) {
             if (this.cheating) {
                 return;
             }
@@ -57,10 +57,23 @@ public class GameBoard {
         tile.setValue(TileValue.values()[nextTileValue]);
     };
 
+    /**
+     * Creates a game board to store the state of the game and
+     * handle interactions.
+     *
+     * @param model the model hooks to use.
+     */
     public GameBoard(BasicModel model) {
         this.model = model;
     }
 
+    /**
+     * Creates a new board with the specified parametesr.
+     *
+     * @param rows    the number of rows to use.
+     * @param columns the number of columns to use.
+     * @param bombs   the number of bombs to use.
+     */
     public void newGame(int rows, int columns, int bombs) {
         this.gameOver = false;
         this.cheating = false;
@@ -125,6 +138,14 @@ public class GameBoard {
         }
     }
 
+    /**
+     * Reveals the tile location specified.
+     * <p>
+     * If the location is a 0 tile, will expand the reveal in all
+     * directions until only numbered tiles are reachable.
+     *
+     * @param position the tile location to reveal.
+     */
     public void revealTile(Position position) {
         Tile tile = this.board[position.row][position.column];
         this.recursiveReveal.alterTile(tile);
@@ -136,6 +157,11 @@ public class GameBoard {
         }
     }
 
+    /**
+     * Flags the tile at the specified location.
+     *
+     * @param position the location to flag.
+     */
     public void flagTile(Position position) {
         Tile tile = this.board[position.row][position.column];
         TileState state;
@@ -158,6 +184,11 @@ public class GameBoard {
         this.updateAndSetTileState(tile, state);
     }
 
+    /**
+     * Highlights the unclicked tiles around the specified location.
+     *
+     * @param position the location to use.
+     */
     public void highlightTiles(Position position) {
         Tile tile = this.board[position.row][position.column];
         if (!(tile.getState().ordinal() <= 8)) {
@@ -209,6 +240,12 @@ public class GameBoard {
         }
     }
 
+    /**
+     * If true reveals the location of all bombs, and ignores clicks on bombs.
+     * Otherwise hides the bombs under unclicked tiles.
+     *
+     * @param toggle true to enable cheating, otherwise false.
+     */
     public void cheatToggle(boolean toggle) {
         this.cheating = toggle;
         // We lie
@@ -223,10 +260,20 @@ public class GameBoard {
         }
     }
 
+    /**
+     * Adds a listener to the number of bombs remaining.
+     *
+     * @param listener the listener to add.
+     */
     public void addBombsRemainingListener(ChangeListener<Integer> listener) {
         this.bombsRemainingListeners.add(listener);
     }
 
+    /**
+     * Adds a listener to the game board.
+     *
+     * @param listener the listener to add.
+     */
     public void addBoardListener(BoardListener listener) {
         this.boardListeners.add(listener);
     }

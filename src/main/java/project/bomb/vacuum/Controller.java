@@ -16,6 +16,9 @@ public interface Controller {
      */
     void startNewGame(DefaultBoard board);
 
+    /**
+     * @param view the view to use.
+     */
     void setView(View view);
 
     /**
@@ -56,11 +59,6 @@ public interface Controller {
     void cheatToggled(boolean cheat);
 
     /**
-     * Starts the timer.
-     */
-    void startTimer();
-
-    /**
      * Updates the high scores for a board.
      * <p>
      * SHOULD only be called if the user was playing on a default
@@ -72,16 +70,27 @@ public interface Controller {
      * @param name the name of the player.
      */
     void updateHighScore(String name);
-    
+
     /**
-     * @return a board validator 
-    */
+     * @return a board validator
+     */
     BoardValidator getBoardValidator();
 
+    /**
+     * @return the name validator to use.
+     */
     NameValidator getNameValidator();
 
+    /**
+     * Saves the board configuration.
+     *
+     * @param configuration the configuration to save.
+     */
     void saveBoardConfig(BoardConfiguration configuration);
 
+    /**
+     * @return the saved board configuration.
+     */
     BoardConfiguration getSavedBoardConfig();
 
     /**
@@ -90,7 +99,6 @@ public interface Controller {
     void addBombsRemainingListener(ChangeListener<Integer> listener);
 
     /**
-     *
      * @param listener the listener to be notified when tiles are changed.
      */
     void addBoardListener(BoardListener listener);
@@ -121,12 +129,28 @@ public interface Controller {
      */
     void setTime(long time);
 
+    /**
+     * @param rows    the number of rows.
+     * @param columns the number of columns.
+     * @return the maximum number of bombs for the given rows and columns.
+     */
     int getMaxBombs(int rows, int columns);
 
+    /**
+     * @param rows    the number of rows.
+     * @param columns the number of columns.
+     * @return the minimum number of bombs for the given rows and columns.
+     */
     int getMinBombs(int rows, int columns);
 
+    /**
+     * @return the smallest valid board configuration.
+     */
     BoardConfiguration getMinBoardConfig();
 
+    /**
+     * @return the largest valid board configuration.
+     */
     BoardConfiguration getMaxBoardConfig();
 
 }

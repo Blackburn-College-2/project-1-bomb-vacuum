@@ -178,19 +178,27 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isNewHighScore(project.bomb.vacuum.DefaultBoard,long)">isNewHighScore</a></span>&#8203;(<a href="../DefaultBoard.html" title="enum in project.bomb.vacuum">DefaultBoard</a>&nbsp;board,
               long&nbsp;time)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Checks if the specified time would result in a new high score
+ for the specified board.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../HighScore.html" title="interface in project.bomb.vacuum">HighScore</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#loadSortedScores(project.bomb.vacuum.DefaultBoard)">loadSortedScores</a></span>&#8203;(<a href="../DefaultBoard.html" title="enum in project.bomb.vacuum">DefaultBoard</a>&nbsp;board)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Returns the saved high scores for the specified board in order
+ from best to worst.</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#saveHighScore(project.bomb.vacuum.DefaultBoard,java.lang.String,long)">saveHighScore</a></span>&#8203;(<a href="../DefaultBoard.html" title="enum in project.bomb.vacuum">DefaultBoard</a>&nbsp;board,
              java.lang.String&nbsp;name,
              long&nbsp;time)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Saves the highscore for the specified board.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -244,6 +252,16 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;saveHighScore&#8203;(<a href="../DefaultBoard.html" title="enum in project.bomb.vacuum">DefaultBoard</a>&nbsp;board,
                           java.lang.String&nbsp;name,
                           long&nbsp;time)</pre>
+<div class="block">Saves the highscore for the specified board.
+ <p>
+ If the score is not better than the existing scores, the new
+ score will not be written.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>board</code> - the default board being used.</dd>
+<dd><code>name</code> - the user's name.</dd>
+<dd><code>time</code> - the user's time.</dd>
+</dl>
 </li>
 </ul>
 <a id="loadSortedScores(project.bomb.vacuum.DefaultBoard)">
@@ -253,6 +271,14 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>loadSortedScores</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../HighScore.html" title="interface in project.bomb.vacuum">HighScore</a>&gt;&nbsp;loadSortedScores&#8203;(<a href="../DefaultBoard.html" title="enum in project.bomb.vacuum">DefaultBoard</a>&nbsp;board)</pre>
+<div class="block">Returns the saved high scores for the specified board in order
+ from best to worst.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>board</code> - the board to load.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the scores for the specified board.</dd>
+</dl>
 </li>
 </ul>
 <a id="isNewHighScore(project.bomb.vacuum.DefaultBoard,long)">
@@ -263,6 +289,15 @@ extends java.lang.Object</pre>
 <h4>isNewHighScore</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isNewHighScore&#8203;(<a href="../DefaultBoard.html" title="enum in project.bomb.vacuum">DefaultBoard</a>&nbsp;board,
                               long&nbsp;time)</pre>
+<div class="block">Checks if the specified time would result in a new high score
+ for the specified board.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>board</code> - the board to check with.</dd>
+<dd><code>time</code> - the time to check with.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>if the time is a new high score for the board.</dd>
+</dl>
 </li>
 </ul>
 </li>

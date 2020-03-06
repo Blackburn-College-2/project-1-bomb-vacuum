@@ -22,6 +22,9 @@ public class HighScoresAlert {
         this.controller = controller;
     }
 
+    /**
+     * Displays all the high scores.
+     */
     public void displayHighScores() {
         String OS = System.getProperty("os.name");
         if (OS.contains("win") && !font.getFamily().equals("Courier New")) {
