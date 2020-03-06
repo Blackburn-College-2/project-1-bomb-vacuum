@@ -47,5 +47,4 @@ public interface View {
 
     void setBombCounter(int bombs);
 
-    String getUserName(int maxChars);
 }
