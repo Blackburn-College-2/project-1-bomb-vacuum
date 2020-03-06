@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -152,31 +152,95 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#cheatToggled(boolean)">cheatToggled</a></span>&#8203;(boolean&nbsp;cheat)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addBoardListener(project.bomb.vacuum.BoardListener)">addBoardListener</a></span>&#8203;(<a href="BoardListener.html" title="interface in project.bomb.vacuum">BoardListener</a>&nbsp;listener)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code><a href="HighScores.html" title="interface in project.bomb.vacuum">HighScores</a></code></td>
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addBombsRemainingListener(project.bomb.vacuum.ChangeListener)">addBombsRemainingListener</a></span>&#8203;(<a href="ChangeListener.html" title="interface in project.bomb.vacuum">ChangeListener</a>&lt;java.lang.Integer&gt;&nbsp;listener)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#cheatToggled(boolean)">cheatToggled</a></span>&#8203;(boolean&nbsp;cheat)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code><a href="BoardValidator.html" title="interface in project.bomb.vacuum">BoardValidator</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getBoardValidator()">getBoardValidator</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code><a href="BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMaxBoardConfig()">getMaxBoardConfig</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>int</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMaxBombs(int,int)">getMaxBombs</a></span>&#8203;(int&nbsp;rows,
+           int&nbsp;columns)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i6" class="altColor">
+<td class="colFirst"><code><a href="BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMinBoardConfig()">getMinBoardConfig</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>int</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMinBombs(int,int)">getMinBombs</a></span>&#8203;(int&nbsp;rows,
+           int&nbsp;columns)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i8" class="altColor">
+<td class="colFirst"><code><a href="NameValidator.html" title="interface in project.bomb.vacuum">NameValidator</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNameValidator()">getNameValidator</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code><a href="BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSavedBoardConfig()">getSavedBoardConfig</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i10" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="HighScore.html" title="interface in project.bomb.vacuum">HighScore</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getScores()">getScores</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Gets the high scores for the current default board.</div>
+</td>
+</tr>
+<tr id="i11" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="HighScore.html" title="interface in project.bomb.vacuum">HighScore</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getScores(project.bomb.vacuum.DefaultBoard)">getScores</a></span>&#8203;(<a href="DefaultBoard.html" title="enum in project.bomb.vacuum">DefaultBoard</a>&nbsp;board)</code></th>
 <td class="colLast">
 <div class="block">Gets the high scores for the specified type of default board.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i12" class="altColor">
+<td class="colFirst"><code>long</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTime()">getTime</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#newGame(project.bomb.vacuum.BoardConfiguration)">newGame</a></span>&#8203;(<a href="BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;boardConfiguration)</code></th>
 <td class="colLast">
 <div class="block">States a new game using the specified board size and bomb count.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#newGame(project.bomb.vacuum.DefaultBoard)">newGame</a></span>&#8203;(<a href="DefaultBoard.html" title="enum in project.bomb.vacuum">DefaultBoard</a>&nbsp;board)</code></th>
 <td class="colLast">
 <div class="block">Starts a new game using the specified default board type.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i15" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#saveBoardConfig(project.bomb.vacuum.BoardConfiguration)">saveBoardConfig</a></span>&#8203;(<a href="BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;configuration)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#tileUpdatedByUser(project.bomb.vacuum.TileAction,project.bomb.vacuum.Position)">tileUpdatedByUser</a></span>&#8203;(<a href="TileAction.html" title="enum in project.bomb.vacuum">TileAction</a>&nbsp;tileAction,
                  <a href="Position.html" title="class in project.bomb.vacuum">Position</a>&nbsp;position)</code></th>
@@ -184,11 +248,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Called when a tile has been altered by the user.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateHighScore(project.bomb.vacuum.DefaultBoard,java.lang.String,long)">updateHighScore</a></span>&#8203;(<a href="DefaultBoard.html" title="enum in project.bomb.vacuum">DefaultBoard</a>&nbsp;board,
-               java.lang.String&nbsp;name,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateHighScore(java.lang.String,long)">updateHighScore</a></span>&#8203;(java.lang.String&nbsp;name,
                long&nbsp;time)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i18" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#usingDefaultBoard()">usingDefaultBoard</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -255,21 +323,97 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="updateHighScore(project.bomb.vacuum.DefaultBoard,java.lang.String,long)">
+<a id="updateHighScore(java.lang.String,long)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>updateHighScore</h4>
-<pre class="methodSignature">void&nbsp;updateHighScore&#8203;(<a href="DefaultBoard.html" title="enum in project.bomb.vacuum">DefaultBoard</a>&nbsp;board,
-                     java.lang.String&nbsp;name,
+<pre class="methodSignature">void&nbsp;updateHighScore&#8203;(java.lang.String&nbsp;name,
                      long&nbsp;time)</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>board</code> - the board played.</dd>
 <dd><code>name</code> - the player's name.</dd>
 <dd><code>time</code> - how long in milliseconds the game took.</dd>
 </dl>
+</li>
+</ul>
+<a id="getBoardValidator()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getBoardValidator</h4>
+<pre class="methodSignature"><a href="BoardValidator.html" title="interface in project.bomb.vacuum">BoardValidator</a>&nbsp;getBoardValidator()</pre>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>a board validator</dd>
+</dl>
+</li>
+</ul>
+<a id="getNameValidator()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getNameValidator</h4>
+<pre class="methodSignature"><a href="NameValidator.html" title="interface in project.bomb.vacuum">NameValidator</a>&nbsp;getNameValidator()</pre>
+</li>
+</ul>
+<a id="getMinBoardConfig()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getMinBoardConfig</h4>
+<pre class="methodSignature"><a href="BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;getMinBoardConfig()</pre>
+</li>
+</ul>
+<a id="getMaxBoardConfig()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getMaxBoardConfig</h4>
+<pre class="methodSignature"><a href="BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;getMaxBoardConfig()</pre>
+</li>
+</ul>
+<a id="getMaxBombs(int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getMaxBombs</h4>
+<pre class="methodSignature">int&nbsp;getMaxBombs&#8203;(int&nbsp;rows,
+                int&nbsp;columns)</pre>
+</li>
+</ul>
+<a id="getMinBombs(int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getMinBombs</h4>
+<pre class="methodSignature">int&nbsp;getMinBombs&#8203;(int&nbsp;rows,
+                int&nbsp;columns)</pre>
+</li>
+</ul>
+<a id="saveBoardConfig(project.bomb.vacuum.BoardConfiguration)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>saveBoardConfig</h4>
+<pre class="methodSignature">void&nbsp;saveBoardConfig&#8203;(<a href="BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;configuration)</pre>
+</li>
+</ul>
+<a id="getSavedBoardConfig()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getSavedBoardConfig</h4>
+<pre class="methodSignature"><a href="BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;getSavedBoardConfig()</pre>
 </li>
 </ul>
 <a id="getScores(project.bomb.vacuum.DefaultBoard)">
@@ -278,7 +422,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getScores</h4>
-<pre class="methodSignature"><a href="HighScores.html" title="interface in project.bomb.vacuum">HighScores</a>&nbsp;getScores&#8203;(<a href="DefaultBoard.html" title="enum in project.bomb.vacuum">DefaultBoard</a>&nbsp;board)</pre>
+<pre class="methodSignature">java.util.List&lt;<a href="HighScore.html" title="interface in project.bomb.vacuum">HighScore</a>&gt;&nbsp;getScores&#8203;(<a href="DefaultBoard.html" title="enum in project.bomb.vacuum">DefaultBoard</a>&nbsp;board)</pre>
 <div class="block">Gets the high scores for the specified type of default board.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -288,16 +432,78 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
+<a id="getScores()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getScores</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="HighScore.html" title="interface in project.bomb.vacuum">HighScore</a>&gt;&nbsp;getScores()</pre>
+<div class="block">Gets the high scores for the current default board.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the scores for the current default board.</dd>
+</dl>
+</li>
+</ul>
 <a id="cheatToggled(boolean)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>cheatToggled</h4>
 <pre class="methodSignature">void&nbsp;cheatToggled&#8203;(boolean&nbsp;cheat)</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>cheat</code> - true to show all bombs, false to hide bombs.</dd>
+</dl>
+</li>
+</ul>
+<a id="getTime()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTime</h4>
+<pre class="methodSignature">long&nbsp;getTime()</pre>
+</li>
+</ul>
+<a id="addBombsRemainingListener(project.bomb.vacuum.ChangeListener)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addBombsRemainingListener</h4>
+<pre class="methodSignature">void&nbsp;addBombsRemainingListener&#8203;(<a href="ChangeListener.html" title="interface in project.bomb.vacuum">ChangeListener</a>&lt;java.lang.Integer&gt;&nbsp;listener)</pre>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>listener</code> - the listener to be notified when bombs remaining changes.</dd>
+</dl>
+</li>
+</ul>
+<a id="addBoardListener(project.bomb.vacuum.BoardListener)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addBoardListener</h4>
+<pre class="methodSignature">void&nbsp;addBoardListener&#8203;(<a href="BoardListener.html" title="interface in project.bomb.vacuum">BoardListener</a>&nbsp;listener)</pre>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>listener</code> - the listener to be notified when tiles are changed.</dd>
+</dl>
+</li>
+</ul>
+<a id="usingDefaultBoard()">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>usingDefaultBoard</h4>
+<pre class="methodSignature">boolean&nbsp;usingDefaultBoard()</pre>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>if a default board configuration is currently being used,</dd>
 </dl>
 </li>
 </ul>

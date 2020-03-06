@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":2,"i1":2,"i2":2,"i3":1,"i4":4,"i5":4,"i6":2,"i7":1,"i8":1,"i9":8,"i10":1,"i11":2,"i12":2,"i13":2,"i14":4,"i15":4,"i16":2,"i17":4,"i18":1,"i19":1,"i20":2};
+var data = {"i0":2,"i1":2,"i2":1,"i3":1,"i4":2,"i5":2,"i6":1,"i7":1,"i8":2,"i9":4,"i10":2,"i11":4,"i12":2,"i13":1,"i14":2,"i15":2,"i16":8,"i17":1,"i18":1,"i19":2,"i20":2,"i21":2,"i22":4,"i23":1,"i24":4,"i25":2,"i26":4,"i27":1,"i28":2,"i29":1,"i30":2,"i31":2};
 var tabs = {65535:["t0","All Classes"],1:["t1","Interface Summary"],2:["t2","Class Summary"],4:["t3","Enum Summary"],8:["t4","Exception Summary"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -122,107 +122,152 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </th>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><a href="project/bomb/vacuum/BoardListener.html" title="interface in project.bomb.vacuum">BoardListener</a></td>
+<th class="colLast" scope="row">&nbsp;</th>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><a href="project/bomb/vacuum/BoardValidator.html" title="interface in project.bomb.vacuum">BoardValidator</a></td>
+<th class="colLast" scope="row">&nbsp;</th>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><a href="project/bomb/vacuum/view/BombCounter.html" title="class in project.bomb.vacuum.view">BombCounter</a></td>
+<th class="colLast" scope="row">
+<div class="block">Displays the number of bombs remaining.</div>
+</th>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><a href="project/bomb/vacuum/controller/BombVacuumController.html" title="class in project.bomb.vacuum.controller">BombVacuumController</a></td>
 <th class="colLast" scope="row">
 <div class="block">The controller for running a game of Bomb Vacuum.</div>
 </th>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i6" class="altColor">
+<td class="colFirst"><a href="project/bomb/vacuum/ChangeListener.html" title="interface in project.bomb.vacuum">ChangeListener</a>&lt;<a href="project/bomb/vacuum/ChangeListener.html" title="type parameter in ChangeListener">T</a>&gt;</td>
+<th class="colLast" scope="row">
+<div class="block">An object to be notified when the listened value changes.</div>
+</th>
+</tr>
+<tr id="i7" class="rowColor">
 <td class="colFirst"><a href="project/bomb/vacuum/Controller.html" title="interface in project.bomb.vacuum">Controller</a></td>
 <th class="colLast" scope="row">
 <div class="block">Handles the communications between a <a href="project/bomb/vacuum/View.html" title="interface in project.bomb.vacuum"><code>View</code></a> and <a href="project/bomb/vacuum/Model.html" title="interface in project.bomb.vacuum"><code>Model</code></a></div>
 </th>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i8" class="altColor">
+<td class="colFirst"><a href="project/bomb/vacuum/model/CustomConfigSaver.html" title="class in project.bomb.vacuum.model">CustomConfigSaver</a></td>
+<th class="colLast" scope="row">&nbsp;</th>
+</tr>
+<tr id="i9" class="rowColor">
 <td class="colFirst"><a href="project/bomb/vacuum/DefaultBoard.html" title="enum in project.bomb.vacuum">DefaultBoard</a></td>
 <th class="colLast" scope="row">&nbsp;</th>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i10" class="altColor">
+<td class="colFirst"><a href="project/bomb/vacuum/model/GameBoard.html" title="class in project.bomb.vacuum.model">GameBoard</a></td>
+<th class="colLast" scope="row">&nbsp;</th>
+</tr>
+<tr id="i11" class="rowColor">
 <td class="colFirst"><a href="project/bomb/vacuum/GameOverState.html" title="enum in project.bomb.vacuum">GameOverState</a></td>
 <th class="colLast" scope="row">&nbsp;</th>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><a href="project/bomb/vacuum/view/GUI.html" title="class in project.bomb.vacuum.view">GUI</a></td>
 <th class="colLast" scope="row">
 <div class="block">The GUI Controller responsible for user interaction.</div>
 </th>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><a href="project/bomb/vacuum/HighScore.html" title="interface in project.bomb.vacuum">HighScore</a></td>
 <th class="colLast" scope="row">
 <div class="block">SHOULD be implemented as an immutable data object that stores
  a name and a time in milliseconds.</div>
 </th>
 </tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><a href="project/bomb/vacuum/HighScores.html" title="interface in project.bomb.vacuum">HighScores</a></td>
-<th class="colLast" scope="row">
-<div class="block">Implementation should store <a href="project/bomb/vacuum/HighScore.html" title="interface in project.bomb.vacuum"><code>HighScore</code></a>s to be passed to a
- <a href="project/bomb/vacuum/View.html" title="interface in project.bomb.vacuum"><code>View</code></a> to show the user.</div>
-</th>
+<tr id="i14" class="altColor">
+<td class="colFirst"><a href="project/bomb/vacuum/model/HighScoreHandler.html" title="class in project.bomb.vacuum.model">HighScoreHandler</a></td>
+<th class="colLast" scope="row">&nbsp;</th>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i15" class="rowColor">
+<td class="colFirst"><a href="project/bomb/vacuum/view/HighScoresAlert.html" title="class in project.bomb.vacuum.view">HighScoresAlert</a></td>
+<th class="colLast" scope="row">&nbsp;</th>
+</tr>
+<tr id="i16" class="altColor">
 <td class="colFirst"><a href="project/bomb/vacuum/exceptions/InvalidStateException.html" title="class in project.bomb.vacuum.exceptions">InvalidStateException</a></td>
 <th class="colLast" scope="row">
 <div class="block">SHOULD be thrown when the state of the game does not
  support the operation called.</div>
 </th>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><a href="project/bomb/vacuum/Model.html" title="interface in project.bomb.vacuum">Model</a></td>
 <th class="colLast" scope="row">
 <div class="block">The base for a model controller, in the MVC paradigm, to play
  a game of Bomb Vacuum.</div>
 </th>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i18" class="altColor">
+<td class="colFirst"><a href="project/bomb/vacuum/NameValidator.html" title="interface in project.bomb.vacuum">NameValidator</a></td>
+<th class="colLast" scope="row">&nbsp;</th>
+</tr>
+<tr id="i19" class="rowColor">
 <td class="colFirst"><a href="project/bomb/vacuum/Position.html" title="class in project.bomb.vacuum">Position</a></td>
 <th class="colLast" scope="row">
 <div class="block">A Data Object that stores a row and column of a tile.</div>
 </th>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><a href="project/bomb/vacuum/model/SimpleHighScore.html" title="class in project.bomb.vacuum.model">SimpleHighScore</a></td>
 <th class="colLast" scope="row">&nbsp;</th>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><a href="project/bomb/vacuum/model/Tile.html" title="class in project.bomb.vacuum.model">Tile</a></td>
 <th class="colLast" scope="row">&nbsp;</th>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><a href="project/bomb/vacuum/TileAction.html" title="enum in project.bomb.vacuum">TileAction</a></td>
 <th class="colLast" scope="row">&nbsp;</th>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i23" class="rowColor">
+<td class="colFirst"><a href="project/bomb/vacuum/model/TileModifier.html" title="interface in project.bomb.vacuum.model">TileModifier</a></td>
+<th class="colLast" scope="row">&nbsp;</th>
+</tr>
+<tr id="i24" class="altColor">
 <td class="colFirst"><a href="project/bomb/vacuum/TileState.html" title="enum in project.bomb.vacuum">TileState</a></td>
 <th class="colLast" scope="row">&nbsp;</th>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><a href="project/bomb/vacuum/TileStatus.html" title="class in project.bomb.vacuum">TileStatus</a></td>
 <th class="colLast" scope="row">&nbsp;</th>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><a href="project/bomb/vacuum/model/TileValue.html" title="enum in project.bomb.vacuum.model">TileValue</a></td>
 <th class="colLast" scope="row">&nbsp;</th>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><a href="project/bomb/vacuum/Timer.html" title="interface in project.bomb.vacuum">Timer</a></td>
 <th class="colLast" scope="row">
 <div class="block">Tracks total time that has passed collectively between start and
  stops.</div>
 </th>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i28" class="altColor">
+<td class="colFirst"><a href="project/bomb/vacuum/view/Util.html" title="class in project.bomb.vacuum.view">Util</a></td>
+<th class="colLast" scope="row">&nbsp;</th>
+</tr>
+<tr id="i29" class="rowColor">
 <td class="colFirst"><a href="project/bomb/vacuum/View.html" title="interface in project.bomb.vacuum">View</a></td>
 <th class="colLast" scope="row">
 <div class="block">Handles displaying the state of the game to the user.</div>
 </th>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><a href="project/bomb/vacuum/ViewContainer.html" title="class in project.bomb.vacuum">ViewContainer</a></td>
 <th class="colLast" scope="row">
 <div class="block">Holds an instance of a <a href="project/bomb/vacuum/View.html" title="interface in project.bomb.vacuum"><code>View</code></a>.</div>
 </th>
+</tr>
+<tr id="i31" class="rowColor">
+<td class="colFirst"><a href="project/bomb/vacuum/view/ViewTile.html" title="class in project.bomb.vacuum.view">ViewTile</a></td>
+<th class="colLast" scope="row">&nbsp;</th>
 </tr>
 </table>
 </li>
