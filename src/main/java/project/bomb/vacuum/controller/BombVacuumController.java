@@ -31,7 +31,6 @@ public class BombVacuumController implements Controller {
         GUI.launchGUI();
     }
 
-
     // ##### Called By Model #####
 
     /**
@@ -60,17 +59,23 @@ public class BombVacuumController implements Controller {
         view.setTime(time);
     }
 
+    // ##### Called By View #####
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getMaxBombs(int rows, int columns) {
         return this.model.getMaxBombs(rows, columns);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getMinBombs(int rows, int columns) {
         return this.model.getMinBombs(rows, columns);
     }
-
-    // ##### Called By View #####
 
     /**
      * {@inheritDoc}
@@ -87,7 +92,7 @@ public class BombVacuumController implements Controller {
         this.prepareNewGame();
         model.newGame(board);
     }
-  
+
     /**
      * {@inheritDoc}
      */
@@ -109,7 +114,6 @@ public class BombVacuumController implements Controller {
     public void tileUpdatedByUser(TileAction tileAction, Position position) {
         if (!timerRunning && !gameOver) {
             timerRunning = true;
-            this.startTimer();
         }
         if (!gameOver) {
             model.tileUpdatedByUser(tileAction, position);
@@ -136,14 +140,6 @@ public class BombVacuumController implements Controller {
      * {@inheritDoc}
      */
     @Override
-    public void startTimer() {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void updateHighScore(String name) {
         if (!this.model.usingDefaultBoard()) {
             throw new InvalidStateException("Not playing a default board configuration");
@@ -159,40 +155,66 @@ public class BombVacuumController implements Controller {
         model.cheatToggled(cheat);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BoardValidator getBoardValidator() {
         return this.model.getBoardValidator();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NameValidator getNameValidator() {
         return this.model.getNameValidator();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void saveBoardConfig(BoardConfiguration configuration) {
         this.model.saveBoardConfig(configuration);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BoardConfiguration getSavedBoardConfig() {
         return this.model.getSavedBoardConfig();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addBombsRemainingListener(ChangeListener<Integer> listener) {
         this.model.addBombsRemainingListener(listener);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addBoardListener(BoardListener listener) {
         this.model.addBoardListener(listener);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public BoardConfiguration getMinBoardConfig() {
         return this.model.getMinBoardConfig();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public BoardConfiguration getMaxBoardConfig() {
         return this.model.getMaxBoardConfig();
     }

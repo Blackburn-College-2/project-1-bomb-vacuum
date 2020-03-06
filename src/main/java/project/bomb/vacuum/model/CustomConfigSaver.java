@@ -1,17 +1,15 @@
 package project.bomb.vacuum.model;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import project.bomb.vacuum.BoardConfiguration;
-import project.bomb.vacuum.HighScore;
 
 public class CustomConfigSaver {
 
-
-
     private final static String URL = "./src/main/java/project/bomb/vacuum/custom/save.txt";
 
+    /**
+     * @return the saved board configuration.
+     */
     public BoardConfiguration getSavedConfig() {
         File file = new File(URL);
         BufferedReader input = null;
@@ -45,6 +43,9 @@ public class CustomConfigSaver {
         );
     }
 
+    /**
+     * @param configuration the board configuration to save.
+     */
     public void saveConfig(BoardConfiguration configuration) {
         File file = new File(URL);
         BufferedWriter output = null;

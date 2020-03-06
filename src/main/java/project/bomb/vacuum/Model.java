@@ -44,18 +44,45 @@ public interface Model {
      */
     BoardValidator getBoardValidator();
 
+    /**
+     * @return the name validator to use.
+     */
     NameValidator getNameValidator();
 
+    /**
+     * @return the smallest valid board configuration.
+     */
     BoardConfiguration getMinBoardConfig();
 
+    /**
+     * @return the largest valid board configuration.
+     */
     BoardConfiguration getMaxBoardConfig();
 
+    /**
+     * @param rows    the number of rows.
+     * @param columns the number of columns.
+     * @return the maximum number of bombs for the given rows and columns.
+     */
     int getMaxBombs(int rows, int columns);
 
+    /**
+     * @param rows    the number of rows.
+     * @param columns the number of columns.
+     * @return the minimum number of bombs for the given rows and columns.
+     */
     int getMinBombs(int rows, int columns);
 
+    /**
+     * Saves the board configuration.
+     *
+     * @param configuration the configuration to save.
+     */
     void saveBoardConfig(BoardConfiguration configuration);
 
+    /**
+     * @return the saved board configuration.
+     */
     BoardConfiguration getSavedBoardConfig();
 
     /**
@@ -78,6 +105,11 @@ public interface Model {
      */
     void cheatToggled(boolean cheat);
 
+    /**
+     * Get the time for the current game.
+     *
+     * @return the time for the current game.
+     */
     long getTime();
 
     /**

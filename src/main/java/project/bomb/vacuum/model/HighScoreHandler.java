@@ -14,6 +14,16 @@ public class HighScoreHandler {
     private final static String INTERMEDIATE_SCORES_URL = SCORES_URL + "intermediate.txt";
     private final static String EXPERT_SCORES_URL = SCORES_URL + "expert.txt";
 
+    /**
+     * Saves the highscore for the specified board.
+     * <p>
+     * If the score is not better than the existing scores, the new
+     * score will not be written.
+     *
+     * @param board the default board being used.
+     * @param name  the user's name.
+     * @param time  the user's time.
+     */
     public void saveHighScore(DefaultBoard board, String name, long time) {
         String URL = this.selectScoreURL(board);
         List<HighScore> currentScores = this.loadSortedScores(board);
@@ -26,6 +36,13 @@ public class HighScoreHandler {
         this.saveHighScores(currentScores, URL);
     }
 
+    /**
+     * Returns the saved high scores for the specified board in order
+     * from best to worst.
+     *
+     * @param board the board to load.
+     * @return the scores for the specified board.
+     */
     public List<HighScore> loadSortedScores(DefaultBoard board) {
         List<HighScore> scores;
         String URL = this.selectScoreURL(board);
@@ -161,6 +178,14 @@ public class HighScoreHandler {
         });
     }
 
+    /**
+     * Checks if the specified time would result in a new high score
+     * for the specified board.
+     *
+     * @param board the board to check with.
+     * @param time  the time to check with.
+     * @return if the time is a new high score for the board.
+     */
     public boolean isNewHighScore(DefaultBoard board, long time) {
         List<HighScore> scores = this.loadSortedScores(board);
         boolean better = false;

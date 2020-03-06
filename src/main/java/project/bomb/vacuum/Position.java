@@ -9,8 +9,7 @@ public class Position {
     public final int column;
 
     /**
-     *
-     * @param row the row to store.
+     * @param row    the row to store.
      * @param column the column to store.
      */
     public Position(int row, int column) {
@@ -27,7 +26,7 @@ public class Position {
 
     public boolean equals(Object other) {
         if (other instanceof Position) {
-            return this.row == ((Position)other).row && this.column == ((Position)other).column;
+            return this.row == ((Position) other).row && this.column == ((Position) other).column;
         }
         return false;
     }

@@ -27,7 +27,6 @@ public class BasicModel implements Model {
         return validRows && validColumns && validBombs;
     };
     private final NameValidator nameValidator = (name) -> name.length() == 3;
-
     private DefaultBoard currentBoard;
     private boolean timerRunning;
 
@@ -174,35 +173,57 @@ public class BasicModel implements Model {
         this.gameBoard.cheatToggle(toggle);
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public BoardValidator getBoardValidator() {
         return this.validator;
     }
 
+    /**
+     * {@inheritDoc }
+     */
+    @Override
     public NameValidator getNameValidator() {
         return this.nameValidator;
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public BoardConfiguration getMinBoardConfig() {
         return new BoardConfiguration(2, 2, 1);
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public BoardConfiguration getMaxBoardConfig() {
         return new BoardConfiguration(25, 35, (25 * 35) - 1);
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public void saveBoardConfig(BoardConfiguration configuration) {
         this.configSaver.saveConfig(configuration);
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public BoardConfiguration getSavedBoardConfig() {
         return this.configSaver.getSavedConfig();
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public long getTime() {
         return this.timer.getTime();

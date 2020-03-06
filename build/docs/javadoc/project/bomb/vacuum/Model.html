@@ -219,7 +219,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>long</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTime()">getTime</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Get the time for the current game.</div>
+</td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
@@ -238,7 +240,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#saveBoardConfig(project.bomb.vacuum.BoardConfiguration)">saveBoardConfig</a></span>&#8203;(<a href="BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;configuration)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Saves the board configuration.</div>
+</td>
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
@@ -358,6 +362,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>getNameValidator</h4>
 <pre class="methodSignature"><a href="NameValidator.html" title="interface in project.bomb.vacuum">NameValidator</a>&nbsp;getNameValidator()</pre>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the name validator to use.</dd>
+</dl>
 </li>
 </ul>
 <a id="getMinBoardConfig()">
@@ -367,6 +375,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>getMinBoardConfig</h4>
 <pre class="methodSignature"><a href="BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;getMinBoardConfig()</pre>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the smallest valid board configuration.</dd>
+</dl>
 </li>
 </ul>
 <a id="getMaxBoardConfig()">
@@ -376,6 +388,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>getMaxBoardConfig</h4>
 <pre class="methodSignature"><a href="BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;getMaxBoardConfig()</pre>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the largest valid board configuration.</dd>
+</dl>
 </li>
 </ul>
 <a id="getMaxBombs(int,int)">
@@ -386,6 +402,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>getMaxBombs</h4>
 <pre class="methodSignature">int&nbsp;getMaxBombs&#8203;(int&nbsp;rows,
                 int&nbsp;columns)</pre>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>rows</code> - the number of rows.</dd>
+<dd><code>columns</code> - the number of columns.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the maximum number of bombs for the given rows and columns.</dd>
+</dl>
 </li>
 </ul>
 <a id="getMinBombs(int,int)">
@@ -396,6 +419,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>getMinBombs</h4>
 <pre class="methodSignature">int&nbsp;getMinBombs&#8203;(int&nbsp;rows,
                 int&nbsp;columns)</pre>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>rows</code> - the number of rows.</dd>
+<dd><code>columns</code> - the number of columns.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the minimum number of bombs for the given rows and columns.</dd>
+</dl>
 </li>
 </ul>
 <a id="saveBoardConfig(project.bomb.vacuum.BoardConfiguration)">
@@ -405,6 +435,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>saveBoardConfig</h4>
 <pre class="methodSignature">void&nbsp;saveBoardConfig&#8203;(<a href="BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;configuration)</pre>
+<div class="block">Saves the board configuration.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>configuration</code> - the configuration to save.</dd>
+</dl>
 </li>
 </ul>
 <a id="getSavedBoardConfig()">
@@ -414,6 +449,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>getSavedBoardConfig</h4>
 <pre class="methodSignature"><a href="BoardConfiguration.html" title="class in project.bomb.vacuum">BoardConfiguration</a>&nbsp;getSavedBoardConfig()</pre>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the saved board configuration.</dd>
+</dl>
 </li>
 </ul>
 <a id="getScores(project.bomb.vacuum.DefaultBoard)">
@@ -466,6 +505,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>getTime</h4>
 <pre class="methodSignature">long&nbsp;getTime()</pre>
+<div class="block">Get the time for the current game.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the time for the current game.</dd>
+</dl>
 </li>
 </ul>
 <a id="addBombsRemainingListener(project.bomb.vacuum.ChangeListener)">
